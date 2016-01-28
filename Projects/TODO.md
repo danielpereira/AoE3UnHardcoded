@@ -8,6 +8,7 @@ Projects in progress
   - Get rid of the 2 stack variables which are created to check the game version and then are destroyed before AIs are lodaded
   - Consider the use of an array, that would already have all of the pointers to the file name strings
   - Put something useful in AI Limit\HOWTO.md
+  - Investigate how the function that loads .personality files really works
   - Investigate a way to generalize this
   
 * Revolutionary Banners
