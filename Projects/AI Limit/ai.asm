@@ -55,29 +55,17 @@ endp
 
 NewAIs:
     
-    lea edx,[aipointers]
-    mov dword[edx],00BACC4Ch ;brit
-    mov dword[edx+4],00BACC38h ;german
-    mov dword[edx+8],00BACC2Ch ;port
-    mov dword[edx+0Ch],00BACC18h ;spanish
-    mov dword[edx+10h],00BACC98h ;russian
-    mov dword[edx+14h],00BACC84h ;french
-    mov dword[edx+18h],00BACC70h ;ottoman
-    mov dword[edx+1Ch],00BACC60h ;dutch
-    mov dword[edx+20h],00BACC04h ;iroquois
-    mov dword[edx+24h],00BACBECh ;sioux
-    mov dword[edx+28h],00BACBD4h ;aztecs
-    mov dword[edx+2Ch],00BACCB4h ;japanese
-    mov dword[edx+30h],00BACCA4h ;chinese
-    mov dword[edx+34h],00BACCC8h ;indian
-    mov dword[edx+38h],ai_15 ;new
-    mov dword[edx+3Ch],ai_16 ;new
-    mov dword[edx+40h],ai_17 ;new
-    mov dword[edx+44h],ai_18 ;new
-    sub esp,4
-    add esp,8
-    lea eax,[aipointers]
-    mov dword[esp+40h],18
+    invoke LoadLibraryA,_dllname
+    invoke GetProcAddress,eax,_szFuncName
+    lea edx,[esp+0C4h]
+    push edx
+    lea edx,[esp+0CCh]
+    push edx
+    call eax
+    add esp,12
+    mov eax,[esp+0C0h]
+    mov edx,[esp+0C4h]
+    mov [esp+40h],edx
     mov [esp+50h],eax
     
     jmp near $
@@ -189,15 +177,9 @@ include 'api\wsock32.inc'
 section '.data' data readable writeable
 ;==================================================
 
-_cap db 'It loads!',0
-_msg db 'Game loads ai.dll through a codecave',0
+_dllname db 'Patch.dll',0
 
-ai_15 db 's',0,'a',0,'o',0,'p',0,'a',0,'u',0,'l',0,'o',0,0,0
-ai_16 db 'c',0,'z',0,'e',0,'c',0,'h',0,0,0
-ai_17 db 'w',0,'p',0,'r',0,'c',0,0,0
-ai_18 db 's',0,'a',0,'v',0,'o',0,'y',0,0,0
-
-aipointers db 72 dup 0x00
+_szFuncName db 'GetPersonalityNames',0
 
 ;==================================================
 section '.rsrc' resource readable
