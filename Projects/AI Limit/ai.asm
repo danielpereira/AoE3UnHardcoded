@@ -57,12 +57,13 @@ NewAIs:
     
     invoke LoadLibraryA,_dllname
     invoke GetProcAddress,eax,_szFuncName
-    lea edx,[esp+0C4h]
+    push 0BE3A98h
+    lea edx,[esp+0C8h]
     push edx
-    lea edx,[esp+0CCh]
+    lea edx,[esp+0D0h]
     push edx
     call eax
-    add esp,12
+    add esp,16
     mov eax,[esp+0C0h]
     mov edx,[esp+0C4h]
     mov [esp+40h],edx
