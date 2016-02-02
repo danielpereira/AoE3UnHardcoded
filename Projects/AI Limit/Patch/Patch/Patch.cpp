@@ -28,17 +28,14 @@ PATCH_API void GetPersonalityNames(int* pCount, LPWSTR** pNames, LPCWSTR pszDir)
 
 	do
 	{
-		if (FILE_ATTRIBUTE_DIRECTORY & fd.dwFileAttributes)
-			continue;
-
 		if (*pNames == NULL)
-			*pNames = (LPWSTR*)HeapAlloc(hHeap, HEAP_ZERO_MEMORY, sizeof(LPWSTR));
+			*pNames = (LPWSTR*)HeapAlloc(hHeap, 0, sizeof(LPWSTR));
 		else
-			*pNames = (LPWSTR*)HeapReAlloc(hHeap, HEAP_ZERO_MEMORY, *pNames, *pCount * sizeof(LPWSTR) + sizeof(LPWSTR));
+			*pNames = (LPWSTR*)HeapReAlloc(hHeap, 0, *pNames, *pCount * sizeof(LPWSTR) + sizeof(LPWSTR));
 
 		PathRemoveExtensionW(fd.cFileName);
 		length = lstrlenW(fd.cFileName) + 1;
-		(*pNames)[*pCount] = (LPWSTR)HeapAlloc(hHeap, HEAP_ZERO_MEMORY, length * sizeof(WCHAR));
+		(*pNames)[*pCount] = (LPWSTR)HeapAlloc(hHeap, 0, length * sizeof(WCHAR));
 		lstrcpyW((*pNames)[*pCount], fd.cFileName);
 
 		(*pCount)++;
