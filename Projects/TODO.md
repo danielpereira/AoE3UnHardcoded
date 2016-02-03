@@ -1,16 +1,16 @@
 # To Do 
 
-Projects in progress
+Projects completed
 --------------------
 
 * AI/Civilization Limit
-  - Consider if getting rid of the 2 stack variables which are created to check the game version and then are destroyed before AIs are lodaded is worthwile
-  - Make the AI/Civilzation Limit patch get the AI file names from the AI path specified inside the .exe, since some mods do not use the default \AI3 directory
-  
+
+Projects in progress
+--------------------
+
 * Revolutionary Banners
   - Commit discoveries to the repository
   - Investigate a way to generalize it
-  
   
 Projects not yet started
 ------------------------
