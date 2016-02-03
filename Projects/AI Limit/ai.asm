@@ -41,7 +41,7 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
 	
     ;invoke   MessageBoxA,0,_msg,_cap,MB_ABORTRETRYIGNORE
     
-    stdcall PatchCodeCave,esi,0x00603BA7,NewAIs,11 ;nomad setting
+    stdcall PatchCodeCave,esi,0x00603B0B,NewAIs,11 ;nomad setting
 	and	edi,eax
     
     stdcall PatchAddress,esi,loc_00603C4F,0x00603C4F,1
@@ -54,23 +54,86 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
 endp
 
 NewAIs:
-    
-    invoke LoadLibraryA,_dllname
-    invoke GetProcAddress,eax,_szFuncName
-    push 0BE3A98h
-    lea edx,[esp+0C8h]
-    push edx
-    lea edx,[esp+0D0h]
-    push edx
-    call eax
-    add esp,16
-    mov eax,[esp+0C0h]
-    mov edx,[esp+0C4h]
-    mov [esp+40h],edx
-    mov [esp+50h],eax
-    
-    jmp near $
-    loc_00603C4F = $-4
+    	push 2h
+	mov dword[esp + 28h], 0h
+	mov byte[esp + 1fh], 0h
+	sub esp, 458h
+	push 0h
+	push 0h
+	push 0h
+	call HeapCreate
+	mov ebp, eax
+	push esp
+	push 209h
+	call GetCurrentDirectoryW
+	push esp
+	call lstrlenW
+	mov word[esp + 2h * eax], 5ch ; hex value of '\'
+	push 00be3a98h ; offset of unicode "AI3"
+	lea eax, [esp + 2h * eax + 6h]
+	push eax
+	call lstrcpyW
+	push esp
+	call lstrlenW
+	mov word[esp + 2h * eax], 2ah ; hex value of '*'
+	push 00c0b39ch ; offset of unicode ".personality"
+	lea eax, [esp + 2h * eax + 6h]
+	push eax
+	call lstrcpyW
+	lea eax, [esp + 208h]
+	push eax
+	lea eax, [esp + 4h]
+	push eax
+	call FindFirstFileW
+	mov dword[esp + 4ech], eax
+	xor esi, esi
+	push 4h
+	push 0h
+	push ebp
+	call HeapAlloc
+	jmp assign
+	loop_main:
+	lea edi, [esi + 3h * esi + 4h]
+	push edi
+	push ebx
+	push 0
+	push ebp
+	call HeapReAlloc
+	assign:
+	mov ebx, eax
+	xor edi, edi
+	loop_string:
+	cmp word[esp + 2 * edi + 234h], 2eh ; hex value of '.'
+	je found
+	inc edi
+	jmp loop_string
+	found:
+	inc edi
+	lea eax, [edi + edi]
+	push eax
+	push 0h
+	push ebp
+	call HeapAlloc
+	mov dword[ebx + 4h * esi], eax
+	push edi
+	lea eax, [esp + 238h]
+	push eax
+	push dword[ebx + 4h * esi]
+	call lstrcpynW
+	inc esi
+	lea eax, [esp + 208h]
+	push eax
+	push dword[esp + 4F0h]
+	call FindNextFileW
+	cmp eax, 0h
+	jne loop_main
+	push dword[esp + 4ech]
+	call FindClose
+	add esp, 45ch
+	mov dword[esp + 40h], esi
+	mov dword[esp + 50h], ebx
+    	jmp near $
+    	loc_00603C4F = $-4
 
 ;--------------------------------------------------
 
@@ -173,14 +236,6 @@ include 'api\kernel32.inc'
 include 'api\shell32.inc'
 include 'api\user32.inc'
 include 'api\wsock32.inc'
-
-;==================================================
-section '.data' data readable writeable
-;==================================================
-
-_dllname db 'Patch.dll',0
-
-_szFuncName db 'GetPersonalityNames',0
 
 ;==================================================
 section '.rsrc' resource readable
