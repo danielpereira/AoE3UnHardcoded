@@ -8,9 +8,11 @@ Projects completed
 Projects in progress
 --------------------
 
+* Patcher
+  - Finish the first 4 items of the patcher TODO file before merging the branch
+
 * Revolutionary Banners
-  - Commit discoveries to the repository
-  - Investigate a way to generalize it
+  - Finish XML, BAR, and XMB parsing code
   
 Projects not yet started
 ------------------------
