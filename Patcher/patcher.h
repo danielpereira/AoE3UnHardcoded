@@ -8,6 +8,16 @@
 #define MAX_OPTIONS 2
 #define MAX_FILES 10
 
+typedef struct patchdata_t {
+    char enabled;
+    DWORD patchAddress;
+    char* patchData;
+    unsigned int patchSize;
+    unsigned int NopSize;
+} PatchInfo;
+
+enum patchOption { PATCH_AI_LIMIT , PATCH_REV_BANNERS };
+
 const DWORD ProtoStrAddress = 0x007f5170;
 const DWORD ProtoStrAddress2 = 0x007f5188;
 const DWORD RandomMapStrAddress = 0x007e3b50;
@@ -41,11 +51,15 @@ const char patchAILimit[] = { 0x6A, 0x02, 0xC7, 0x44, 0xE4, 0x28, 0x00, 0x00, 0x
 0xB8, 0x00, 0x81, 0xC4, 0x5C, 0x04, 0x00, 0x00, 0x89, 0x74, 0xE4, 0x40, 0x89, 0x5C, 0xE4, 0x50,
 };
  
-const DWORD patchAILimitNopStart = 0x00203c16;
+const unsigned int patchAILimitSize = 267;
 const unsigned int patchAILimitNopSize = 57;
- 
-char PatchData(FILE *exe, const DWORD offset, const char *data);
-char PatchFileName(FILE *exe, const DWORD offset, const wchar_t *filename);
-char NopOMatic(FILE *exe, const DWORD offset, const unsigned int size);
 
-void ClearArray(char *array, int size);
+const DWORD patchRevBannerAddress = NULL;
+const char patchRevBanner[] = { '\0' };
+ 
+const unsigned int patchRevBannerSize = NULL;
+const unsigned int patchRevBannerNopSize = NULL;
+ 
+char PatchData(FILE *exe, const DWORD offset, const char *patchData, const patchSize, const NopSize);
+char PatchFileName(FILE *exe, const DWORD offset, const wchar_t *filename);
+void InitializeStructs(PatchInfo *patches);
