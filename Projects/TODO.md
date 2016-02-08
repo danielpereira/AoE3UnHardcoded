@@ -8,11 +8,11 @@ Projects completed
 Projects in progress
 --------------------
 
+* Revolutionary Banners
+  - Investigate a way to store the temporary banner path string, without using memory blocks allocated by a .dll
+  
 * Patcher
   - Finish the first 4 items of the patcher TODO file before merging the branch
-
-* Revolutionary Banners
-  - Finish XML, BAR, and XMB parsing code
   
 Projects not yet started
 ------------------------
