@@ -68,28 +68,27 @@ NewRevs:
     repe cmpsb
     jne near $
     loc_0081a7ec = $-4
-    ;sub esp, 208h
-    stdcall memset,_pathtmp,0,208h
-    add esp,0Ch
+    sub esp, 208h
     push _Path ; unicode "ui\ingame\politicians\REV_banner_"
-    lea eax,[_pathtmp]
+    lea eax, [esp+4]
     push eax
     call dword[00b84290h] ; lstrcpyW
     push esi
     call dword[00b843ach] ; lstrlenA
+    inc eax
     push eax
-    lea eax,[_pathtmp+42h]
+    lea eax,[esp+46h]
     push eax
     push 0ffffffffh
     push esi
     push 0h
     push 0h
     call dword[00b841fch] ; MultiByteToWideChar
-    push _pathtmp
-    lea ecx, [esp+2ch]
+    push esp
+    lea ecx, [esp+234h]
     call near $
     sub_00401a12 = $-4
-    ;add esp,208h
+    add esp,208h
     lea eax, [esp + 28h]
     push eax
     mov ecx,ebp
@@ -100,29 +99,6 @@ NewRevs:
     loc_0081a7ec_1 = $-4
 
 ;--------------------------------------------------
-
-proc memset c ptr,value,num
-
-        mov     ecx,dword[num]
-        jecxz	.end
-        push    edi
-        mov     eax,dword[value]
-        mov     ah,al
-        mov     dx,ax
-        shl     eax,16
-        mov     ax,dx
-        mov     edi,dword[ptr]
-        mov     edx,ecx
-        shr     ecx,2
-        rep     stosd
-        mov     ecx,edx
-        and     ecx,3
-        rep     stosb
-        pop     edi
-        .end:              
-        mov     eax,dword[ptr]
-        ret
-endp
 
 proc PatchAddress hProcess,lpBaseAddress,lpDestAddress,bRelAddr
 
@@ -231,8 +207,6 @@ section '.data' data readable writeable
 _XPRevolution db 'XPRevolution',0
 _Path du 'ui\ingame\politicians\REV_banner_',0
 dd 0
-
-_pathtmp db 208 dup 0x00
 
 ;==================================================
 section '.rsrc' resource readable
