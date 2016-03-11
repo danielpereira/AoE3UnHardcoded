@@ -58,7 +58,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	lpArgs = CommandLineToArgvW(GetCommandLineW(), &argCount);
 
 	if (argCount < 2) {
-		MessageBoxW(GetActiveWindow(), L"target EXE not found!", L"UHC Patcher", MB_ICONERROR | MB_OK);
+		MessageBoxW(GetActiveWindow(), L"No target EXE was found.", L"UHC Patcher", MB_ICONERROR | MB_OK);
 		return FALSE;
 	}
 
@@ -77,7 +77,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	hFind = FindFirstFileW(lpFind, &fd);
 
 	if (hFind == INVALID_HANDLE_VALUE) {
-		MessageBoxW(GetActiveWindow(), L"No patch files found!", L"UHC Patcher", MB_ICONERROR | MB_OK);
+		MessageBoxW(GetActiveWindow(), L"No patch files have been found found.", L"UHC Patcher", MB_ICONERROR | MB_OK);
 		return FALSE;
 	}
 
