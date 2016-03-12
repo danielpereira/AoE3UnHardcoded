@@ -74,7 +74,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			lstrcpynW(lpBackup, lpArgs[1], &lpArgs[1][i] - lpArgs[1] + 1);
 			lstrcatW(lpBackup, L".backupuhc");
 
-			DWORD dwAttr = GetFileAttributes(lpBackup);
+			DWORD dwAttr = GetFileAttributesW(lpBackup);
 
 			if (dwAttr != INVALID_FILE_ATTRIBUTES &&
 				!(dwAttr & FILE_ATTRIBUTE_DIRECTORY)) {
@@ -150,7 +150,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	FindClose(hFind);
 
-	MessageBox(GetActiveWindow(), L"The EXE has been sucessfully patched!", UHC_NAME, MB_ICONINFORMATION | MB_OK);
+	MessageBoxW(GetActiveWindow(), L"The EXE has been sucessfully patched!", UHC_NAME, MB_ICONINFORMATION | MB_OK);
 
 	return EXIT_SUCCESS;
 }
