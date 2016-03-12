@@ -25,15 +25,17 @@ This project is driven by members of the AoE3 community.
 Progress
 --------
 
-The development progress can be checked in the TODO file in the Projects\ directory.
+The development progress can be checked in the TODO file in the /Projects directory.
 
 
 How to use
 ----------
 
-In order to use the code provided by this project, you'll need to download the Patcher and the uhc patch files in the \Patch directory and open your Age of Empires 3 TAD .exe with it
+In order to use the code provided by this project, you'll need to download the Patcher and the uhc patch files in the /Patcher directory and open your Age of Empires 3 TAD .exe with it
 
-Aditionally, you can also assemble the codes in the \Projects using the Flat Assembler, and then inject the generated .dlls into the game.
+For more information about the Patcher, check the README.md file at the /Patcher directory.
+
+Aditionally, you can also assemble the codes in the /Projects using the Flat Assembler, and then inject the generated .dlls into the game.
 
 Different projects can have specific instructions associated with them, so be sure to read the HOWTO of a project before attempting to use the asm code.
 
