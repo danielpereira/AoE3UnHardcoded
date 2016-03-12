@@ -10,6 +10,7 @@
 // data 1...
 // ...
 
+#define UHC_NAME L"UHC Patcher"
 #define UHC_HEADER 0x31434855 
 
 BOOL UHCPatch(HANDLE hFile, HANDLE hPatchFile) {
@@ -49,6 +50,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow) {
 	int argCount;
 	LPWSTR *lpArgs;
+	WCHAR lpBackup[MAX_PATH];
 	WCHAR lpDirectory[MAX_PATH];
 	WCHAR lpFind[MAX_PATH];
 	WIN32_FIND_DATAW fd;
@@ -58,8 +60,43 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	lpArgs = CommandLineToArgvW(GetCommandLineW(), &argCount);
 
 	if (argCount < 2) {
-		MessageBoxW(GetActiveWindow(), L"No target EXE was found.", L"UHC Patcher", MB_ICONERROR | MB_OK);
+		MessageBoxW(GetActiveWindow(), L"Failed to open file\ntarget EXE not found!", UHC_NAME, MB_ICONERROR | MB_OK);
 		return FALSE;
+	}
+
+	for (DWORD i = lstrlenW(lpArgs[1]) - 1; i >= 0; --i) {
+		if (lpArgs[1][i] == '.') {
+			if (lstrcmpiW(&lpArgs[1][i], L".exe") != 0) {
+				MessageBoxW(GetActiveWindow(), L"Failed to open file\nTarget file is not an EXE", UHC_NAME, MB_ICONERROR | MB_OK);
+				return FALSE;
+			}
+
+			lstrcpynW(lpBackup, lpArgs[1], &lpArgs[1][i] - lpArgs[1] + 1);
+			lstrcatW(lpBackup, L".backupuhc");
+
+			DWORD dwAttr = GetFileAttributes(lpBackup);
+
+			if (dwAttr != INVALID_FILE_ATTRIBUTES &&
+				!(dwAttr & FILE_ATTRIBUTE_DIRECTORY)) {
+				if (MessageBoxW(GetActiveWindow(), L"A Patcher backup file for the target EXE has been located\nDo you want to restore it?", UHC_NAME, MB_ICONQUESTION | MB_YESNO) == IDYES) {
+					if (CopyFileW(lpBackup, lpArgs[1], FALSE) &&
+						DeleteFileW(lpBackup)) {
+						MessageBoxW(GetActiveWindow(), L"Backup successfully restored.", UHC_NAME, MB_ICONINFORMATION | MB_OK);
+						return TRUE;
+					}
+					else {
+						MessageBoxW(GetActiveWindow(), L"Failed to restore backup!", UHC_NAME, MB_ICONERROR | MB_OK);
+						return FALSE;
+					}
+				}
+			}
+			else {
+				if (!CopyFileW(lpArgs[1], lpBackup, FALSE))
+					MessageBoxW(GetActiveWindow(), L"Failed to make a backup!", UHC_NAME, MB_ICONWARNING | MB_OK);
+			}
+
+			break;
+		}
 	}
 
 	hFile = CreateFileW(lpArgs[1], GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -77,7 +114,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	hFind = FindFirstFileW(lpFind, &fd);
 
 	if (hFind == INVALID_HANDLE_VALUE) {
-		MessageBoxW(GetActiveWindow(), L"No patch files have been found found.", L"UHC Patcher", MB_ICONERROR | MB_OK);
+		MessageBoxW(GetActiveWindow(), L"No patch files have been found!", UHC_NAME, MB_ICONERROR | MB_OK);
 		return FALSE;
 	}
 
@@ -98,7 +135,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 		lstrcatW(lpMsg, L"\"?");
 		
-		if (MessageBoxW(GetActiveWindow(), lpMsg, L"UHC Patcher", MB_ICONQUESTION | MB_YESNO) != IDYES)
+		if (MessageBoxW(GetActiveWindow(), lpMsg, UHC_NAME, MB_ICONQUESTION | MB_YESNO) != IDYES)
 			continue;
 
 		lstrcpyW(lpPatchFilePath, lpDirectory);
@@ -107,11 +144,13 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		hPatchFile = CreateFileW(lpPatchFilePath, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 		if (!UHCPatch(hFile, hPatchFile))
-			MessageBoxW(GetActiveWindow(), L"An error occurred while patching the EXE file!", L"UHC Patcher", MB_ICONERROR | MB_OK);	
+			MessageBoxW(GetActiveWindow(), L"An error occurred while patching the EXE file!", UHC_NAME, MB_ICONERROR | MB_OK);
 
 	} while (FindNextFileW(hFind, &fd));
 
 	FindClose(hFind);
+
+	MessageBox(GetActiveWindow(), L"The EXE has been sucessfully patched!", UHC_NAME, MB_ICONINFORMATION | MB_OK);
 
 	return EXIT_SUCCESS;
 }
