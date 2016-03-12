@@ -75,6 +75,9 @@
   <ItemGroup>
     <ClCompile Include="UHC.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="UHCPatcher.rc" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

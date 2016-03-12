@@ -100,8 +100,8 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			}
 			else {
 				if (!CopyFileW(lpArgs[1], lpBackup, FALSE))
-					if (MessageBoxW(GetActiveWindow(), L"Failed to make a backup!\nContinue patching anyway?", UHC_NAME, MB_ICONWARNING | MB_YESNO) != IDYES);
-				return FALSE;
+					if (MessageBoxW(GetActiveWindow(), L"Failed to make a backup!\nContinue patching anyway?", UHC_NAME, MB_ICONWARNING | MB_YESNO) != IDYES)
+				        return FALSE;
 			}
 
 			break;
