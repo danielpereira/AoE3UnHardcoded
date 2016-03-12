@@ -11,8 +11,6 @@ After that, just drag and drop your Age of Empires III TAD executable over the U
 
 To Do
 -----
-* Add the Revolution Banners patch to the Patcher
 * Implement a proper GUI
-* Make the patcher display more specific error messages
 * Allow the Patcher to change the hardcoded filenames of some of the files that are loaded by the executable
 * Add commandline options

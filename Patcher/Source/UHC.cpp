@@ -13,6 +13,12 @@
 #define UHC_NAME L"UHC Patcher"
 #define UHC_HEADER 0x31434855 
 
+typedef enum UHC_PATCH_RESULT {
+	UHC_PATCH_NONE,
+	UHC_PATCH_FAILED,
+	UHC_PATCH_SUCCESS
+} UHC_PATCH_RESULT;
+
 BOOL UHCPatch(HANDLE hFile, HANDLE hPatchFile) {
 	static HANDLE hHeap = GetProcessHeap();
 	DWORD dwBytes;
@@ -38,6 +44,7 @@ BOOL UHCPatch(HANDLE hFile, HANDLE hPatchFile) {
 
 		if (SetFilePointer(hFile, dwOffset, NULL, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
 			return FALSE;
+
 		WriteFile(hFile, lpData, dwLength, &dwBytes, NULL);
 
 		HeapFree(hHeap, 0, lpData);
@@ -56,6 +63,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	WIN32_FIND_DATAW fd;
 	HANDLE hFind;
 	HANDLE hFile;
+	UHC_PATCH_RESULT patchStatus = UHC_PATCH_NONE;
 
 	lpArgs = CommandLineToArgvW(GetCommandLineW(), &argCount);
 
@@ -92,7 +100,8 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			}
 			else {
 				if (!CopyFileW(lpArgs[1], lpBackup, FALSE))
-					MessageBoxW(GetActiveWindow(), L"Failed to make a backup!", UHC_NAME, MB_ICONWARNING | MB_OK);
+					if (MessageBoxW(GetActiveWindow(), L"Failed to make a backup!\nContinue patching anyway?", UHC_NAME, MB_ICONWARNING | MB_YESNO) != IDYES);
+				return FALSE;
 			}
 
 			break;
@@ -134,7 +143,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		}
 
 		lstrcatW(lpMsg, L"\"?");
-		
+
 		if (MessageBoxW(GetActiveWindow(), lpMsg, UHC_NAME, MB_ICONQUESTION | MB_YESNO) != IDYES)
 			continue;
 
@@ -143,14 +152,36 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 		hPatchFile = CreateFileW(lpPatchFilePath, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
-		if (!UHCPatch(hFile, hPatchFile))
-			MessageBoxW(GetActiveWindow(), L"An error occurred while patching the EXE file!", UHC_NAME, MB_ICONERROR | MB_OK);
+		if (!UHCPatch(hFile, hPatchFile)) {
+			patchStatus = UHC_PATCH_FAILED;
+			break;
+		}
+
+		CloseHandle(hPatchFile);
+
+		patchStatus = UHC_PATCH_SUCCESS;
 
 	} while (FindNextFileW(hFind, &fd));
 
 	FindClose(hFind);
 
-	MessageBoxW(GetActiveWindow(), L"The EXE has been sucessfully patched!", UHC_NAME, MB_ICONINFORMATION | MB_OK);
+	CloseHandle(hFile);
+
+	switch (patchStatus) {
+	    case UHC_PATCH_NONE:
+		    DeleteFileW(lpBackup);
+		    MessageBoxW(GetActiveWindow(), L"No patches have been applied to the EXE.", UHC_NAME, MB_ICONINFORMATION | MB_OK);
+		    break;
+	    case UHC_PATCH_FAILED:
+		    if (CopyFileW(lpBackup, lpArgs[1], FALSE) &&
+			    DeleteFileW(lpBackup))
+			    MessageBoxW(GetActiveWindow(), L"An error occurred while attempting to patch the EXE file\nThe original EXE file has been restored.", UHC_NAME, MB_ICONERROR | MB_OK);
+		    else
+			    MessageBoxW(GetActiveWindow(), L"An error occurred while attempting to patch the EXE file\n" UHC_NAME L" also could not restore the original EXE file", UHC_NAME, MB_ICONERROR | MB_OK);
+		    break;
+	    case UHC_PATCH_SUCCESS:
+		    MessageBoxW(GetActiveWindow(), L"The EXE has been sucessfully patched!", UHC_NAME, MB_ICONINFORMATION | MB_OK);
+	}
 
 	return EXIT_SUCCESS;
 }

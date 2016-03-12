@@ -54,7 +54,7 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
 endp
 
 NewAIs:
-    	push 2h
+	push 2h
 	mov dword[esp + 28h], 0h
 	mov byte[esp + 1fh], 0h
 	sub esp, 458h
@@ -132,8 +132,8 @@ NewAIs:
 	add esp, 45ch
 	mov dword[esp + 40h], esi
 	mov dword[esp + 50h], ebx
-    	jmp near $
-    	loc_00603C4F = $-4
+	jmp near $
+	loc_00603C4F = $-4
 
 ;--------------------------------------------------
 
