@@ -6,6 +6,7 @@ Projects completed
 * AI/Civilization Limit
 * Revolutionary Banners
 * Unlimited Population
+* HC card limit
 * Patcher
 
 Projects in progress
@@ -22,5 +23,4 @@ Projects not yet started
 * Rice Paddy hardcoding
 * Factory hardcoding
 * Selection limit
-* HC card limit
 * etc.
