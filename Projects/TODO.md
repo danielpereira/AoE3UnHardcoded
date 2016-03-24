@@ -20,7 +20,6 @@ Projects not yet started
 * Export UI for Asian civs and Fire Pit UI for Native civs
 * Wonder and Tribal Council Aging Up
 * New Abilities
-* Rice Paddy hardcoding
-* Factory hardcoding
+* Market hardcoding
 * Selection limit
 * etc.
