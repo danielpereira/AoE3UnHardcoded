@@ -18,8 +18,8 @@ UHCInfo* UHCInitInfo(LPWSTR lpConfigName, HANDLE hHeap) {
 	Config uConfig;
 	UHCInfo *info = NULL;
 	static LPCSTR uTableNames[TABLE_COUNT] = {
-		"EnableFarmAnim",
-		"EnableRectFarmAnim"
+		"FarmAnim:",
+		"RectFarmAnim:"
 	};
 
 	if (UHCParseConfig(&uConfig, lpConfigName, hHeap)) {
