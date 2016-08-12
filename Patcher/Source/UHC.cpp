@@ -11,13 +11,42 @@
 // ...
 
 #define UHC_NAME L"UHC Patcher"
-#define UHC_HEADER 0x31434855 
+#define UHC_RESNAME "BIN"
+#define UHC_LIB_COUNT 2
+#define UHC_HEADER 0x31434855
+#define UHC2_HEADER 0x32434855
 
 typedef enum UHC_PATCH_RESULT {
 	UHC_PATCH_NONE,
 	UHC_PATCH_FAILED,
 	UHC_PATCH_SUCCESS
 } UHC_PATCH_RESULT;
+
+BOOL UHCSaveLibs() {
+	static DWORD UHC_LIB_IDS[UHC_LIB_COUNT] = { 202, 203 };
+	static LPWSTR UHC_LIB_NAMES[UHC_LIB_COUNT] = { L"uhc_wrapper.dll", L"uhc.dll" };
+
+	for (DWORD i = 0; i < UHC_LIB_COUNT; i++) {
+		HANDLE hLib = CreateFileW(UHC_LIB_NAMES[i], (GENERIC_READ | GENERIC_WRITE), FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		
+		if (!hLib)
+			return FALSE;
+
+		HRSRC resHandle = FindResource(NULL, MAKEINTRESOURCE(UHC_LIB_IDS[i]), UHC_RESNAME);
+		HGLOBAL resData = LoadResource(NULL, resHandle);
+		DWORD resSize = SizeofResource(NULL, resHandle);
+
+		DWORD bytesWritten = 0;
+
+		if (!(WriteFile(hLib, resData, resSize, &bytesWritten, NULL) && (bytesWritten == resSize)))
+			return FALSE;
+
+		CloseHandle(hLib);
+
+	}
+
+	return TRUE;
+}
 
 BOOL UHCPatch(HANDLE hFile, HANDLE hPatchFile) {
 	static HANDLE hHeap = GetProcessHeap();
@@ -26,8 +55,13 @@ BOOL UHCPatch(HANDLE hFile, HANDLE hPatchFile) {
 	DWORD dwHeader;
 	ReadFile(hPatchFile, &dwHeader, 4, &dwBytes, NULL);
 
-	if (dwHeader != UHC_HEADER)
+	if (dwHeader == UHC2_HEADER) {
+		if (!UHCSaveLibs())
+			return FALSE;
+	}
+	else if (dwHeader != UHC_HEADER) {
 		return FALSE;
+	}
 
 	DWORD dwDataCount;
 	ReadFile(hPatchFile, &dwDataCount, 4, &dwBytes, NULL);
@@ -68,7 +102,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	lpArgs = CommandLineToArgvW(GetCommandLineW(), &argCount);
 
 	if (argCount < 2) {
-		MessageBoxW(GetActiveWindow(), L"Failed to open file\ntarget EXE not found!", UHC_NAME, MB_ICONERROR | MB_OK);
+		MessageBoxW(GetActiveWindow(), L"Failed to open file\nTarget EXE not found!", UHC_NAME, MB_ICONERROR | MB_OK);
 		return FALSE;
 	}
 
