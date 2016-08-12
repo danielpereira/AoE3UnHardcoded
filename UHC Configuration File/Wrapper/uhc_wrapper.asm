@@ -7,6 +7,7 @@ entry DllEntryPoint
 
 include 'win32a.inc'
 
+;# made by Tomasz Grysztar
 struc db [data]
 {
 	common . db data 
@@ -36,6 +37,12 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
 	push	esi edi ebx
     
     invoke LoadLibrary,_config
+    test eax,eax
+    jne .load_cfg_file
+    invoke MessageBoxA,0,_FailedToLoadUHCErrMsg,_MsgBoxCap,MB_ICONERROR
+	invoke ExitProcess,0
+    
+    .load_cfg_file:
     invoke GetProcAddress,eax,_funcname
     mov dword[UHCInitInfo],eax
     invoke HeapCreate,0,0,0
@@ -51,6 +58,10 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
     jmp .end
     
     .cfg_loaded:
+    lea ecx,[eax+08]
+    mov edx,[ecx+04]
+    mov dword[_ExtraPop],edx
+
     mov eax,[eax+04]
     mov [_UHCInfoPtr],eax
     
@@ -208,6 +219,49 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
     stdcall PatchAddress,esi,loc_004EEEA4,0x004EEEA4,1
 	and	edi,eax
     
+    stdcall PatchCodeCave,esi,0x007DEF70,loc_007DEF70,6
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_007DEFC3,0x007DEFC3,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_007DEF76,0x007DEF76,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_004C846D,0x004C846D,1
+	and	edi,eax
+    
+    mov al,[004581F3h]
+    cmp al,0xEB
+    je .end_
+    cmp dword[_ExtraPop],50
+    je .end_
+    
+    .PopCapPatches:
+    mov eax,200
+    mov ecx,dword[_ExtraPop]
+    add ecx,eax
+    mov dword[_TotalPop],ecx
+    
+    stdcall PatchCodeCave,esi,0x004581F3,loc_004581F3,9
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_00679618,0x00679618,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_004581FC,0x004581FC,1
+	and	edi,eax
+    
+    stdcall PatchData,esi,0x00679619,_ExtraPop,4
+	and	edi,eax
+    
+    stdcall PatchData,esi,0x00458235,_TotalPop,4
+	and	edi,eax
+    
+    stdcall PatchData,esi,0x00679638,_TotalPop,4
+	and	edi,eax
+    
+    .end_:
 	mov	eax,edi
     
     .end:
@@ -222,6 +276,8 @@ loc_005EE78B:
     stdcall getIDs,0
     mov ecx,edi
     stdcall getIDs,1
+    mov ecx,edi
+    stdcall getIDs,2
     mov edi,[esi+140h]
     jmp near $
     loc_005EE791 = $-4
@@ -485,6 +541,25 @@ loc_004EEE9E:
     mov ecx,[00C66234h]
     jmp near $
     loc_004EEEA4 = $-4
+    
+loc_007DEF70:
+    
+    call marketCheck
+    test eax,eax
+    jne near $
+    loc_007DEFC3 = $-4
+    mov edx,[00C66234h]
+    mov ecx,[esi+80h]
+    jmp near $
+    loc_007DEF76 = $-4
+    
+loc_004581F3:
+
+    cmp ecx,[_ExtraPop]
+    jg near $
+    loc_00679618 = $-4
+    jmp near $
+    loc_004581FC = $-4
 
 ;--------------------------------------------------
 
@@ -558,30 +633,47 @@ proc getIDs type
 
 endp
 
-;--------------------------------------------------
-
-proc memset c ptr,value,num
-
-        mov     ecx,dword[num]
-        jecxz	.end
-        push    edi
-        mov     eax,dword[value]
-        mov     ah,al
-        mov     dx,ax
-        shl     eax,16
-        mov     ax,dx
-        mov     edi,dword[ptr]
-        mov     edx,ecx
-        shr     ecx,2
-        rep     stosd
-        mov     ecx,edx
-        and     ecx,3
-        rep     stosb
-        pop     edi
-        .end:              
-        mov     eax,dword[ptr]
-        ret
+proc marketCheck
+    push ebx edi
+    mov ebx,12
+    imul ebx,2
+    mov edi,[_UHCInfoPtr]
+    lea edi,[edi+ebx]
+    mov ebx,[edi]
+    test ebx,ebx
+    je .end
+    dec ebx
+    mov edi,[edi+08]
+    
+    .loop:
+    mov eax,[edi+ebx*4]
+    mov edx,[esp+1Ch]
+    mov ecx,[esi+80h]
+    push 0
+    push 2
+    push eax
+    push edx
+    call near $
+    loc_004C846D = $-4
+    test eax,eax
+    jg .valid_id
+    dec ebx
+    cmp ebx,0
+    jge .loop
+    
+    xor eax,eax
+    pop edi ebx
+    ret
+    
+    .valid_id:
+    mov eax,1
+    
+    .end:
+    pop edi ebx
+    ret
 endp
+
+;--------------------------------------------------
 
 proc PatchAddress hProcess,lpBaseAddress,lpDestAddress,bRelAddr
 
@@ -691,26 +783,19 @@ UHCInitInfo dd 0
 
 _UHCInfoPtr dd 0
 
-; _UnitAmount dd 0
-; _UnitNameArrayPtr dd 0
-; _UnitIDArrayPtr dd 0
-; _RectUnitAmount dd 0
-; _RectUnitNameArrayPtr dd 0
-; _RectUnitIDArrayPtr dd 0
-
+_ExtraPop dd 0
+_TotalPop dd 0
 
 _config db 'uhc.dll',0
 
 _funcname db 'UHCInitInfo',0
 
-_XPRevolution db 'XPRevolution',0
-_Path du 'ui\ingame\politicians\REV_banner_',0
-
 _ConfigPath du 'Startup\uhc.cfg',0
 
-_HeapHandle dd 0
+_MsgBoxCap db 'Intialization Error',0
+_FailedToLoadUHCErrMsg db 'Failed to load required library UHC.dll',0
 
-_pathtmp db 208 dup 0x00
+_HeapHandle dd 0
 
 ;==================================================
 section '.rsrc' resource readable

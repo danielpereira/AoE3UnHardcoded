@@ -23,15 +23,16 @@ Supported Properties
 The code for the following properties is already implemented into the parser and the wrapper:
 * FarmAnim - Defines the (additional) buildings in which settlers would walk through it while gathering a resource from it, like AoE3 Mills and Plantations
 * RectFarmAnim - Defines the (additional) buildings which would have a behaviour similar to the rectangular Farms that TWC civilizations have
+* MarketUnits - Defines which (additional) buildings should support a proper market behaviour
+* ExtraPop - Defines the maximum extra population capacity
 
 
 Planned Properties
 ------------------
 
 The following properties are planned, but were not coded yet:
-* MarketUnits - Defines which (additional) buildings should support a proper market behaviour
+
 * BasePop - Defines the base maximum population capacity
-* ExtraPop - Defines the maximum extra population capacity
 * AsianCivs - Defines which civilizations should get export UI, plus support wonder age up
 * NativeCivs - Defines which civilizations should get the fire pit UI, plus support council age up
 
