@@ -8,11 +8,13 @@ Projects completed
 * Unlimited Population
 * HC card limit
 * Patcher
+* Farming animations
+* Market hardcoding
 
 Projects in progress
 --------------------
   
-* Farming animations
+* TBD
   
 Projects not yet started
 ------------------------
@@ -20,6 +22,5 @@ Projects not yet started
 * Export UI for Asian civs and Fire Pit UI for Native civs
 * Wonder and Tribal Council Aging Up
 * New Abilities
-* Market hardcoding
 * Selection limit
 * etc.
