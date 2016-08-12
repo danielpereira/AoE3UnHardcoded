@@ -36,6 +36,10 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
 
 	push	esi edi ebx
     
+    invoke	GetCurrentProcess
+	mov	esi,eax
+    mov edi,1
+    
     invoke LoadLibrary,_config
     test eax,eax
     jne .load_cfg_file
@@ -65,9 +69,6 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
     mov eax,[eax+04]
     mov [_UHCInfoPtr],eax
     
-    invoke	GetCurrentProcess
-	mov	esi,eax
-    mov edi,1
     
     stdcall PatchCodeCave,esi,0x005EE78B,loc_005EE78B,6
 	and	edi,eax
@@ -233,9 +234,9 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
     
     mov al,[004581F3h]
     cmp al,0xEB
-    je .end_
+    je .end
     cmp dword[_ExtraPop],50
-    je .end_
+    je .end
     
     .PopCapPatches:
     mov eax,200
@@ -261,10 +262,8 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
     stdcall PatchData,esi,0x00679638,_TotalPop,4
 	and	edi,eax
     
-    .end_:
-	mov	eax,edi
-    
     .end:
+	mov	eax,edi
 	pop	ebx edi esi
 	ret
 	
