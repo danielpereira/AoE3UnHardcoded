@@ -32,6 +32,7 @@ UHCInfo* UHCInitInfo(LPWSTR lpConfigName, HANDLE hHeap) {
 			info->Tables = (UHCInfo::UHCRefTable*)HeapAlloc(hHeap, HEAP_ZERO_MEMORY, sizeof(UHCInfo::UHCRefTable) * TABLE_COUNT);
 			if (info->Tables) {
 				info->BasePop = 200;
+                info->ExtraPop = 50;
 
 				for (DWORD i = 0; i < uConfig.KeyCount; ++i) {
 					BOOL found = FALSE;
