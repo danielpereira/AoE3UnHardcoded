@@ -48,7 +48,7 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
     invoke HeapCreate,0,0,0
     mov [_HeapHandle],eax
     push eax
-    push _ConfigPath
+    push 0x00CAA0B0
     call dword[UHCInitInfo]
     add esp,8
     test eax,eax
@@ -789,8 +789,6 @@ _TotalPop dd 0
 _config db 'uhc.dll',0
 
 _funcname db 'UHCInitInfo',0
-
-_ConfigPath du 'Startup\uhc.cfg',0
 
 _MsgBoxCap db 'Intialization Error',0
 _FailedToLoadUHCErrMsg db 'Failed to load required library UHC.dll',0
