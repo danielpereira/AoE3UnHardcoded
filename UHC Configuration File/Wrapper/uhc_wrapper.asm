@@ -47,8 +47,11 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
 	invoke ExitProcess,0
     
     .load_cfg_file:
-    invoke GetProcAddress,eax,_funcname
+    mov ebx,eax
+    invoke GetProcAddress,ebx,_funcname
     mov dword[UHCInitInfo],eax
+    invoke GetProcAddress,ebx,_funcname2
+    mov dword[UHCAnsiStrToWideStr],eax
     invoke HeapCreate,0,0,0
     mov [_HeapHandle],eax
     push eax
@@ -69,6 +72,7 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
     mov eax,[eax+04]
     mov [_UHCInfoPtr],eax
     
+    stdcall getWndrNames
     
     stdcall PatchCodeCave,esi,0x005EE78B,loc_005EE78B,6
 	and	edi,eax
@@ -234,9 +238,9 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
     
     mov al,[004581F3h]
     cmp al,0xEB
-    je .end
+    je .asian
     cmp dword[_ExtraPop],50
-    je .end
+    je .asian
     
     .PopCapPatches:
     mov eax,200
@@ -260,6 +264,58 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
 	and	edi,eax
     
     stdcall PatchData,esi,0x00679638,_TotalPop,4
+	and	edi,eax
+    
+    .asian:
+    stdcall PatchAddress,esi,loc_0058E71F,0x0058E71F,1
+	and	edi,eax
+    
+    stdcall PatchCodeCave,esi,0x008D0318,loc_008D0318,5
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_008D031D,0x008D031D,1
+	and	edi,eax
+    
+    stdcall PatchCodeCave,esi,0x008DABA3,loc_008DABA3,6
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_008DABA9,0x008DABA9,1
+	and	edi,eax
+    
+    stdcall PatchCodeCave,esi,0x00454F1D,loc_00454F1D,6
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_00454F2A,0x00454F2A,1
+	and	edi,eax
+    
+    stdcall PatchCodeCave,esi,0x008D6AC4,loc_008D6AC4,6
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_008D6ACC,0x008D6ACC,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_008D6B0C,0x008D6B0C,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_008D6AF7,0x008D6AF7,1
+	and	edi,eax
+    
+    stdcall PatchCodeCave,esi,0x00818284,loc_00818284,5
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_0049A2D8,0x0049A2D8,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_0081828D,0x0081828D,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_008182EB,0x008182EB,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_008182A9,0x008182A9,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_00443C10,0x00443C10,1
 	and	edi,eax
     
     .end:
@@ -559,6 +615,83 @@ loc_004581F3:
     loc_00679618 = $-4
     jmp near $
     loc_004581FC = $-4
+    
+loc_008D0318:
+
+    mov ecx,[00C66234h]
+    mov ecx,[ecx+140h]
+    stdcall getCivIDs,3
+    mov eax,[00C66234h]
+    jmp near $
+    loc_008D031D = $-4
+    
+loc_008D0451:
+
+    cmp eax,[00C6FB48h]
+    je near $
+    loc_008D045C = $-4
+    stdcall checkID,3,eax
+    test eax,eax
+    je .invalid_id
+    mov al,1
+    retn
+    
+    .invalid_id:
+    xor al,al
+    retn
+    
+loc_008DABA3:
+
+    mov ecx,[00C66234h]
+    mov ecx,[ecx+140h]
+    stdcall getCivIDs,3
+    mov edx,[00C66234h]
+    jmp near $
+    loc_008DABA9 = $-4
+    
+loc_00454F1D:
+
+    cmp eax,[00C6FB88h]
+    je near $
+    loc_00454F2A = $-4
+    stdcall checkID,3,eax
+    test eax,eax
+    je .invalid_id
+    mov al,1
+    retn 4
+    
+    .invalid_id:
+    xor al,al
+    retn 4
+    
+loc_008D6AC4:
+
+    cmp eax,[00C6FB88h]
+    je near $
+    loc_008D6ACC = $-4
+    stdcall checkID,3,eax
+    test eax,eax
+    je near $
+    loc_008D6B0C = $-4
+    jmp near $
+    loc_008D6AF7 = $-4
+
+loc_00818284:
+
+    call near $
+    loc_0049A2D8 = $-4
+    test eax,eax
+    jne near $
+    loc_0081828D = $-4
+    mov ecx,ebp
+    stdcall checkWonders,esi,edi
+    test eax,eax
+    je near $
+    loc_008182EB = $-4
+    jmp near $
+    loc_008182A9 = $-4
+    
+    
 
 ;--------------------------------------------------
 
@@ -672,6 +805,135 @@ proc marketCheck
     ret
 endp
 
+proc getCivIDs type
+
+    push edi esi ebx
+    mov ebx,12
+    mov esi,ecx
+    mov edi,dword[type]
+    imul ebx,edi
+    mov edi,[_UHCInfoPtr]
+    lea edi,[edi+ebx]
+    mov ebx,[edi]
+    test ebx,ebx
+    je .end
+    dec ebx
+    
+    .loop:
+    mov eax,[edi+04]
+    mov eax,[eax+ebx*4]
+    push eax
+    mov ecx,esi
+    call near $
+    loc_0058E71F = $-4
+    mov ecx,[edi+08]
+    mov [ecx+ebx*4],eax
+    dec ebx
+    cmp ebx,0
+    jge .loop
+    
+    .end:
+    pop ebx esi edi
+    ret
+
+endp
+
+proc checkWonders,esiPtr,ediPtr
+
+    push edi esi ebx
+    mov ebx,12
+    mov esi,ecx
+    mov edi,3
+    imul ebx,edi
+    mov edi,[_UHCInfoPtr]
+    lea edi,[edi+ebx]
+    mov ebx,[edi]
+    test ebx,ebx
+    je .end
+    dec ebx
+    mov ecx,[edi+08]
+    cmp dword[esi+24h],0
+    jg .not_null
+    or eax,-1
+    jmp .loop
+    
+    .not_null:
+    mov eax,[esi+20h]
+    mov eax,[eax]
+    
+    .loop:
+    cmp eax,[ecx+ebx*4]
+    je .load_wonders
+    dec ebx
+    cmp ebx,0
+    jge .loop
+    jmp .end
+    
+    .load_wonders:
+    mov esi,dword[esiPtr]
+    mov edi,dword[ediPtr]
+    push -1
+    push 0
+    mov eax,[_AsianWndrNamesPtr]
+    mov eax,[eax+ebx*4]
+    push eax
+    mov eax,[esi+18Ch]
+    lea ecx,[eax+edi+8]
+    call near $
+    loc_00443C10 = $-4
+    test eax,eax
+    jne .end
+    mov eax,1
+    pop ebx esi edi
+    ret
+    
+    .end:
+    xor eax,eax
+    pop ebx esi edi
+    ret
+
+endp
+
+proc getWndrNames
+
+    push edi esi ebx
+    mov ebx,12
+    mov esi,ecx
+    mov edi,3
+    imul ebx,edi
+    mov edi,[_UHCInfoPtr]
+    lea edi,[edi+ebx]
+    mov ebx,[edi]
+    test ebx,ebx
+    je .end
+    mov edi,[edi+04]
+    mov ecx,[_HeapHandle]
+    mov esi,ebx
+    imul esi,4
+    invoke HeapAlloc,ecx,8,esi
+    mov [_AsianWndrNamesPtr],eax
+    mov esi,eax
+    dec ebx
+    
+    .loop:
+    mov eax,[edi+ebx*4]
+    mov ecx,dword[UHCAnsiStrToWideStr]
+    push eax
+    mov eax,[_HeapHandle]
+    push eax
+    stdcall ecx
+    add esp,8
+    mov [esi+ebx*4],eax
+    dec ebx
+    cmp ebx,0
+    jge .loop
+
+    .end:
+    pop ebx esi edi
+    ret
+
+endp
+
 ;--------------------------------------------------
 
 proc PatchAddress hProcess,lpBaseAddress,lpDestAddress,bRelAddr
@@ -779,8 +1041,11 @@ section '.data' data readable writeable
 ;==================================================
 
 UHCInitInfo dd 0
+UHCAnsiStrToWideStr dd 0
 
 _UHCInfoPtr dd 0
+
+_AsianWndrNamesPtr dd 0
 
 _ExtraPop dd 0
 _TotalPop dd 0
@@ -788,6 +1053,7 @@ _TotalPop dd 0
 _config db 'uhc.dll',0
 
 _funcname db 'UHCInitInfo',0
+_funcname2 db 'UHCAnsiStrToWideStr',0
 
 _MsgBoxCap db 'Intialization Error',0
 _FailedToLoadUHCErrMsg db 'Failed to load required library UHC.dll',0

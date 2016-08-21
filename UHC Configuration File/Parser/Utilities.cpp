@@ -23,3 +23,20 @@ int UHCStr2Int(LPCSTR lpStr) {
 
 	return result;
 }
+
+extern "C" _declspec(dllexport)
+WCHAR* UHCAnsiStrToWideStr(HANDLE hHeap, CHAR* lpStr) {
+
+	int lenght = lstrlenA(lpStr);
+
+	if (lenght) {
+		WCHAR* wideStr = (WCHAR*) HeapAlloc(hHeap, HEAP_ZERO_MEMORY, (++lenght) * 2);
+
+		for (int i = 0; i < lenght; i++)
+			wideStr[i] = (WCHAR)lpStr[i];
+
+		return wideStr;
+	}
+
+	return NULL;
+}

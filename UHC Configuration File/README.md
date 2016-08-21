@@ -25,6 +25,7 @@ The code for the following properties is already implemented into the parser and
 * RectFarmAnim - Defines the (additional) buildings which would have a behaviour similar to the rectangular Farms that TWC civilizations have
 * MarketUnits - Defines which (additional) buildings should support a proper market behaviour
 * ExtraPop - Defines the maximum extra population capacity
+* AsianCivs - Defines which civilizations should get export UI, plus support wonder age up
 
 
 Planned Properties
@@ -33,7 +34,6 @@ Planned Properties
 The following properties are planned, but were not coded yet:
 
 * BasePop - Defines the base maximum population capacity
-* AsianCivs - Defines which civilizations should get export UI, plus support wonder age up
 * NativeCivs - Defines which civilizations should get the fire pit UI, plus support council age up
 
 

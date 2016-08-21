@@ -1,7 +1,7 @@
 #include "Config.h"
 #include "Utilities.h"
 
-#define TABLE_COUNT 3
+#define TABLE_COUNT 4
 
 struct UHCInfo {
 	DWORD TableCount;
@@ -21,7 +21,8 @@ UHCInfo* UHCInitInfo(LPWSTR lpConfigName, HANDLE hHeap) {
 	static LPCSTR uTableNames[TABLE_COUNT] = {
 		"FarmAnim:",
 		"RectFarmAnim:",
-        "MarketUnits:"
+        "MarketUnits:",
+		"AsianCivs:"
 	};
 
 	if (UHCParseConfig(&uConfig, lpConfigName, hHeap)) {
