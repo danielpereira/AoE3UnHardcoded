@@ -1,7 +1,7 @@
 #include "Config.h"
 #include "Utilities.h"
 
-#define TABLE_COUNT 4
+#define TABLE_COUNT 5
 
 struct UHCInfo {
 	DWORD TableCount;
@@ -22,7 +22,8 @@ UHCInfo* UHCInitInfo(LPWSTR lpConfigName, HANDLE hHeap) {
 		"FarmAnim:",
 		"RectFarmAnim:",
         "MarketUnits:",
-		"AsianCivs:"
+		"AsianCivs:",
+		"BigButtonCivs:"
 	};
 
 	if (UHCParseConfig(&uConfig, lpConfigName, hHeap)) {
@@ -51,7 +52,7 @@ UHCInfo* UHCInitInfo(LPWSTR lpConfigName, HANDLE hHeap) {
 
 							info->Tables[t].RefCount = uConfig.Keys[i].ValueCount;
 							info->Tables[t].Refs = (LPVOID*)uConfig.Keys[i].Values;
-                            info->Tables[t].RefIDs = (DWORD*)HeapAlloc(hHeap, HEAP_ZERO_MEMORY, sizeof(DWORD)*(info->Tables[t].RefCount));
+							info->Tables[t].RefIDs = (DWORD*)HeapAlloc(hHeap, HEAP_ZERO_MEMORY, sizeof(DWORD)*(info->Tables[t].RefCount));
 
 							found = TRUE;
 							break;

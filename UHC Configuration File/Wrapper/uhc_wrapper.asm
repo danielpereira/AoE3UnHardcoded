@@ -318,6 +318,18 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
     stdcall PatchAddress,esi,loc_00443C10,0x00443C10,1
 	and	edi,eax
     
+    stdcall PatchCodeCave,esi,0x00461BD8,loc_00461BD8,6
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_00695955,0x00695955,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_00695955_1,0x00695955,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_00461BDE,0x00461BDE,1
+	and	edi,eax
+    
     .end:
 	mov	eax,edi
 	pop	ebx edi esi
@@ -621,6 +633,9 @@ loc_008D0318:
     mov ecx,[00C66234h]
     mov ecx,[ecx+140h]
     stdcall getCivIDs,3
+    mov ecx,[00C66234h]
+    mov ecx,[ecx+140h]
+    stdcall getCivIDs,4
     mov eax,[00C66234h]
     jmp near $
     loc_008D031D = $-4
@@ -645,6 +660,9 @@ loc_008DABA3:
     mov ecx,[00C66234h]
     mov ecx,[ecx+140h]
     stdcall getCivIDs,3
+    mov ecx,[00C66234h]
+    mov ecx,[ecx+140h]
+    stdcall getCivIDs,4
     mov edx,[00C66234h]
     jmp near $
     loc_008DABA9 = $-4
@@ -691,6 +709,27 @@ loc_00818284:
     jmp near $
     loc_008182A9 = $-4
     
+loc_00461BD8:
+
+    jne near $
+    loc_00695955 = $-4
+    mov edi,eax
+    cmp dword[eax+24h],0
+    jg .not_null
+    or eax,-1
+    jmp .check
+    
+    .not_null:
+    mov eax,[eax+20h]
+    mov eax,[eax]
+    
+    .check:
+    stdcall checkID,4,eax
+    test eax,eax
+    jne near $
+    loc_00695955_1 = $-4
+    jmp near $
+    loc_00461BDE = $-4
     
 
 ;--------------------------------------------------
@@ -773,7 +812,7 @@ proc marketCheck
     lea edi,[edi+ebx]
     mov ebx,[edi]
     test ebx,ebx
-    je .end
+    je .invalid_id
     dec ebx
     mov edi,[edi+08]
     
@@ -793,14 +832,13 @@ proc marketCheck
     cmp ebx,0
     jge .loop
     
+    .invalid_id:
     xor eax,eax
     pop edi ebx
     ret
     
     .valid_id:
     mov eax,1
-    
-    .end:
     pop edi ebx
     ret
 endp
