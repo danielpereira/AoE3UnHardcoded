@@ -77,10 +77,10 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
     stdcall PatchCodeCave,esi,0x005EE78B,loc_005EE78B,6
 	and	edi,eax
     
-    stdcall PatchAddress,esi,loc_005A2346,0x005A2346,1
+    stdcall PatchAddress,esi,loc_005EE791,0x005EE791,1
 	and	edi,eax
     
-    stdcall PatchAddress,esi,loc_005EE791,0x005EE791,1
+    stdcall PatchAddress,esi,loc_005A2346,0x005A2346,1
 	and	edi,eax
     
     stdcall PatchCodeCave,esi,0x004EDA85,loc_004EDA85,6
@@ -330,6 +330,9 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
     stdcall PatchAddress,esi,loc_00461BDE,0x00461BDE,1
 	and	edi,eax
     
+    stdcall PatchAddress,esi,loc_00695955_2,0x00695955,1
+	and	edi,eax
+    
     .end:
 	mov	eax,edi
 	pop	ebx edi esi
@@ -345,6 +348,8 @@ loc_005EE78B:
     stdcall getIDs,1
     mov ecx,edi
     stdcall getIDs,2
+    mov ecx,edi
+    stdcall getIDs,5
     mov edi,[esi+140h]
     jmp near $
     loc_005EE791 = $-4
@@ -713,7 +718,7 @@ loc_00461BD8:
 
     jne near $
     loc_00695955 = $-4
-    mov edi,eax
+    mov eax,edi
     cmp dword[eax+24h],0
     jg .not_null
     or eax,-1
@@ -726,10 +731,22 @@ loc_00461BD8:
     .check:
     stdcall checkID,4,eax
     test eax,eax
-    jne near $
+    je .back
+    mov eax,[esi+5Ch]
+    test eax,eax
+    je near $
     loc_00695955_1 = $-4
+    mov eax,[eax+08h]
+    stdcall checkID,5,eax
+    test eax,eax
+    je near $
+    loc_00695955_2 = $-4
+    
+    .back:
     jmp near $
     loc_00461BDE = $-4
+    
+    
     
 
 ;--------------------------------------------------
