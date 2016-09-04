@@ -321,9 +321,6 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
     stdcall PatchCodeCave,esi,0x00461BD8,loc_00461BD8,6
 	and	edi,eax
     
-    stdcall PatchAddress,esi,loc_00695955,0x00695955,1
-	and	edi,eax
-    
     stdcall PatchAddress,esi,loc_00695955_1,0x00695955,1
 	and	edi,eax
     
@@ -716,8 +713,7 @@ loc_00818284:
     
 loc_00461BD8:
 
-    jne near $
-    loc_00695955 = $-4
+    jne .exclude_buildings
     mov eax,edi
     cmp dword[eax+24h],0
     jg .not_null
@@ -732,6 +728,8 @@ loc_00461BD8:
     stdcall checkID,4,eax
     test eax,eax
     je .back
+    
+    .exclude_buildings:
     mov eax,[esi+5Ch]
     test eax,eax
     je near $
@@ -745,8 +743,6 @@ loc_00461BD8:
     .back:
     jmp near $
     loc_00461BDE = $-4
-    
-    
     
 
 ;--------------------------------------------------
