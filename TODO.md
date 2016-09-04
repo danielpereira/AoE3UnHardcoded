@@ -10,6 +10,8 @@ Projects completed
 * Patcher
 * Farming animations
 * Market hardcoding
+* Export UI for Asian civs
+* Wonder Aging Up
 
 Projects in progress
 --------------------
@@ -19,8 +21,8 @@ Projects in progress
 Projects not yet started
 ------------------------
 
-* Export UI for Asian civs and Fire Pit UI for Native civs
-* Wonder and Tribal Council Aging Up
+* Fire Pit UI for Native civs
+* Tribal Council Aging Up
 * New Abilities
 * Selection limit
 * etc.
