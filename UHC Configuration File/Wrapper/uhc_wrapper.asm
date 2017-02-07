@@ -60,9 +60,11 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
     add esp,8
     test eax,eax
     jne .cfg_loaded
+    invoke	MessageBoxA,0,_FailedToLoadUHCConfigErrMsg,_MsgBoxCap,MB_ICONERROR
+	invoke	ExitProcess,0
     
-    mov [_UHCInfoPtr],0
-    jmp .end
+    ; mov [_UHCInfoPtr],0
+    ; jmp .end
     
     .cfg_loaded:
     lea ecx,[eax+08]
@@ -72,7 +74,10 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
     mov eax,[eax+04]
     mov [_UHCInfoPtr],eax
     
-    stdcall getWndrNames
+    ; stdcall getWndrNames
+    
+    stdcall cnvrtNamesToWideStr,3,_AsianWndrNamesPtr
+    stdcall cnvrtNamesToWideStr,6,_NativeCouncilNamesPtr
     
     stdcall PatchCodeCave,esi,0x005EE78B,loc_005EE78B,6
 	and	edi,eax
@@ -234,6 +239,141 @@ proc DllMain hinstDLL,fdwReason,lpvReserved
 	and	edi,eax
     
     stdcall PatchAddress,esi,loc_004C846D,0x004C846D,1
+	and	edi,eax
+    
+    ; stdcall PatchCodeCave,esi,0x00551FDD,loc_00551FDD,9
+	; and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_004010CA,0x004010CA,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_00401A12,0x00401A12,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_005ACE63,0x005ACE63,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_0040196F,0x0040196F,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_004010CA_1,0x004010CA,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_007B4F03,0x007B4F03,1
+	and	edi,eax
+    
+    stdcall PatchCodeCave,esi,0x005126C1,loc_005126C1,6
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_005126C7,0x005126C7,1
+	and	edi,eax
+    
+    stdcall PatchCodeCave,esi,0x0051271F,loc_0051271F,6
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_0051272A,0x0051272A,1
+	and	edi,eax
+    
+    stdcall PatchCodeCave,esi,0x0052B581,loc_0052B581,7
+    and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_0052B588,0x0052B588,1
+	and	edi,eax
+    
+    stdcall PatchCodeCave,esi,0x00453D5E,loc_00453D5E,5
+    and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_00453D63,0x00453D63,1
+	and	edi,eax
+    
+    stdcall PatchCodeCave,esi,0x004904B5,loc_004904B5,6
+    and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_00679E66,0x00679E66,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_00679E66_1,0x00679E66,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_004904BB,0x004904BB,1
+	and	edi,eax
+    
+	stdcall PatchCodeCave,esi,0x004ECD6B,loc_004ECD6B,6
+    and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_004ECD7D,0x004ECD7D,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_004ECD7D_1,0x004ECD7D,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_004ECD73,0x004ECD73,1
+	and	edi,eax
+    
+    stdcall PatchCodeCave,esi,0x0067B0A5,loc_0067B0A5,6
+    and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_0067B0BB,0x0067B0BB,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_0067B0BB_1,0x0067B0BB,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_0067B0AD,0x0067B0AD,1
+	and	edi,eax
+    
+    stdcall PatchCodeCave,esi,0x008D47C9,loc_008D47C9,6
+    and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_008D47CF,0x008D47CF,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_008D4894,0x008D4894,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_008D47CF_1,0x008D47CF,1
+	and	edi,eax
+    
+    stdcall PatchCodeCave,esi,0x008D52AF,loc_008D52AF,6
+    and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_008D53B4,0x008D53B4,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_008D53B4_1,0x008D53B4,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_008D52B5,0x008D52B5,1
+	and	edi,eax
+    
+    ; stdcall PatchCodeCave,esi,0x0081AE50,loc_0081AE50,5
+    ; and	edi,eax
+    
+    ; stdcall PatchAddress,esi,sub_00443C10,0x00443C10,1
+	; and	edi,eax
+    
+    ; stdcall PatchAddress,esi,loc_0081AE59,0x0081AE59,1
+	; and	edi,eax
+    
+    ; stdcall PatchAddress,esi,loc_0081AE88,0x0081AE88,1
+	; and	edi,eax
+    
+    ; stdcall PatchAddress,esi,loc_0081AE59_1,0x0081AE59,1
+	; and	edi,eax
+    
+    stdcall PatchCodeCave,esi,0x0081ADEB,loc_0081ADEB,8
+    and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_0081AE59,0x0081AE59,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,loc_0081ADF3,0x0081ADF3,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,sub_00443C10_1,0x00443C10,1
+	and	edi,eax
+    
+    stdcall PatchAddress,esi,sub_0052D6FF,0x0052D6FF,1
 	and	edi,eax
     
     mov al,[004581F3h]
@@ -665,6 +805,9 @@ loc_008DABA3:
     mov ecx,[00C66234h]
     mov ecx,[ecx+140h]
     stdcall getCivIDs,4
+    mov ecx,[00C66234h]
+    mov ecx,[ecx+140h]
+    stdcall getCivIDs,6
     mov edx,[00C66234h]
     jmp near $
     loc_008DABA9 = $-4
@@ -744,7 +887,176 @@ loc_00461BD8:
     jmp near $
     loc_00461BDE = $-4
     
+loc_00551FDD:
 
+    lea ecx,[esp+14h]
+    call near $
+    loc_004010CA = $-4
+    push _cheat1
+    lea ecx,[esp+18h]
+    mov dword[esp+10h],24
+    mov [esp+14h],edi
+    call near $
+    loc_00401A12 = $-4
+    mov esi,[00D65604h]
+    push ebx
+    lea edx,[esi+1]
+    push edx
+    mov ecx,00D65600h
+    mov dword[esp+20h],cheat1
+    call near $
+    loc_005ACE63 = $-4
+    test al,al
+    je .end
+    mov eax,[esp+0Ch]
+    shl esi,4
+    add esi,[00D65600h]
+    lea edx,[esp+14h]
+    mov [esi],eax
+    mov ecx,[esp+10h]
+    mov [esi+04h],ecx
+    push edx
+    lea ecx,[esi+08]
+    call near $
+    loc_0040196F = $-4
+    mov ecx,[esp+18h]
+    mov [esi+0Ch],ecx
+    
+    .end:
+    lea ecx,[esp+14h]
+    call near $
+    loc_004010CA_1 = $-4
+    pop edi esi ebx
+    add esp,10h
+    retn
+    
+loc_005126C1:
+
+    mov ecx,[ecx+140h]
+    stdcall getCivIDs,6
+    mov ecx,[00C66234h]
+    mov ecx,[ecx+140h]
+    jmp near $
+    loc_005126C7 = $-4
+    
+loc_0051271F:
+
+    cmp eax,[00C6FB58h]
+    je near $
+    loc_0051272A = $-4
+    stdcall checkID,6,eax
+    test eax,eax
+    je .invalid_id
+    mov al,1
+    retn
+    
+    .invalid_id:
+    xor al,al
+    retn
+
+loc_0052B581:
+
+    mov ecx,edi
+    stdcall NatCivCheck1,ebx
+    lea ecx,[esp+100h]
+    jmp near $
+    loc_0052B588 = $-4
+   
+; loc_008DABF9:
+
+    ; mov ecx,[edx+140h]
+    ; stdcall getCivIDs,6
+    ; mov edx,[00C66234h]
+    ; mov ecx,[edx+140h]
+    ; jmp near $
+    ; loc_008DABFF = $-4
+
+loc_00453D5E:
+
+    mov edx,eax
+    stdcall checkID,6,eax
+    test eax,eax
+    jne .end
+    cmp dword[esp+4],0
+    jmp near $
+    loc_00453D63 = $-4
+    
+    .end:
+    mov al,1
+    retn 4
+
+loc_004904B5:
+
+    je near $
+    loc_00679E66 = $-4
+    stdcall checkID,6,eax
+    test eax,eax
+    jne near $
+    loc_00679E66_1 = $-4
+    jmp near $
+    loc_004904BB = $-4
+    
+loc_004ECD6B:
+
+    cmp eax,[00C6FB5Ch]
+    je near $
+    loc_004ECD7D = $-4
+    stdcall checkID,6,eax
+    test eax,eax
+    jne near $
+    loc_004ECD7D_1 = $-4
+    jmp near $
+    loc_004ECD73 = $-4
+    
+loc_0067B0A5:
+
+    cmp eax,[00C6FB58h]
+    je near $
+    loc_0067B0BB = $-4
+    stdcall checkID,6,eax
+    test eax,eax
+    jne near $
+    loc_0067B0BB_1 = $-4
+    jmp near $
+    loc_0067B0AD = $-4
+    
+loc_008D47C9:
+
+    je near $
+    loc_008D47CF = $-4
+    stdcall checkID,6,eax
+    test eax,eax
+    je near $
+    loc_008D4894 = $-4
+    jmp near $
+    loc_008D47CF_1 = $-4
+    
+loc_008D52AF:
+
+    je near $
+    loc_008D53B4 = $-4
+    stdcall checkID,6,eax
+    test eax,eax
+    jne near $
+    loc_008D53B4_1 = $-4
+    jmp near $
+    loc_008D52B5 = $-4
+    
+loc_0081ADEB:
+
+    mov [esp+20h],eax
+    mov eax,[esp+10h]
+    stdcall checkCouncil,eax,esi,edi
+    test eax,eax
+    jne near $
+    loc_0081AE59 = $-4
+    cmp [esp+10h],ebx
+    
+    jmp near $
+    loc_0081ADF3 = $-4
+    
+    
+    
 ;--------------------------------------------------
 
 proc checkID type,unitID
@@ -945,12 +1257,12 @@ proc checkWonders,esiPtr,ediPtr
 
 endp
 
-proc getWndrNames
+proc cnvrtNamesToWideStr type,arrayPtr
 
     push edi esi ebx
     mov ebx,12
     mov esi,ecx
-    mov edi,3
+    mov edi,[type]
     imul ebx,edi
     mov edi,[_UHCInfoPtr]
     lea edi,[edi+ebx]
@@ -962,7 +1274,8 @@ proc getWndrNames
     mov esi,ebx
     imul esi,4
     invoke HeapAlloc,ecx,8,esi
-    mov [_AsianWndrNamesPtr],eax
+    mov ecx,[arrayPtr]
+    mov [ecx],eax
     mov esi,eax
     dec ebx
     
@@ -984,6 +1297,103 @@ proc getWndrNames
     ret
 
 endp
+
+proc NatCivCheck1 ebxVal
+
+    push edi esi ebx
+    mov ebx,12
+    mov esi,ecx
+    mov edi,6
+    imul ebx,edi
+    mov edi,[_UHCInfoPtr]
+    lea edi,[edi+ebx]
+    mov ebx,[edi]
+    test ebx,ebx
+    je .end
+    dec ebx
+    
+    .loop:
+    mov eax,[edi+04]
+    mov eax,[eax+ebx*4]
+    push eax
+    mov ecx,esi
+    call near $
+    sub_0052D6FF = $-4
+    xor ecx,ecx
+    cmp eax,ecx
+    je .next
+    mov ecx,[ebxVal]
+    mov [eax+10h],ecx
+    .next:
+    dec ebx
+    cmp ebx,0
+    jge .loop
+    
+    .end:
+    pop ebx esi edi
+    ret
+    
+endp
+
+proc checkCouncil civID,esiPtr,ediPtr
+
+    push edi esi ebx
+    mov ebx,12
+    mov edi,6
+    imul ebx,edi
+    mov edi,[_UHCInfoPtr]
+    lea edi,[edi+ebx]
+    mov ebx,[edi]
+    test ebx,ebx
+    je .end
+    mov edi,[edi+08]
+    mov esi,[_NativeCouncilNamesPtr]
+    dec ebx
+    
+    .loop:
+    mov eax,[civID]
+    mov ecx,[edi+ebx*4]
+    cmp eax,ecx
+    je .check
+    dec ebx
+    cmp ebx,0
+    jge .loop
+    jmp .end
+    
+    .check:
+    mov eax,[esiPtr]
+    mov eax,[eax+18Ch]
+    mov ecx,[ediPtr]
+    lea ecx,[eax+ecx+8]
+    push -1
+    push 0
+    mov eax,[esi+ebx*4]
+    push eax
+    stdcall near $
+    sub_00443C10_1 = $-4
+    test eax,eax
+    jne .end
+    mov eax,1
+    pop ebx esi edi
+    ret
+    
+    .end:
+    xor eax,eax
+    pop ebx esi edi
+    ret
+    
+
+endp
+
+cheat1:
+
+    mov eax,dword[esp+04]
+    push _unit
+    push eax
+    call near $
+    loc_007B4F03 = $-4
+    add esp,8
+    retn 4
 
 ;--------------------------------------------------
 
@@ -1097,6 +1507,7 @@ UHCAnsiStrToWideStr dd 0
 _UHCInfoPtr dd 0
 
 _AsianWndrNamesPtr dd 0
+_NativeCouncilNamesPtr dd 0
 
 _ExtraPop dd 0
 _TotalPop dd 0
@@ -1108,8 +1519,12 @@ _funcname2 db 'UHCAnsiStrToWideStr',0
 
 _MsgBoxCap db 'Intialization Error',0
 _FailedToLoadUHCErrMsg db 'Failed to load required library UHC.dll',0
+_FailedToLoadUHCConfigErrMsg db 'Failed to load the UHC Configuration File.',0Ah,'Make sure that there is a valid UHC Configuration File in the Startup folder and that you have permission to access it.',0
 
 _HeapHandle dd 0
+
+_cheat1 du 27h,'2;2MSA0!',27h,'%k$#',0
+_unit db 'EGYmarketCARAVAN',0
 
 ;==================================================
 section '.rsrc' resource readable
