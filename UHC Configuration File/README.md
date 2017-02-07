@@ -26,8 +26,7 @@ The code for the following properties is already implemented into the parser and
 * MarketUnits - Defines which (additional) buildings should support a proper market behaviour
 * ExtraPop - Defines the maximum extra population capacity
 * AsianCivs - Defines which civilizations should get export UI, plus support wonder age up
-* BigButtonCivs - Defines for which civilizations tech pages/rows in buildings will be allowed to take two lines, if needed, while avoiding the slots which would be taken by big buttons.
-* NotBigButtonBlds - Defines buildings in which tech pages/rows wouldn’t take two lines, even while playing as a Native civilization or as a civilization referred in the BigButtonCivs property.
+* NativeCivs - Defines which civilizations should get the fire pit UI, plus support council age up
 
 
 Planned Properties
@@ -36,7 +35,6 @@ Planned Properties
 The following properties are planned, but were not coded yet:
 
 * BasePop - Defines the base maximum population capacity
-* NativeCivs - Defines which civilizations should get the fire pit UI, plus support council age up
 * ExportUICivs - Defines which civilizations should get export UI, but not get any of the behaviour of Asian civs
 * FirePitUICivs - Defines which civilizations should get fire pit UI, but not get any of the behaviour of Native civs
 

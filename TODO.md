@@ -12,6 +12,8 @@ Projects completed
 * Market hardcoding
 * Export UI for Asian civs
 * Wonder Aging Up
+* Fire Pit UI for Native civs
+* Tribal Council Aging Up
 
 Projects in progress
 --------------------
@@ -21,8 +23,6 @@ Projects in progress
 Projects not yet started
 ------------------------
 
-* Fire Pit UI for Native civs
-* Tribal Council Aging Up
 * Export UI and Fire Pit UI for non-Asian/non-Native civs
 * New Protounit Commmands
 * Rice Paddy hardcoding
