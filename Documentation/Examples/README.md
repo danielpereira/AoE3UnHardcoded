@@ -2,6 +2,8 @@
 
 This folder contains Visual C++ 2015 projects of demonstration UHC plugins, with the goal of explaining how basic custom syscalls and cheats can be implemented through the UHC Patch Plugin System.
 
+Feel free to explore, analyze and even use in your modding projects the source codes of these examples.
+
 Contents
 --------
 
