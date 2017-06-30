@@ -21,22 +21,143 @@ BOOL backupExists = FALSE;
 WCHAR cfgFileRelPath[CFG_PATH_MAX] = L"Startup\\uhc.cfg";
 DWORD patchSettings = 0;
 
-// Patch files must be named as the patch name
-// They will be read from the same directory of this EXE
-// File Specs (.uhc)
-// header (4 bytes) UHC_HEADER
-// data count (4 bytes)
-// data 0 offset (4 bytes)
-// data 0 length (4 bytes)
-// data 0 [bytes]
-// data 1...
-// ...
-
 typedef enum UHC_PATCH_RESULT {
 	UHC_PATCH_NONE,
 	UHC_PATCH_FAILED,
 	UHC_PATCH_SUCCESS
 } UHC_PATCH_RESULT;
+
+BOOL UHCPatch(HANDLE hFile, HANDLE hPatchFile) {
+	static HANDLE hHeap = GetProcessHeap();
+	DWORD dwBytes;
+
+	DWORD dwHeader;
+	ReadFile(hPatchFile, &dwHeader, 4, &dwBytes, NULL);
+
+	if (dwHeader != UHC_HEADER) {
+		return FALSE;
+	}
+
+	DWORD dwDataCount;
+	ReadFile(hPatchFile, &dwDataCount, 4, &dwBytes, NULL);
+
+	for (DWORD i = 0; i < dwDataCount; ++i) {
+		DWORD dwOffset, dwLength;
+		LPSTR lpData;
+
+		ReadFile(hPatchFile, &dwOffset, 4, &dwBytes, NULL);
+		ReadFile(hPatchFile, &dwLength, 4, &dwBytes, NULL);
+
+		lpData = (LPSTR)HeapAlloc(hHeap, 0, dwLength);
+		ReadFile(hPatchFile, lpData, dwLength, &dwBytes, NULL);
+
+		if (SetFilePointer(hFile, dwOffset, NULL, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
+			return FALSE;
+
+		WriteFile(hFile, lpData, dwLength, &dwBytes, NULL);
+
+		HeapFree(hHeap, 0, lpData);
+	}
+
+	return TRUE;
+}
+
+UHC_PATCH_RESULT PatchExecutable(HWND hwndDlg) {
+	if (!backupExists && !(CopyFileW(exePath, exeBackupPath, FALSE))) {
+		if (MessageBoxW(hwndDlg, L"The patcher has failed to backup the current executable.\nContinue patching anyway?", L"Error", MB_ICONWARNING | MB_YESNO) != IDYES) {
+			return UHC_PATCH_NONE;
+		}
+	}
+	else
+		backupExists = TRUE;
+
+	WCHAR dirBuffer[MAX_PATH];
+	WCHAR tmpFile[MAX_PATH];
+
+	GetTempPath(MAX_PATH, dirBuffer);
+	GetTempFileNameW(dirBuffer, L"UHC", 0, tmpFile);
+	HANDLE hTmpPatchFile = CreateFileW(tmpFile, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	HRSRC resHandle = FindResource(NULL, MAKEINTRESOURCE(IDR_PATCH), UHC_RESNAME);
+	HGLOBAL resData = LoadResource(NULL, resHandle);
+	DWORD resSize = SizeofResource(NULL, resHandle);
+
+	DWORD bytesWritten = 0;
+	WriteFile(hTmpPatchFile, resData, resSize, &bytesWritten, NULL);
+
+	HANDLE hExeFile = CreateFileW(exePath, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (hExeFile == INVALID_HANDLE_VALUE) {
+		MessageBoxW(hwndDlg, L"Failed to open the supplied executable file.", L"Error", MB_ICONERROR | MB_OK);
+		CloseHandle(hTmpPatchFile);
+		DeleteFileW(tmpFile);
+		return UHC_PATCH_NONE;
+	}
+
+	SetFilePointer(hTmpPatchFile, 0, NULL, FILE_BEGIN);
+
+	if (!UHCPatch(hExeFile, hTmpPatchFile)) {
+		CloseHandle(hExeFile);
+		CloseHandle(hTmpPatchFile);
+		DeleteFileW(tmpFile);
+		return UHC_PATCH_FAILED;
+	}
+
+	if (SetFilePointer(hExeFile, 0x00865083, NULL, FILE_BEGIN) != INVALID_SET_FILE_POINTER)
+		WriteFile(hExeFile, cfgFileRelPath, (lstrlen(cfgFileRelPath) + 1) * 2, &bytesWritten, NULL);
+
+	CloseHandle(hExeFile);
+	CloseHandle(hTmpPatchFile);
+	DeleteFileW(tmpFile);
+
+	Config* cfgFile = new Config;
+
+	lstrcpyW(dirBuffer, exePath);
+
+	int lastSlashIndex;
+
+	for (int i = lstrlen(dirBuffer) - 1, stop = 0; i >= 0 && !stop; i--) {
+		if (dirBuffer[i] == '\\') {
+			lastSlashIndex = i;
+			dirBuffer[i + 1] = '\0';
+			lstrcatW(dirBuffer, cfgFileRelPath);
+			stop = 1;
+		}
+	}
+
+	cfgFile->Parse(dirBuffer);
+	cfgFile->ProcessData();
+
+	if (!cfgFile->WriteToFile(dirBuffer, patchSettings))
+		MessageBoxW(hwndDlg, L"The patcher has failed to write to the supplied configuration file\n\nIn order to apply the intended patch settings,\n you will have to edit it manually.\n\nRefer to the official UHC Configuration File documentation for more information.", UHC_NAME, MB_ICONINFORMATION | MB_OK);
+
+	delete cfgFile;
+
+	dirBuffer[lastSlashIndex + 1] = '\0';
+	lstrcatW(dirBuffer, UHC_LIB_NAME);
+
+	HANDLE hLib = CreateFileW(dirBuffer, (GENERIC_READ | GENERIC_WRITE), FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	resHandle = FindResource(NULL, MAKEINTRESOURCE(IDR_UHC), UHC_RESNAME);
+	resData = LoadResource(NULL, resHandle);
+	resSize = SizeofResource(NULL, resHandle);
+
+	if (!(WriteFile(hLib, resData, resSize, &bytesWritten, NULL) && (bytesWritten == resSize))) {
+		MessageBoxW(hwndDlg, L"The patcher has failed to place the main DLL at the path of the supplied executable.\nYou'll have to manually download it and place it.", UHC_NAME, MB_ICONERROR | MB_OK);
+	}
+	else
+		CloseHandle(hLib);
+
+	return UHC_PATCH_SUCCESS;
+}
+
+BOOL StringCchLength(LPWSTR psz, size_t cchMax, size_t *pcch) {
+	size_t i;
+
+	for (i = 0, (*pcch) = 0; i < cchMax && psz[i] != '\0'; i++, (*pcch)++);
+
+	return (psz[i] == '\0');
+}
 
 BOOL ReadCFGPathFromExe(WCHAR* cfgFilePath) {
 	WCHAR tmpCfgPath[CFG_PATH_MAX];
@@ -50,21 +171,25 @@ BOOL ReadCFGPathFromExe(WCHAR* cfgFilePath) {
 		if (SetFilePointer(exeHandle, 0x00865083, NULL, FILE_BEGIN) != INVALID_SET_FILE_POINTER) {
 			ReadFile(exeHandle, tmpCfgPath, CFG_PATH_MAX * 2, &bytesRead, NULL);
 
-			if (SUCCEEDED(StringCchLength(tmpCfgPath, CFG_PATH_MAX, &pcch)) && pcch) {
+			if (StringCchLength(tmpCfgPath, CFG_PATH_MAX, &pcch) && pcch) {
 				lstrcpy(cfgFilePath, tmpCfgPath);
+				CloseHandle(exeHandle);
 				return TRUE;
 			}
 			else {
 				if (SetFilePointer(exeHandle, 0x008AA0B0, NULL, FILE_BEGIN) != INVALID_SET_FILE_POINTER) {
 					ReadFile(exeHandle, tmpCfgPath, CFG_PATH_MAX * 2, &bytesRead, NULL);
 
-					if (SUCCEEDED(StringCchLength(tmpCfgPath, CFG_PATH_MAX, &pcch)) && pcch) {
+					if (StringCchLength(tmpCfgPath, CFG_PATH_MAX, &pcch) && pcch) {
 						lstrcpy(cfgFilePath, tmpCfgPath);
+						CloseHandle(exeHandle);
 						return TRUE;
 					}
 				}
 			}
 		}
+
+		CloseHandle(exeHandle);
 	}
 
 	return FALSE;
@@ -92,7 +217,7 @@ BOOL IsAValidExecutable(WCHAR* lpExePath, BOOL* backupExists) {
 
 					DWORD dwAttrBackup = GetFileAttributesW(exeBackupPath);
 
-					(*backupExists) = (dwAttr != INVALID_FILE_ATTRIBUTES && !(dwAttr & FILE_ATTRIBUTE_DIRECTORY)) ? TRUE : FALSE;
+					(*backupExists) = (dwAttrBackup != INVALID_FILE_ATTRIBUTES && !(dwAttrBackup & FILE_ATTRIBUTE_DIRECTORY)) ? TRUE : FALSE;
 
 					return TRUE;
 
@@ -143,149 +268,6 @@ BOOL SelectExecutableFile(HWND parentWnd, LPWSTR fileName, BOOL* backupExists) {
 	return FALSE;
 }
 
-/*BOOL UHCSaveLibs() {
-	static DWORD UHC_LIB_IDS[UHC_LIB_COUNT] = { 202, 203 };
-	static LPWSTR UHC_LIB_NAMES[UHC_LIB_COUNT] = { L"uhc_wrapper.dll", L"uhc.dll" };
-
-	for (DWORD i = 0; i < UHC_LIB_COUNT; i++) {
-		HANDLE hLib = CreateFileW(UHC_LIB_NAMES[i], (GENERIC_READ | GENERIC_WRITE), FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-
-		if (!hLib)
-			return FALSE;
-
-		HRSRC resHandle = FindResource(NULL, MAKEINTRESOURCE(UHC_LIB_IDS[i]), UHC_RESNAME);
-		HGLOBAL resData = LoadResource(NULL, resHandle);
-		DWORD resSize = SizeofResource(NULL, resHandle);
-
-		DWORD bytesWritten = 0;
-
-		if (!(WriteFile(hLib, resData, resSize, &bytesWritten, NULL) && (bytesWritten == resSize)))
-			return FALSE;
-
-		CloseHandle(hLib);
-
-	}
-
-	return TRUE;
-}*/
-
-BOOL UHCPatch(HANDLE hFile, HANDLE hPatchFile) {
-	static HANDLE hHeap = GetProcessHeap();
-	DWORD dwBytes;
-
-	DWORD dwHeader;
-	ReadFile(hPatchFile, &dwHeader, 4, &dwBytes, NULL);
-
-	if (dwHeader != UHC_HEADER) {
-		return FALSE;
-	}
-
-	DWORD dwDataCount;
-	ReadFile(hPatchFile, &dwDataCount, 4, &dwBytes, NULL);
-
-	for (DWORD i = 0; i < dwDataCount; ++i) {
-		DWORD dwOffset, dwLength;
-		LPSTR lpData;
-
-		ReadFile(hPatchFile, &dwOffset, 4, &dwBytes, NULL);
-		ReadFile(hPatchFile, &dwLength, 4, &dwBytes, NULL);
-
-		lpData = (LPSTR)HeapAlloc(hHeap, 0, dwLength);
-		ReadFile(hPatchFile, lpData, dwLength, &dwBytes, NULL);
-
-		if (SetFilePointer(hFile, dwOffset, NULL, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
-			return FALSE;
-
-		WriteFile(hFile, lpData, dwLength, &dwBytes, NULL);
-
-		HeapFree(hHeap, 0, lpData);
-	}
-
-	return TRUE;
-}
-
-UHC_PATCH_RESULT PatchExecutable(HWND hwndDlg) {
-	if (!backupExists && !(CopyFileW(exePath, exeBackupPath, FALSE))) {
-		if (MessageBoxW(hwndDlg, L"The patcher has failed to backup the current executable.\nContinue patching anyway?", L"Error", MB_ICONWARNING | MB_YESNO) != IDYES) {
-			return UHC_PATCH_NONE;
-		}
-	}
-
-	WCHAR dirBuffer[MAX_PATH];
-	WCHAR tmpFile[MAX_PATH];
-
-	GetTempPath(MAX_PATH, dirBuffer);
-	GetTempFileNameW(dirBuffer, L"UHC", 0, tmpFile);
-	HANDLE hTmpPatchFile = CreateFileW(tmpFile, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-
-	HRSRC resHandle = FindResource(NULL, MAKEINTRESOURCE(IDR_PATCH), UHC_RESNAME);
-	HGLOBAL resData = LoadResource(NULL, resHandle);
-	DWORD resSize = SizeofResource(NULL, resHandle);
-
-	DWORD bytesWritten = 0;
-	WriteFile(hTmpPatchFile, resData, resSize, &bytesWritten, NULL);
-	
-	HANDLE hExeFile = CreateFileW(exePath, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-
-	if (hExeFile == INVALID_HANDLE_VALUE) {
-		MessageBoxW(hwndDlg, L"Failed to open the supplied executable file.", L"Error", MB_ICONERROR | MB_OK);
-		CloseHandle(hTmpPatchFile);
-		DeleteFileW(tmpFile);
-		return UHC_PATCH_NONE;
-	}
-
-	if (!UHCPatch(hExeFile, hTmpPatchFile)) {
-		CloseHandle(hExeFile);
-		CloseHandle(hTmpPatchFile);
-		DeleteFileW(tmpFile);
-		return UHC_PATCH_FAILED;
-	}
-
-	if (SetFilePointer(hExeFile, 0x00865083, NULL, FILE_BEGIN) != INVALID_SET_FILE_POINTER)
-		WriteFile(hExeFile, cfgFileRelPath, (lstrlen(cfgFileRelPath) + 1) * 2, &bytesWritten, NULL);
-
-	CloseHandle(hExeFile);
-	CloseHandle(hTmpPatchFile);
-	DeleteFileW(tmpFile);
-
-	Config* cfgFile = new Config;
-
-	lstrcpyW(dirBuffer, exePath);
-
-	int lastSlashIndex;
-
-	for (int i = lstrlen(dirBuffer) - 1, stop = 0; i <= 0 && !stop; i++) {
-		if (dirBuffer[i] == '\\') {
-			lastSlashIndex = i;
-			dirBuffer[i + 1] == '\0';
-			lstrcatW(dirBuffer, cfgFileRelPath);
-		}
-	}
-
-	cfgFile->Parse(dirBuffer);
-	cfgFile->ProcessData();
-	
-	if (!cfgFile->WriteToFile(dirBuffer, patchSettings))
-		MessageBoxW(hwndDlg, L"The patcher has failed to write to the supplied configuration file\n\nIn order to apply the intended patch settings,\n you will have to edit it manually.\n\nRefer to the official UHC Configuration File documentation for more information.", UHC_NAME, MB_ICONINFORMATION | MB_OK);
-
-	delete cfgFile;
-
-	dirBuffer[lastSlashIndex + 1] = '\0';
-	lstrcatW(dirBuffer, UHC_LIB_NAME);
-
-	HANDLE hLib = CreateFileW(dirBuffer, (GENERIC_READ | GENERIC_WRITE), FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-
-	resHandle = FindResource(NULL, MAKEINTRESOURCE(IDR_UHC), UHC_RESNAME);
-	resData = LoadResource(NULL, resHandle);
-	resSize = SizeofResource(NULL, resHandle);
-
-	if (!(WriteFile(hLib, resData, resSize, &bytesWritten, NULL) && (bytesWritten == resSize))) {
-		MessageBoxW(hwndDlg, L"The patcher has failed to place the main DLL at the path of the supplied executable.\nYou'll have to manually download it and place it.", UHC_NAME, MB_ICONERROR | MB_OK);
-	}
-
-	return UHC_PATCH_SUCCESS;
-}
-
 INT_PTR CALLBACK DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
 		case WM_INITDIALOG: {
@@ -329,6 +311,8 @@ INT_PTR CALLBACK DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 					break;
 				}
 				case IDC_APPLY: {
+					GetDlgItemTextW(hwndDlg, IDC_CFGNAME, cfgFileRelPath, 21);
+
 					DWORD patchResult = PatchExecutable(hwndDlg);
 
 					switch (patchResult) {
@@ -339,14 +323,27 @@ INT_PTR CALLBACK DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 							if (CopyFileW(exeBackupPath, exePath, FALSE) && DeleteFileW(exeBackupPath))
 								MessageBoxW(hwndDlg, L"An error occurred while attempting to patch the EXE file\nThe original EXE file has been restored.", UHC_NAME, MB_ICONERROR | MB_OK);
 							else
-								MessageBoxW(hwndDlg, L"An error occurred while attempting to patch the EXE file\nThe patcher also could not restore the original EXE file", UHC_NAME, MB_ICONERROR | MB_OK);
+								MessageBoxW(hwndDlg, L"An error occurred while attempting to patch the EXE file\nThe patcher also could not restore the original EXE file.", UHC_NAME, MB_ICONERROR | MB_OK);
 							break;
 						case UHC_PATCH_SUCCESS:
 							MessageBoxW(GetActiveWindow(), L"The EXE has been sucessfully patched!", UHC_NAME, MB_ICONINFORMATION | MB_OK);
 					}
 
+					if (backupExists)
+						EnableWindow(GetDlgItem(hwndDlg, IDC_RESTORE), TRUE);
+
 					break;
 
+				}
+				case IDC_RESTORE: {
+					if (CopyFileW(exeBackupPath, exePath, FALSE) && DeleteFileW(exeBackupPath)) {
+						MessageBoxW(hwndDlg, L"Backup sucessfully restored.", UHC_NAME, MB_ICONINFORMATION | MB_OK);
+						backupExists = false;
+						EnableWindow(GetDlgItem(hwndDlg, IDC_RESTORE), FALSE);
+					}
+					else
+						MessageBoxW(hwndDlg, L"An error occurred while attempting to restore the backup of the selected executable.", UHC_NAME, MB_ICONERROR | MB_OK);
+					break;
 				}
 				case IDC_AILIMIT:
 				case IDC_REVBANNERS:

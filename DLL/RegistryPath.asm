@@ -1,9 +1,11 @@
 PatchData proto stdcall hProcess:DWORD, dwAddress:DWORD, lpBuffer:DWORD, dwSize:DWORD
 
-RegistryPathPatch db 0EBh, 7Ch, 90h, 90h, 90h, 90h
+code_cave_begin 0057CB54h
+
+code_cave_end 006420A1h
 
 public stdcall PatchRegistryPath
 PatchRegistryPath proc
-	invoke PatchData,_hProcess,0057CB54h,RegistryPathPatch,6
+	patch_code_cave 0057CB54h, 006420A1h
 	ret
 PatchRegistryPath endp

@@ -99,7 +99,7 @@ private:
 };
 
 extern "C" {
-	void __stdcall UHCRegisterCheat(UHCInfo* info, LPCWSTR string, BOOL enable, void (__stdcall * fPtr)(int));
+	void __stdcall UHCRegisterCheat(UHCInfo* info, LPCWSTR string, BOOL enable, void (__stdcall * fPtr)(void*));
 
 	UHCSyscall& __stdcall UHCRegisterSyscall(UHCInfo* info, UHCSyscallGroupName groupName,
 		DWORD retType, LPCSTR name, LPVOID fPtr, DWORD paramCount, LPCSTR comment);
@@ -130,7 +130,9 @@ extern "C" {
 }
 
 struct UHCPluginInfo {
-	void (__stdcall *RegisterCheat)(UHCInfo* info, LPCWSTR string, BOOL enable, void(__stdcall * fPtr)(int));
+	UHCInfo* info;
+
+	void (__stdcall *RegisterCheat)(UHCInfo* info, LPCWSTR string, BOOL enable, void(__stdcall * fPtr)(void*));
 
 	UHCSyscall& (__stdcall *RegisterSyscall)(UHCInfo* info, UHCSyscallGroupName groupName,
 		DWORD retType, LPCSTR name, LPVOID fPtr, DWORD paramCount, LPCSTR comment);

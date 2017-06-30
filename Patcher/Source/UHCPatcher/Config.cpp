@@ -145,7 +145,8 @@ void Config::ProcessData() {
 		for (int j = 0, detected = 0; j < 9 && !detected; j++) {
 			if (!lstrcmpiA(m_Keys[i].Name, conversionTable[j][0])) {
 				delete[] m_Keys[i].Name;
-				m_Keys[i].Name = conversionTable[j][1];
+				m_Keys[i].Name = new char[lstrlenA(conversionTable[j][1]) + 1];
+				lstrcpyA(m_Keys[i].Name, conversionTable[j][1]);
 				detected = 1;
 			}
 		}
@@ -154,6 +155,7 @@ void Config::ProcessData() {
 
 BOOL Config::WriteToFile(LPCWSTR lpConfigFileName, DWORD dwSettings) {
 	HANDLE cfgFile = CreateFile(lpConfigFileName, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	DWORD bytesWritten;
 
 	if (cfgFile != INVALID_HANDLE_VALUE) {
 		LPSTR settingTable[4] = { "noAILimit", "customRevolutionBanners", "ignoreRegistryPath", "enableAllTeams" };
@@ -161,14 +163,14 @@ BOOL Config::WriteToFile(LPCWSTR lpConfigFileName, DWORD dwSettings) {
 
 		for (int i = 0; i < 4; i++) {
 			if (dwSettings & (1 << i)) {
-				WriteFile(cfgFile, settingTable[i], lstrlenA(settingTable[i]), NULL, NULL);
-				WriteFile(cfgFile, "\r\n", 2, NULL, NULL);
+				WriteFile(cfgFile, settingTable[i], lstrlenA(settingTable[i]), &bytesWritten, NULL);
+				WriteFile(cfgFile, "\r\n", 2, &bytesWritten, NULL);
 			}
 		}
 
 		for (size_t i = 0; i < m_Keys.GetNumElements(); i++) {
-			BOOL isSettingString;
-			BOOL isValueString;
+			BOOL isSettingString = FALSE;
+			BOOL isValueString = FALSE;
 
 			for (int j = 0, detected = 0; j < 4; j++) {
 				if (!lstrcmpiA(settingTable[j], m_Keys[i].Name)) {
@@ -186,19 +188,19 @@ BOOL Config::WriteToFile(LPCWSTR lpConfigFileName, DWORD dwSettings) {
 						}
 					}
 
-					WriteFile(cfgFile, m_Keys[i].Name, lstrlenA(m_Keys[i].Name), NULL, NULL);
+					WriteFile(cfgFile, m_Keys[i].Name, lstrlenA(m_Keys[i].Name), &bytesWritten, NULL);
 
 					if (isValueString) {
-						WriteFile(cfgFile, "=", 1, NULL, NULL);
-						WriteFile(cfgFile, m_Keys[i].Values[0], lstrlenA(m_Keys[i].Values[0]), NULL, NULL);
-						WriteFile(cfgFile, "\r\n", 2, NULL, NULL);
+						WriteFile(cfgFile, "=", 1, &bytesWritten, NULL);
+						WriteFile(cfgFile, m_Keys[i].Values[0], lstrlenA(m_Keys[i].Values[0]), &bytesWritten, NULL);
+						WriteFile(cfgFile, "\r\n", 2, &bytesWritten, NULL);
 					}
 					else {
 						for (size_t j = 0; j < m_Keys[i].Values.GetNumElements(); j++) {
-							WriteFile(cfgFile, " ", 1, NULL, NULL);
-							WriteFile(cfgFile, m_Keys[i].Values[j], lstrlenA(m_Keys[i].Values[j]), NULL, NULL);
+							WriteFile(cfgFile, " ", 1, &bytesWritten, NULL);
+							WriteFile(cfgFile, m_Keys[i].Values[j], lstrlenA(m_Keys[i].Values[j]), &bytesWritten, NULL);
 						}
-						WriteFile(cfgFile, "\r\n", 2, NULL, NULL);
+						WriteFile(cfgFile, "\r\n", 2, &bytesWritten, NULL);
 					}
 				}
 			}

@@ -9,12 +9,8 @@
 name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
 processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
-#include "targetver.h"
-#include "Config.h"
-
-// Windows Header Files:
 #include <windows.h>
-#include <Strsafe.h>
 
+#include "targetver.h"
 
-// TODO: reference additional headers your program requires here
+#include "Config.h"

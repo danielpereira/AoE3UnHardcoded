@@ -5,7 +5,7 @@
 
 using namespace syscalls;
 
-void __stdcall CheatForceOfNature(int) {
+void __stdcall CheatForceOfNature(void* playerData) {
 	xsSetContextPlayer(1);
 
 	std::unordered_map<std::wstring, int> unitTypeMap;

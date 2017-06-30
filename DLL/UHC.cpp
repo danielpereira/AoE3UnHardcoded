@@ -18,6 +18,22 @@ void operator delete(void* mem) {
 	return _operator_delete(0xc66010, mem);
 }*/
 
+void FixWorkingPath() {
+	WCHAR lpWorkingPath[MAX_PATH];
+
+	GetModuleFileNameW(NULL, lpWorkingPath, MAX_PATH);
+
+	for (int i = lstrlenW(lpWorkingPath) - 1; i >= 0; i--) {
+		if (lpWorkingPath[i] == '\\') {
+			lpWorkingPath[i + 1] = '\0';
+
+			SetCurrentDirectoryW(lpWorkingPath);
+			break;
+		}
+	}
+
+}
+
 void EncryptString(LPWSTR dest, LPCWSTR src) {
 	LPCWSTR lpPtr = src;
 	LPWSTR lpEncryptedPtr = dest;
@@ -42,7 +58,7 @@ void EncryptString(LPWSTR dest, LPCWSTR src) {
 	*lpEncryptedPtr = 0;
 }
 
-void __stdcall UHCRegisterCheat(UHCInfo* info, LPCWSTR string, BOOL enable, void(__stdcall * fPtr)(int)) {
+void __stdcall UHCRegisterCheat(UHCInfo* info, LPCWSTR string, BOOL enable, void(__stdcall * fPtr)(void*)) {
 	DWORD length = lstrlenW(string);
 	LPWSTR lpEncrypted = new WCHAR[length * 2 + 1];
 
@@ -106,15 +122,15 @@ LPWSTR __stdcall UHCAnsiStrToWideStr(CHAR* lpStr) {
 UHCInfo* UHCInfo::Instance = nullptr;
 
 UHCInfo::UHCInfo() {
-	WCHAR szConfig[256];
-	LPCWSTR lpStartup = (LPCWSTR)0xbeaf98;
+	LPCWSTR szConfig = (LPCWSTR)0x00C65083;
+	//LPCWSTR lpStartup = (LPCWSTR)0xbeaf98;
 
 	hHeap = GetProcessHeap();
 
 	Enable = 0;
 
-	lstrcpyW(szConfig, lpStartup);
-	lstrcatW(szConfig, L"uhc.cfg");
+	//lstrcpyW(szConfig, lpStartup);
+	//lstrcatW(szConfig, L"uhc.cfg");
 
 	for (DWORD i = 0; i < TABLE_COUNT; i++) {
 		Tables[i].RefCount = 0;
@@ -127,6 +143,8 @@ UHCInfo::UHCInfo() {
 	DeckCardCount = 25;
 
 	m_Config = new Config;
+
+	FixWorkingPath();
 
 	if (!m_Config->Parse(szConfig))
 		return;
@@ -239,6 +257,7 @@ void LoadPlugins() {
 	HANDLE hFind = FindFirstFileW(L"*.upl", &fd);
 
 	UHCPluginInfo pluginInfo = {
+		UHCInfo::Instance,
 		UHCRegisterCheat,
 		UHCRegisterSyscall,
 		UHCSyscallSetParam
@@ -257,7 +276,7 @@ void LoadPlugins() {
 			FARPROC pluginProc = GetProcAddress(hLib, "_UHCPluginMain@4");
 
 			if (pluginProc)
-				((int(*)(UHCPluginInfo*))pluginProc)(&pluginInfo);
+				((int(__stdcall*)(UHCPluginInfo*))pluginProc)(&pluginInfo);
 		} while (FindNextFileW(hFind, &fd));
 	}
 

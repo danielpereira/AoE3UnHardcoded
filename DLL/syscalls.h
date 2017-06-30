@@ -11064,4 +11064,26 @@ namespace syscalls
 		int _this = *(int*)(*(int*)0xc66234 + 0x140);
 		return (array<wchar_t*>*)(_this + 0x1ff0);
 	}
+
+	inline int getMyID() {
+		int _this = *(int*)(*(int*)0xc66234 + 0x13c);
+		_this = *(int*)(*(int*)(_this + 0x58) + 4 * *(int*)0xc66664);
+		int* _thisPlayer = (int*)(*(int*)(_this + 0x80) + 0xc);
+		return _thisPlayer[1];
+	}
+
+	inline int getMyCiv() {
+		int _this = *(int*)(*(int*)0xc66234 + 0x13c);
+		_this = *(int*)(*(int*)(_this + 0x58) + 4 * *(int*)0xc66664);
+		int* _thisPlayer = (int*)(*(int*)(_this + 0x80) + 0xc);
+		return **(int**)(*_thisPlayer + 0x20);
+	}
+
+	inline int getMyTeam() {
+		int _this = *(int*)(*(int*)0xc66234 + 0x13c);
+		_this = *(int*)(*(int*)(_this + 0x58) + 4 * *(int*)0xc66664);
+		int* _thisPlayer = (int*)(*(int*)(_this + 0x80) + 0xc);
+		return *(int*)(*_thisPlayer + 0x10);
+	}
+
 }
