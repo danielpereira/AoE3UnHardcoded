@@ -28,20 +28,20 @@ Supported Properties
 --------------------
 
 The code for the following properties is already implemented into the parser and the wrapper:
-*enableFarmAnim - Defines the (additional) buildings in which settlers would walk through it while gathering a resource from it, like AoE3 Mills and Plantations.
-*rectFarmAnim - Defines the (additional) buildings which would have a behaviour similar to the rectangular Farms of the TWC civilizations.
-*marketUnits - Defines which (additional) buildings should support a proper market behaviour.
-*asianCivs - Defines which civilizations should get export UI, plus support wonder age up.
-*nativeCivs - Defines which civilizations should get the fire pit UI, plus support council age up
-*basePop - Defines the maximum base population to be used by the game. If it’s not set, the default value is 200
-*extraPop - Defines the maximum extra population to be used by the game. If it’s not set, the default value is 50
-*deckCardCount - Defines the maximum possible number of cards in a deck. If it’s not set, the default value is 25
-*noAILimit - Removes the hardcoded 14 AI/Civilization limit by making the game read all .personality files in the from the AI directory defined in the .exe (which should be \AI3, by default)
-*customRevolutionBanners - Allows new revolutions to have banners above the revolutionary’s portrait in the Revolution UI.
-*ignoreRegistryPath - Makes the game read the AoE3 files from the folder in which the AoE3 .exe is located, instead of looking for a working path in the registry
-*enableAllTeams - Enables team options 3 and 4 for Single Player and Multiplayer games
-*customSyscalls - Allows the UHC Patch to load and register custom syscalls implemented through plugins
-*customCheats - Allows the UHC Patch to load and register custom cheats implemented through plugins
+* enableFarmAnim - Defines the (additional) buildings in which settlers would walk through it while gathering a resource from it, like AoE3 Mills and Plantations.
+* rectFarmAnim - Defines the (additional) buildings which would have a behaviour similar to the rectangular Farms of the TWC civilizations.
+* marketUnits - Defines which (additional) buildings should support a proper market behaviour.
+* asianCivs - Defines which civilizations should get export UI, plus support wonder age up.
+* nativeCivs - Defines which civilizations should get the fire pit UI, plus support council age up
+* basePop - Defines the maximum base population to be used by the game. If it’s not set, the default value is 200
+* extraPop - Defines the maximum extra population to be used by the game. If it’s not set, the default value is 50
+* deckCardCount - Defines the maximum possible number of cards in a deck. If it’s not set, the default value is 25
+* noAILimit - Removes the hardcoded 14 AI/Civilization limit by making the game read all .personality files in the from the AI directory defined in the .exe (which should be \AI3, by default)
+* customRevolutionBanners - Allows new revolutions to have banners above the revolutionary’s portrait in the Revolution UI.
+* ignoreRegistryPath - Makes the game read the AoE3 files from the folder in which the AoE3 .exe is located, instead of looking for a working path in the registry
+* enableAllTeams - Enables team options 3 and 4 for Single Player and Multiplayer games
+* customSyscalls - Allows the UHC Patch to load and register custom syscalls implemented through plugins
+* customCheats - Allows the UHC Patch to load and register custom cheats implemented through plugins
 
 
 
