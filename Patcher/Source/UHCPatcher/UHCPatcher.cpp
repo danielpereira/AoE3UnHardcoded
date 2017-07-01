@@ -391,10 +391,18 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 		}
 	}
 
-	if (!exePath) {
+	if (!exePathInitialized) {
 		WCHAR relativeExePath[MAX_PATH];
 
-		GetCurrentDirectoryW(MAX_PATH, relativeExePath);
+		GetModuleFileNameW(NULL, relativeExePath, MAX_PATH);
+
+		for (int i = lstrlenW(relativeExePath) - 1, stop = 0; i >= 0 && !stop; i--) {
+			if (relativeExePath[i] == '\\') {
+				relativeExePath[i] = '\0';
+				stop = 1;
+			}
+ 		}
+
 		lstrcatW(relativeExePath, L"\\age3y.exe");
 
 		DWORD dwAttr = GetFileAttributesW(relativeExePath);
