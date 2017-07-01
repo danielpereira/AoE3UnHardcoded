@@ -5,7 +5,7 @@ Projects completed
 
 * AI/Civilization Limit
 * Revolutionary Banners
-* Unlimited Population
+* Population Limit
 * HC card limit
 * Patcher
 * Farming animations
@@ -14,6 +14,8 @@ Projects completed
 * Wonder Aging Up
 * Fire Pit UI for Native civs
 * Tribal Council Aging Up
+* GUI for the Patcher
+* Plugin system
 
 Projects in progress
 --------------------
