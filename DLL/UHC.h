@@ -75,7 +75,7 @@ struct UHCCheat {
 #define ENABLE_PATCH_MARKET 0x200
 #define ENABLE_NATIVE_CIVS 0x400
 #define ENABLE_ASIAN_CIVS 0x800
-#define ENABLE_WOL_BIGBUTTON 0x1000
+#define ENABLE_BIGBUTTON 0x1000
 
 class UHCInfo {
 public:
@@ -124,7 +124,7 @@ extern "C" {
 	void __stdcall PatchCivChecking();
 	void __stdcall PatchAsianCivs();
 	void __stdcall PatchNativeCivs();
-	void __stdcall PatchWoLBigButton();
+	void __stdcall PatchBigButton();
 
 	void __stdcall PatchDumpSyscall();
 }

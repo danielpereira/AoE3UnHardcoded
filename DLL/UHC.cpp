@@ -168,12 +168,12 @@ UHCInfo::UHCInfo() {
 		}
 
 		else if (lstrcmpiA(key.Name, "bigButtonCivs") == 0) {
-			Enable |= ENABLE_WOL_BIGBUTTON;
+			Enable |= ENABLE_BIGBUTTON;
 			SetRefTable(Tables[BigButtonCivs], key);
 		}
 
 		else if (lstrcmpiA(key.Name, "noBigButtonBlds") == 0) {
-			Enable |= ENABLE_WOL_BIGBUTTON;
+			Enable |= ENABLE_BIGBUTTON;
 			SetRefTable(Tables[NoBigButtonBlds], key);
 		}
 
@@ -309,7 +309,7 @@ void APIENTRY UHCMain() {
 		if (enable & ENABLE_DECK_LIMIT)
 			PatchDeckLimit();
 
-		if (enable & (ENABLE_FARM_ANIM | ENABLE_PATCH_MARKET | ENABLE_WOL_BIGBUTTON))
+		if (enable & (ENABLE_FARM_ANIM | ENABLE_PATCH_MARKET | ENABLE_BIGBUTTON))
 			PatchUnitChecking();
 
 		if (enable & ENABLE_FARM_ANIM)
@@ -318,7 +318,7 @@ void APIENTRY UHCMain() {
 		if (enable & ENABLE_PATCH_MARKET)
 			PatchMarketUnits();
 
-		if (enable & (ENABLE_ASIAN_CIVS | ENABLE_NATIVE_CIVS | ENABLE_WOL_BIGBUTTON))
+		if (enable & (ENABLE_ASIAN_CIVS | ENABLE_NATIVE_CIVS | ENABLE_BIGBUTTON))
 			PatchCivChecking();
 
 		if (enable & ENABLE_ASIAN_CIVS)
@@ -327,8 +327,8 @@ void APIENTRY UHCMain() {
 		if (enable & ENABLE_NATIVE_CIVS)
 			PatchNativeCivs();
 		
-		if (enable & ENABLE_WOL_BIGBUTTON)
-			PatchWoLBigButton();
+		if (enable & ENABLE_BIGBUTTON)
+			PatchBigButton();
 
 		if (enable & ENABLE_POP_LIMIT)
 			PatchPopLimit();
