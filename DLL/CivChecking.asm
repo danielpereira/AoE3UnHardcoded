@@ -1,10 +1,10 @@
 code_cave_begin 008D0318h
     mov ecx, dword ptr ds:[00C66234h]
     mov ecx,[ecx+140h]
-    invoke getCivIDs,3
+    invoke getCivIDs,ASIAN
     mov ecx, dword ptr ds:[00C66234h]
     mov ecx,[ecx+140h]
-    invoke getCivIDs,4
+    invoke getCivIDs,NATIVE
     mov eax, dword ptr ds:[00C66234h]
     jmp_rel32 008D031D
 code_cave_end 008D031Ch
@@ -12,10 +12,10 @@ code_cave_end 008D031Ch
 code_cave_begin 008DABA3h
     mov ecx, dword ptr ds:[00C66234h]
     mov ecx,[ecx+140h]
-    invoke getCivIDs,3
+    invoke getCivIDs,ASIAN
     mov ecx, dword ptr ds:[00C66234h]
     mov ecx,[ecx+140h]
-    invoke getCivIDs,4
+    invoke getCivIDs,NATIVE
     mov ecx, dword ptr ds:[00C66234h]
     mov ecx,[ecx+140h]
     invoke getCivIDs,5

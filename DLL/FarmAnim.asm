@@ -11,7 +11,7 @@ code_cave_begin 004EDA85h
     mov ecx, [ecx+08h]
     
     fpatch1_check:
-    invoke checkID, 0, ecx
+    invoke checkID, FARM, ecx
     test eax, eax
     jne_rel32 004E3069
     
@@ -27,7 +27,7 @@ code_cave_begin 004EDA85h
     mov ecx, [ecx+08h]
     
     fpatch1_check_r:
-    invoke checkID, 1, ecx
+    invoke checkID, RECTFARM, ecx
     test eax, eax
     je fpatch1_end
     jmp_rel32 006A8A55
@@ -51,7 +51,7 @@ code_cave_begin 0050DE33h
     mov ecx, [ecx+08h]
     
     fpatch2_check:
-    invoke checkID, 0, ecx
+    invoke checkID, FARM, ecx
     test eax, eax
     jne_rel32 006A8E67_1
     
@@ -67,7 +67,7 @@ code_cave_begin 0050DE33h
     mov ecx, [ecx+08h]
     
     fpatch2_check_r:
-    invoke checkID, 1, ecx
+    invoke checkID, RECTFARM, ecx
     test eax, eax
     je_rel32 004EDD6C
     jmp_rel32 0050DF51
@@ -77,10 +77,10 @@ code_cave_end 0050DE39h
 code_cave_begin 0073D41Ah
     je fpatch3_sacred_field
     mov edx, eax
-    invoke checkID, 0, ebx
+    invoke checkID, FARM, ebx
     test eax, eax
     jne fpatch3_mill
-    invoke checkID, 1, ebx
+    invoke checkID, RECTFARM, ebx
     test eax, eax
     jne fpatch3_mill
     mov eax, edx
@@ -98,10 +98,10 @@ code_cave_end 0073D422h
 ;Farm Patch #4
 code_cave_begin 008CEC9Fh
     call_rel32 004E2C50
-    invoke checkID, 0, esi
+    invoke checkID, FARM, esi
     test eax, eax
     jne_rel32 008CED20
-    invoke checkID, 1, esi
+    invoke checkID, RECTFARM, esi
     test eax, eax
     jne_rel32 008CED20_1
 code_cave_end 008CECA4h
@@ -109,7 +109,7 @@ code_cave_end 008CECA4h
 ;Farm Patch #5    
 code_cave_begin 009DDB79h
     mov ebx, eax
-    invoke checkID, 0, ecx
+    invoke checkID, FARM, ecx
     test eax, eax
     mov eax, ebx
     je fpatch5_back
@@ -124,7 +124,7 @@ code_cave_end 009DDB7Fh
 ;Farm Patch #6
 code_cave_begin 004EE07Fh
     je_rel32 00586DFF
-    invoke checkID, 0, eax
+    invoke checkID, FARM, eax
     test eax, eax
     jne_rel32 00586DFF_1
 code_cave_end 004EE085h
@@ -143,7 +143,7 @@ code_cave_begin 004EE2FEh
     mov eax, [eax+08h]
     
     fpatch7_check:
-    invoke checkID, 0, eax
+    invoke checkID, FARM, eax
     test eax, eax
     jne_rel32 00586E11_1
 code_cave_end 004EE304h
@@ -154,7 +154,7 @@ code_cave_begin 006A8FE1h
     cmp eax, ebx
     je_rel32 006A8FEA
     mov edx, eax
-    invoke checkID, 0, eax
+    invoke checkID, FARM, eax
     test eax, eax
     je_rel32 006A900C
     jmp_rel32 006A8FEA_1
@@ -167,7 +167,7 @@ code_cave_begin 009DDD80h
     mov eax, [edx+140h]
     mov ecx, [ecx+04]
     mov ebp, eax
-    invoke checkID, 1, ecx
+    invoke checkID, RECTFARM, ecx
     test eax, eax
     mov eax, ebp
     jne_rel32 009DDD9E
@@ -187,7 +187,7 @@ code_cave_begin 004741F0h
     mov ecx, [ecx+08]
     
     rpatch2_check:
-    invoke checkID, 1, ecx
+    invoke checkID, RECTFARM, ecx
     test eax, eax
     je_rel32 004741F6
     mov ecx, [ebx+18h]
@@ -207,7 +207,7 @@ code_cave_begin 004EEDB4h
     mov ecx, [ecx+08]
     
     rpatch3_check:
-    invoke checkID, 1, ecx
+    invoke checkID, RECTFARM, ecx
     test eax, eax
     jne_rel32 004EEE18
     mov ecx, dword ptr ds:[00C66234h]
@@ -225,7 +225,7 @@ code_cave_begin 004EEE9Eh
     mov ecx, [ecx+08]
     
     rpatch4_check:
-    invoke checkID, 1, ecx
+    invoke checkID, RECTFARM, ecx
     test eax, eax
     jne_rel32 004ED756
     mov ecx, dword ptr ds:[00C66234h]

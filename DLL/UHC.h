@@ -81,7 +81,6 @@ class UHCInfo {
 public:
 	static UHCInfo* Instance;
 
-	HANDLE hHeap;
 	DWORD Enable;
 	UHCRefTable Tables[TABLE_COUNT];
 	int BasePop, ExtraPop, DeckCardCount;
@@ -105,7 +104,6 @@ extern "C" {
 		DWORD retType, LPCSTR name, LPVOID fPtr, DWORD paramCount, LPCSTR comment);
 
 	void __stdcall UHCSyscallSetParam(UHCSyscall& syscall, DWORD paramId, DWORD type, LPCVOID defaultVal);
-	LPWSTR __stdcall UHCAnsiStrToWideStr(CHAR* lpStr);
 
 	// ASM stuffs
 	void __stdcall UHCAsmInit(UHCInfo* info, HANDLE hProcess);

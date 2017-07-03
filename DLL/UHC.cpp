@@ -103,34 +103,17 @@ inline void SetRefTable(UHCRefTable& table, ConfigKey& key) {
 	table.Refs = key.Values.GetData();
 }
 
-LPWSTR __stdcall UHCAnsiStrToWideStr(CHAR* lpStr) {
-
-	int lenght = lstrlenA(lpStr);
-
-	if (lenght) {
-		LPWSTR wideStr = new WCHAR[lenght];
-
-		for (int i = 0; i < lenght; i++)
-			wideStr[i] = (WCHAR)lpStr[i];
-
-		return wideStr;
-	}
-
-	return NULL;
-}
-
 UHCInfo* UHCInfo::Instance = nullptr;
 
 UHCInfo::UHCInfo() {
-	LPCWSTR szConfig = (LPCWSTR)0x00C65083;
-	//LPCWSTR lpStartup = (LPCWSTR)0xbeaf98;
-
-	hHeap = GetProcessHeap();
+	//LPCWSTR szConfig = (LPCWSTR)0x00C65083;
+	WCHAR szConfig[MAX_PATH];
+	LPCWSTR lpStartup = (LPCWSTR)0xbeaf98;
 
 	Enable = 0;
 
-	//lstrcpyW(szConfig, lpStartup);
-	//lstrcatW(szConfig, L"uhc.cfg");
+	lstrcpyW(szConfig, lpStartup);
+	lstrcatW(szConfig, L"uhc.cfg");
 
 	for (DWORD i = 0; i < TABLE_COUNT; i++) {
 		Tables[i].RefCount = 0;
@@ -182,7 +165,11 @@ UHCInfo::UHCInfo() {
 			SetRefTable(Tables[Asian], key);
 
 			for (DWORD i = 0; i < Tables[Asian].RefCount; i++) {
-				AsianCivNames.PushBack(UHCAnsiStrToWideStr(Tables[Asian].Refs[i]));
+				LPCSTR lpSrc = Tables[Asian].Refs[i];
+				size_t length = lstrlenA(lpSrc) + 1;
+				WCHAR* lpStr = new WCHAR[length];
+				mbstowcs(lpStr, lpSrc, length);
+				AsianCivNames.PushBack(lpStr);
 			}
 		}
 
@@ -191,7 +178,11 @@ UHCInfo::UHCInfo() {
 			SetRefTable(Tables[Native], key);
 
 			for (DWORD i = 0; i < Tables[Native].RefCount; i++) {
-				NativeCivNames.PushBack(UHCAnsiStrToWideStr(Tables[Native].Refs[i]));
+				LPCSTR lpSrc = Tables[Native].Refs[i];
+				size_t length = lstrlenA(lpSrc) + 1;
+				WCHAR* lpStr = new WCHAR[length];
+				mbstowcs(lpStr, lpSrc, length);
+				NativeCivNames.PushBack(lpStr);
 			}
 		}
 

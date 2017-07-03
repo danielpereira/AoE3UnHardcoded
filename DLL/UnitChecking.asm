@@ -1,9 +1,3 @@
-FARM = 0
-RECTFARM = 1
-MARKET = 2
-ASIAN = 3
-NATIVE = 4
-
 ; Get farm and market IDs
 code_cave_begin 005EE78Bh
 	mov edi,  [esi+140h]

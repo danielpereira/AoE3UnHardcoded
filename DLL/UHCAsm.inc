@@ -2,6 +2,12 @@ PatchData proto stdcall hProcess:DWORD, dwAddress:DWORD, lpBuffer:DWORD, dwSize:
 PatchCodeCave proto stdcall hProcess:DWORD, dwAddress:DWORD, dwAddressEnd:DWORD, dwCCAddress:DWORD, dwCCAddressEnd:DWORD
 PatchAddress proto stdcall hProcess:DWORD, lpBaseAddress:DWORD, lpDestAddress:DWORD, bRelAddr:DWORD
 
+FARM = 0
+RECTFARM = 1
+MARKET = 2
+ASIAN = 3
+NATIVE = 4
+
 UHCRefTable struct
 	RefCount dd ?
 	Refs dd ?
@@ -25,7 +31,6 @@ TABLE_COUNT = 7
 GROUP_COUNT = 8
 
 UHCInfo struct
-	hHeap dd ?
 	Enable dd ?
 	Tables UHCRefTable TABLE_COUNT dup (<>)
 	BasePop dd ?

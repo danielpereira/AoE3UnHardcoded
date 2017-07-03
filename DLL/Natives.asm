@@ -1,7 +1,7 @@
 ; Native Civs Patch #1
 code_cave_begin 005126C1h
     mov ecx,[ecx+140h]
-    invoke getCivIDs,4
+    invoke getCivIDs, NATIVE
     mov ecx,dword ptr ds:[00C66234h]
     mov ecx,[ecx+140h]
     jmp_rel32 005126C7
@@ -11,7 +11,7 @@ code_cave_end 005126C6h
 code_cave_begin 0051271Fh
     cmp eax,dword ptr ds:[00C6FB58h]
     je_rel32 0051272A 
-    invoke checkID,4,eax
+    invoke checkID, NATIVE,eax
     test eax,eax
     je npatch2_invalid_id
     mov al,1
@@ -33,7 +33,7 @@ code_cave_end 0052B587h
 ; Native Civs Patch #4 
 code_cave_begin 00453D5Eh
     mov edx,eax
-    invoke checkID,4,eax
+    invoke checkID,NATIVE,eax
     test eax,eax
     jne npatch4_end
     cmp dword ptr ds:[esp+4],0
@@ -47,7 +47,7 @@ code_cave_end 00453D62h
 ; Native Civs Patch #5
 code_cave_begin 004904B5h
     je_rel32 00679E66
-    invoke checkID,4,eax
+    invoke checkID,NATIVE,eax
     test eax,eax
     jne_rel32 00679E66_1
     jmp_rel32 004904BB
@@ -57,7 +57,7 @@ code_cave_end 004904BAh
 code_cave_begin 004ECD6Bh
     cmp eax,dword ptr ds:[00C6FB5Ch]
     je_rel32 004ECD7D
-    invoke checkID,4,eax
+    invoke checkID,NATIVE,eax
     test eax,eax
     jne_rel32 004ECD7D_1
     jmp_rel32 004ECD73
@@ -67,7 +67,7 @@ code_cave_end 004ECD71h
 code_cave_begin 0067B0A5h
     cmp eax,dword ptr ds:[00C6FB58h]
     je_rel32 0067B0BB
-    invoke checkID,4,eax
+    invoke checkID,NATIVE,eax
     test eax,eax
     jne_rel32 0067B0BB_1
     jmp_rel32 0067B0AD
@@ -76,7 +76,7 @@ code_cave_end 0067B0AAh
 ; Native Civs Patch #8    
 code_cave_begin 008D47C9h
     je_rel32 008D47CF
-    invoke checkID,4,eax
+    invoke checkID,NATIVE,eax
     test eax,eax
     je_rel32 008D4894
     jmp_rel32 008D47CF_1
@@ -85,7 +85,7 @@ code_cave_end 008D47CEh
 ; Native Civs Patch #9    
 code_cave_begin 008D52AFh
     je_rel32 008D53B4
-    invoke checkID,4,eax
+    invoke checkID,NATIVE,eax
     test eax,eax
     jne_rel32 008D53B4_1
     jmp_rel32 008D52B5

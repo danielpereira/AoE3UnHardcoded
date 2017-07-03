@@ -6,17 +6,17 @@ checkID PROC stdcall dwType:DWORD, unitID:DWORD
     push edi
 	push esi
 	push ebx
-    mov ebx,12
-    mov eax,dwType
+    mov ebx, UHCRefTable
+    mov eax, dwType
     imul ebx,eax
     mov eax,_UHCInfoPtr
 	lea eax,[eax].UHCInfo.Tables
     lea eax,[eax+ebx]
-    mov ebx,dword ptr ds:[eax]
+    mov ebx,[eax].UHCRefTable.RefCount
     test ebx,ebx
     je checkid_end1
     
-    mov esi,dword ptr ds:[eax+08]
+    mov esi,[eax].UHCRefTable.RefIDs
     mov edi,unitID
     dec ebx
     
@@ -48,27 +48,27 @@ getIDs PROC stdcall dwType:DWORD
     push edi
 	push esi
 	push ebx
-    mov ebx,12
+    mov ebx,UHCRefTable
     mov esi,ecx
     mov edi,dwType
     imul ebx,edi
     mov edi,_UHCInfoPtr
 	lea edi,[edi].UHCInfo.Tables
     lea edi,[edi+ebx]
-    mov ebx,[edi]
+    mov ebx,[edi].UHCRefTable.RefCount
     test ebx,ebx
     je getids_end
     
     dec ebx
     
     getids_loop:
-    mov eax,[edi+04]
+    mov eax,[edi].UHCRefTable.Refs
     mov eax,[eax+ebx*4]
     push eax
     mov ecx,esi
     mov eax, 005A2346h
 	call eax
-    mov ecx,[edi+08]
+    mov ecx,[edi].UHCRefTable.RefIDs
     mov [ecx+ebx*4],eax
     dec ebx
     jns getids_loop
@@ -84,16 +84,16 @@ getIDs ENDP
 marketCheck PROC stdcall
     push ebx
 	push edi
-    mov ebx,12
-    imul ebx,2
+    mov ebx, UHCRefTable
+    imul ebx, MARKET
     mov edi,[_UHCInfoPtr]
 	lea edi,[edi].UHCInfo.Tables
     lea edi,[edi+ebx]
-    mov ebx,[edi]
+    mov ebx,[edi].UHCRefTable.RefCount
     test ebx,ebx
     je marketcheck_invalid_id
     dec ebx
-    mov edi,[edi+08]
+    mov edi,[edi].UHCRefTable.RefIDs
     
     marketcheck_loop:
     mov eax,[edi+ebx*4]
@@ -128,26 +128,26 @@ getCivIDs PROC stdcall dwType:DWORD
     push edi
 	push esi
 	push ebx
-    mov ebx,12
+    mov ebx, UHCRefTable
     mov esi,ecx
     mov edi, dwType
     imul ebx,edi
     mov edi,_UHCInfoPtr
 	lea edi,[edi].UHCInfo.Tables
     lea edi,[edi+ebx]
-    mov ebx,[edi]
+    mov ebx,[edi].UHCRefTable.RefCount
     test ebx,ebx
     je getCivIDs_end
     dec ebx
     
     getCivIDs_loop:
-    mov eax,[edi+04]
+    mov eax,[edi].UHCRefTable.Refs
     mov eax,[eax+ebx*4]
     push eax
     mov ecx,esi
     mov eax, 0058E71Fh
 	call eax
-    mov ecx,[edi+08]
+    mov ecx,[edi].UHCRefTable.RefIDs
     mov [ecx+ebx*4],eax
     dec ebx
     jns getCivIDs_loop
@@ -165,18 +165,18 @@ checkWonders PROC stdcall esiPtr:DWORD,ediPtr:DWORD
     push edi
 	push esi
 	push ebx
-    mov ebx,12
+    mov ebx,UHCRefTable
     mov esi,ecx
-    mov edi,3
+    mov edi, ASIAN
     imul ebx,edi
     mov edi,_UHCInfoPtr
 	lea edi,[edi].UHCInfo.Tables
     lea edi,[edi+ebx]
-    mov ebx,[edi]
+    mov ebx,[edi].UHCRefTable.RefCount
     test ebx,ebx
     je checkWonders_end
     dec ebx
-    mov ecx,[edi+08]
+    mov ecx,[edi].UHCRefTable.RefIDs
     cmp dword ptr ds:[esi+24h],0
     jg checkWonders_not_null
     or eax,-1
@@ -228,17 +228,17 @@ checkCouncil PROC stdcall civID:DWORD,esiPtr:DWORD,ediPtr:DWORD
     push edi
 	push esi
 	push ebx
-    mov ebx,12
-    mov edi,4
+    mov ebx, UHCRefTable
+    mov edi, NATIVE
     imul ebx,edi
     mov edi,_UHCInfoPtr
 	lea edi,[edi].UHCInfo.Tables
 	mov esi,[edi].UHCInfo.NativeCivNames
     lea edi,[edi+ebx]
-    mov ebx,[edi]
+    mov ebx,[edi].UHCRefTable.RefCount
     test ebx,ebx
     je checkcouncil_end
-    mov edi,[edi+08]
+    mov edi,[edi].UHCRefTable.RefIDs
     dec ebx
     
     checkcouncil_loop:
@@ -284,20 +284,20 @@ NatCivCheck1 PROC STDCALL ebxVal:DWORD
     push edi
 	push esi
 	push ebx
-    mov ebx,12
+    mov ebx, UHCRefTable
     mov esi,ecx
-    mov edi,4
+    mov edi, NATIVE
     imul ebx,edi
     mov edi,_UHCInfoPtr
 	lea edi,[edi].UHCInfo.Tables
     lea edi,[edi+ebx]
-    mov ebx,[edi]
+    mov ebx,[edi].UHCRefTable.RefCount
     test ebx,ebx
     je natcivcheck1_end
     dec ebx
     
     natcivcheck1_loop:
-    mov eax,[edi+04]
+    mov eax,[edi].UHCRefTable.Refs
     mov eax,[eax+ebx*4]
     push eax
     mov ecx,esi

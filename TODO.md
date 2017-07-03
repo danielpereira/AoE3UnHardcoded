@@ -20,14 +20,14 @@ Projects completed
 Projects in progress
 --------------------
   
-* TBD
+* Set farming radius manually
+* Rice Paddy hardcoding/Building Tactic switching
   
 Projects not yet started
 ------------------------
 
 * Export UI and Fire Pit UI for non-Asian/non-Native civs
 * New Protounit Commmands
-* Rice Paddy hardcoding
 * New Abilities
 * Selection limit
 * Hardcoding in MaxZoom property in gamey.cfg

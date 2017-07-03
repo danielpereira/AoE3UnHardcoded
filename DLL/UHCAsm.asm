@@ -7,10 +7,6 @@ include UHCAsm.inc
 _UHCInfoPtr UHCInfoPtr ?
 _hProcess dd ?
 
-_AsianWndrNamesPtr dd ?
-_NativeCouncilNamesPtr dd ?
-_HeapHandle dd ?
-
 ;_this dd ?
 
 .code
