@@ -1,12 +1,6 @@
 #include "stdafx.h"
 #include "UHC.h"
 
-#define TEST
-
-#ifdef TEST
-#include "Test.h"
-#endif
-
 // override operator new and delete
 /*void* operator new(size_t size) {
 	auto _operator_new = reinterpret_cast<void* (__thiscall *)(int, size_t*)>(0x401234);
