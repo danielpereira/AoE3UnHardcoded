@@ -3,6 +3,9 @@
 
 #include "stdafx.h"
 #include "UHCPatcher.h"
+#include <ImageHlp.h>
+
+#pragma comment(lib, "imagehlp.lib")
 
 #define MAX_LOADSTRING 100
 
@@ -93,6 +96,8 @@ UHC_PATCH_RESULT PatchExecutable(HWND hwndDlg) {
 		DeleteFileW(tmpFile);
 		return UHC_PATCH_NONE;
 	}
+
+	ImageRemoveCertificate(hExeFile, 0);
 
 	SetFilePointer(hTmpPatchFile, 0, NULL, FILE_BEGIN);
 
