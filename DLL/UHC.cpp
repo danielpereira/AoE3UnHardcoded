@@ -106,14 +106,14 @@ inline void SetRefTable(UHCRefTable& table, ConfigKey& key) {
 UHCInfo* UHCInfo::Instance = nullptr;
 
 UHCInfo::UHCInfo() {
-	//LPCWSTR szConfig = (LPCWSTR)0x00C65083;
-	WCHAR szConfig[MAX_PATH];
-	LPCWSTR lpStartup = (LPCWSTR)0xbeaf98;
+	LPCWSTR szConfig = (LPCWSTR)0x00C65083;
+	//WCHAR szConfig[MAX_PATH];
+	//LPCWSTR lpStartup = (LPCWSTR)0xbeaf98;
 
 	Enable = 0;
 
-	lstrcpyW(szConfig, lpStartup);
-	lstrcatW(szConfig, L"uhc.cfg");
+	//lstrcpyW(szConfig, lpStartup);
+	//lstrcatW(szConfig, L"uhc.cfg");
 
 	for (DWORD i = 0; i < TABLE_COUNT; i++) {
 		Tables[i].RefCount = 0;
@@ -140,7 +140,7 @@ UHCInfo::UHCInfo() {
 			SetRefTable(Tables[Farm], key);
 		}
 
-		else if (lstrcmpiA(key.Name, "enableRectFarmAnim") == 0) {
+		else if (lstrcmpiA(key.Name, "rectFarmAnim") == 0) {
 			Enable |= ENABLE_FARM_ANIM;
 			SetRefTable(Tables[RectFarm], key);
 		}
@@ -338,10 +338,6 @@ void APIENTRY UHCMain() {
 
 		// Load .upl plugins
 		LoadPlugins();
-
-#ifdef TEST
-		TestInit();
-#endif
 	}
 	catch (...)
 	{
@@ -349,8 +345,6 @@ void APIENTRY UHCMain() {
 		ExitProcess(0);
 	}
 }
-
-#include <fstream>
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
 	switch (ul_reason_for_call)
