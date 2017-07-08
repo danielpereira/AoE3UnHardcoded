@@ -105,7 +105,7 @@ LABEL_NOT_REL:
 
 		dwRestoreSize = lpRestore - lpRestoreBuffer + JMP_REL32_SIZE;
 		lpRestoration = (PBYTE)VirtualAllocEx(hProcess, NULL, dwRestoreSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-
+		
 		// update relative addresses
 		for (DWORD i = 0; i < dwAddressCount; i++)
 			*lpAddresses[i] -= (DWORD)lpRestoration;

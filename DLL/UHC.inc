@@ -52,43 +52,43 @@ UHCInfoPtr typedef ptr UHCInfo
 ; instruction macros, used for patching executable memory
 jmp_rel32 macro address
 	db 0E9h
-	@catstr(<loc_>, <address>, < : >)
+	@CatStr(<loc_>, <address>, < : >)
     dd 0FFFFFFFAh
 endm
 
 call_rel32 macro address
 	db 0E8h
-	@catstr(<sub_>, <address>, < : >)
+	@CatStr(<sub_>, <address>, < : >)
     dd 0FFFFFFFAh
 endm
 
 je_rel32 macro address
 	db 0Fh, 84h
-	@catstr(<loc_>, <address>, < : >)
+	@CatStr(<loc_>, <address>, < : >)
     dd 0FFFFFFFAh
 endm
 
 jne_rel32 macro address
 	db 0Fh, 85h
-	@catstr(<loc_>, <address>, < : >)
+	@CatStr(<loc_>, <address>, < : >)
     dd 0FFFFFFFAh
 endm
 
 ; code cave macros
 code_cave_begin macro address
-	@catstr(<loc_>, <address>, <_begin:>)
+	@CatStr(<loc_>, <address>, <_begin:>)
 endm
 
 code_cave_end macro address
-	@catstr(<loc_>, <address>, <_end:>)
+	@CatStr(<loc_>, <address>, <_end:>)
 	db 0E9h, 0FBh, 0FFh, 0FFh, 0FFh
 endm
 
 patch_code_cave macro address, address_end
-	push @catstr(<loc_>, <address_end>, <_end>)
-	push @catstr(<loc_>, <address>, <_begin>)
+	push @CatStr(<loc_>, <address_end>, <_end>)
+	push @CatStr(<loc_>, <address>, <_begin>)
 	push address_end
 	push address
-	push _hProcess
+	push hProcess
 	call PatchCodeCave
 endm

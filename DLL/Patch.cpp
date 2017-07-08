@@ -1,7 +1,20 @@
 #include "stdafx.h"
 #include "UHC.h"
 
-extern "C" void __stdcall RegisterSyscallGroup(UHCInfo* info, UHCSyscallGroupName name, LPVOID _this) {
+extern "C" BOOL __stdcall TableIDExists(DWORD dwTable, int id) {
+	if (dwTable < GROUP_COUNT)
+		return FALSE;
+
+	UHCRefTable& table = pUHCInfo->Tables[dwTable];
+	for (DWORD i = 0; i < table.RefCount; i++) {
+		if (table.RefIDs[i] == id)
+			return TRUE;
+	}
+
+	return FALSE;
+}
+
+extern "C" void __stdcall RegisterSyscallGroup(UHCSyscallGroupName name, LPVOID _this) {
 	auto SyscallRegister = reinterpret_cast<BOOL(__thiscall *)(LPVOID _this, LPCSTR name, LPVOID fPtr, DWORD retType)>(0x624f52);
 	auto SyscallPrintf = reinterpret_cast<int(*)(LPVOID _this, LPCSTR format, ...)>(0xa44b95);
 	auto SyscallFree = reinterpret_cast<int(__thiscall *)(LPVOID _this)>(0xa44c0b);
@@ -14,7 +27,7 @@ extern "C" void __stdcall RegisterSyscallGroup(UHCInfo* info, UHCSyscallGroupNam
 	auto SyscallComment = reinterpret_cast<BOOL(__thiscall *)(LPVOID _this, LPCSTR comment)>(0x624e56);
 	auto SyscallRegisterEnd = reinterpret_cast<BOOL(__thiscall *)(LPVOID _this)>(0x6250b0);
 
-	TArray<UHCSyscall>& group = info->SyscallGroups[name];
+	TArray<UHCSyscall>& group = pUHCInfo->SyscallGroups[name];
 	for (size_t i = 0; i < group.GetNumElements(); i++) {
 		UHCSyscall& syscall = group[i];
 		if (!SyscallRegister(_this, syscall.Name, syscall.Ptr, syscall.RetType)) {
@@ -74,15 +87,15 @@ extern "C" void __stdcall RegisterSyscallGroup(UHCInfo* info, UHCSyscallGroupNam
 		SyscallRegisterEnd(_this);
 
 #ifdef _DEBUG
-		char debugString[256];
-		wsprintfA(debugString, "Loaded syscall '%s' with 'UHC.dll'.", syscall.Name);
-		OutputDebugStringA(debugString);
+		char debugMsg[256];
+		wsprintfA(debugMsg, "Loaded UHC syscall '%s'.\n", syscall.Name);
+		OutputDebugStringA(debugMsg);
 #endif
 
 	}
 }
 
-extern "C" void __stdcall LoadPersonalities(UHCInfo* info) {
+extern "C" void __stdcall LoadPersonalities() {
 	WCHAR szFindPath[MAX_PATH];
 	LPCWSTR lpAI = (LPCWSTR)0x0be3a98;
 	LPCWSTR lpPersonalityExt = (LPCWSTR)0x0c0b39c;
@@ -96,12 +109,14 @@ extern "C" void __stdcall LoadPersonalities(UHCInfo* info) {
 	hFind = FindFirstFileW(szFindPath, &fd);
 
 	if (hFind != INVALID_HANDLE_VALUE) {
+		TArray<LPWSTR>& personalities = pUHCInfo->Personalities;
+
 		do
 		{
 			size_t length = wcschr(fd.cFileName, L'.') - fd.cFileName + 1;
 
-			info->Personalities.PushBack(new WCHAR[length]);
-			lstrcpynW(info->Personalities.Back(), fd.cFileName, length);
+			personalities.PushBack(new WCHAR[length]);
+			lstrcpynW(personalities.Back(), fd.cFileName, length);
 
 		} while (FindNextFileW(hFind, &fd));
 

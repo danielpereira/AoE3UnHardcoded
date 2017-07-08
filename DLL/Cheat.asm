@@ -1,12 +1,22 @@
+.model flat, stdcall
+option casemap :none
+
+include UHC.inc
+
+extern pUHCInfo:UHCInfoPtr
+extern hProcess:DWORD
+
+.code
+
 code_cave_begin 0551FE6h
-		mov edi, _UHCInfoPtr
+		mov edi, pUHCInfo
 		mov ebx, [edi].UHCInfo.CheatCount
 		test ebx, ebx
 		je cheat_end
 		mov edi, [edi].UHCInfo.Cheats
 		dec ebx
     
- cheat_loop:
+cheat_loop:
 		mov eax, [edi].UHCCheat.String
 		push eax
 		lea ecx, [esp+18h]
@@ -42,7 +52,7 @@ code_cave_begin 0551FE6h
 		mov ecx, [esp+18h]
 		mov [esi+0Ch], ecx
     
-    cheat_next:
+cheat_next:
 		lea ecx, [esp+14h]
 		mov eax, 004010CAh
 		call eax
@@ -51,7 +61,7 @@ code_cave_begin 0551FE6h
 		dec ebx
 		jns cheat_loop
     
-    cheat_end:
+cheat_end:
 code_cave_end 0551FE6h
 
 public stdcall PatchCheat
@@ -59,3 +69,5 @@ PatchCheat proc
 	patch_code_cave 0551FE6h,  0551FE6h
 	ret
 PatchCheat endp
+
+end

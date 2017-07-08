@@ -1,3 +1,13 @@
+.model flat, stdcall
+option casemap :none
+
+include UHC.inc
+
+extern pUHCInfo:UHCInfoPtr
+extern hProcess:DWORD
+
+.code
+
 CheckRevBanner proto stdcall lpTechName:DWORD, lpThis:DWORD, lpPathObject:DWORD
 
 code_cave_begin 0081A7CCh
@@ -28,6 +38,8 @@ code_cave_end 0081A7ECh
 public stdcall PatchRevBanner
 PatchRevBanner proc
 	patch_code_cave 0081A7CCh, 0081A7ECh
-	invoke PatchAddress, _hProcess, loc_0081A7F1h, 0081A7F1h, 1
+	invoke PatchAddress, hProcess, loc_0081A7F1h, 0081A7F1h, 1
 	ret
 PatchRevBanner endp
+
+end

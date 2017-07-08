@@ -79,8 +79,6 @@ struct UHCCheat {
 
 class UHCInfo {
 public:
-	static UHCInfo* Instance;
-
 	DWORD Enable;
 	UHCRefTable Tables[TABLE_COUNT];
 	int BasePop, ExtraPop, DeckCardCount;
@@ -93,11 +91,16 @@ public:
 	UHCInfo();
 	~UHCInfo();
 
+	void LoadPlugins();
+
 private:
 	Config* m_Config;
 };
 
 extern "C" {
+	extern UHCInfo* pUHCInfo;
+	extern HANDLE hProcess;
+
 	void __stdcall UHCRegisterCheat(UHCInfo* info, LPCWSTR string, BOOL enable, void (__stdcall * fPtr)(void*));
 
 	UHCSyscall& __stdcall UHCRegisterSyscall(UHCInfo* info, UHCSyscallGroupName groupName,
@@ -117,14 +120,14 @@ extern "C" {
 	void __stdcall PatchRevBanner();
 	void __stdcall PatchSyscall();
 	void __stdcall PatchTeamLimit();
-	void __stdcall PatchUnitChecking();
+	void __stdcall PatchUnitCheck();
 	void __stdcall PatchMarketUnits();
-	void __stdcall PatchCivChecking();
+	void __stdcall PatchCivCheck();
 	void __stdcall PatchAsianCivs();
 	void __stdcall PatchNativeCivs();
 	void __stdcall PatchBigButton();
 
-	void __stdcall PatchDumpSyscall();
+	//void __stdcall PatchDumpSyscall();
 }
 
 struct UHCPluginInfo {

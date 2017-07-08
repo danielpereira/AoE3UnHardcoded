@@ -443,7 +443,7 @@ namespace syscalls
 	// Get ambient color
 	extern void(*const ambientGetColor)();
 
-	//reset the sun color to full
+	// reset the sun color to full
 	extern void(*const resetAmbientColor)();
 
 	// Set ambient color 2 to given RGB (0-255)
@@ -458,7 +458,7 @@ namespace syscalls
 	// Get sun color
 	extern void(*const sunGetColor)();
 
-	//reset the sun color to full
+	// reset the sun color to full
 	extern void(*const resetSunColor)();
 
 	// Set fake sun params for water
@@ -476,28 +476,28 @@ namespace syscalls
 	// sets scene bump scale
 	extern void(*const setBumpScale)(float scale);
 
-	//unitPlayerFakify(fakePlayerIndex) sets the selected units to use the fake player indicated.
-	extern void(*const unitPlayerFakify)(int a);
+	// sets the selected units to use the fake player indicated.
+	extern void(*const unitPlayerFakify)(int fakePlayerIndex);
 
-	//unitPlayerDefakify() sets the selected units to stop using a fake player.
+	// sets the selected units to stop using a fake player.
 	extern void(*const unitPlayerDefakify)();
 
-	//sets tonemap params
+	// sets tonemap params
 	extern void(*const setToneMapParams)(float exposure, float dispGamma, float greyFStops, float kneeLow, float kneeHigh, float ditherNoiseInten);
 
-	//sets tonemap params
+	// sets tonemap params
 	extern void(*const setBloomParams)(float bloomThreshold, float bloomColorR, float bloomColorG, float bloomColorB, float bloomIntensity, float bloomPass, float bloomSigma);
 
-	//sets LDR Bloom params
+	// sets LDR Bloom params
 	extern void(*const setLDRBloomParams)(float bloomColorR, float bloomColorG, float bloomColorB, float bloomIntensity, float bloomSigma);
 
-	//sets bloom streak params
+	// sets bloom streak params
 	extern void(*const setBloomStreakParams)(float streakCount, float Passes, float ElementOffset, float Exposure, float Intensity, float Falloff, float streakRed, float streakGreen, float streakBlue, float threshold);
 
-	//sets bloom feedback params
+	// sets bloom feedback params
 	extern void(*const setBloomFeedbackParams)(float currentFrameContribution, float lastFrameContribution);
 
-	//sets Terrain Lighting Params
+	// sets Terrain Lighting Params
 	extern void(*const setTerrainLightingParams)(float bumpScale, float specularPower, float specularIntensity, float terrainMetalness);
 
 	// Applies a Lighting set
@@ -512,7 +512,7 @@ namespace syscalls
 	// sets the circular brush size
 	extern void(*const brushCircularSize)(float floatValue);
 
-	//stop playing music
+	// stop playing music
 	extern void(*const musicStop)();
 
 	// set the current music volume (0.0 - 1.0)
@@ -548,14 +548,14 @@ namespace syscalls
 	// toggles between the two modes only if we're not in a BMultiplayer game.
 	extern void(*const modeToggleBetweenIfNotMP)(string stringMode1, string stringMode2);
 
-	//helpPrefix( string commandPrefix ) - Lists all of the commands that start with the given prefix
-	extern void(*const helpPrefix)(string a);
+	// Lists all of the commands that start with the given prefix
+	extern void(*const helpPrefix)(string commandPrefix);
 
-	//help( string commandSubstring ) - Lists all of the commands that contain the given substring
-	extern void(*const help)(string a);
+	// Lists all of the commands that contain the given substring
+	extern void(*const help)(string commandSubstring);
 
-	//helpText( string helptextSubstring ) - Lists all of the commands that contain the given substring in their help text.
-	extern void(*const helpText)(string a);
+	// Lists all of the commands that contain the given substring in their help text.
+	extern void(*const helpText)(string helptextSubstring);
 
 	// looks at given x,z location on terrain.
 	extern void(*const lookAt)(float x, float z);
@@ -982,10 +982,10 @@ namespace syscalls
 	// intended for ui use only.  Indicates that the lower elevation button has gone up/down.
 	extern void(*const uiLowerElevation)(int integerKeyState);
 
-	//uiUniformRaiseElevation - raises the terrain height uniformly in the brush region
+	// raises the terrain height uniformly in the brush region
 	extern void(*const uiUniformRaiseElevation)(int a);
 
-	//uiUniformLowerElevation - lowers the terrain height uniformly in the brush region
+	// lowers the terrain height uniformly in the brush region
 	extern void(*const uiUniformLowerElevation)(int a);
 
 	// intended for ui use only.  Indicates that the smooth button has gone up/down.
@@ -1318,13 +1318,10 @@ namespace syscalls
 	// save some triggers.
 	extern void(*const uiExportTriggers)(string a);
 
-	//uiTriggerSelectLocation
 	extern void(*const uiTriggerSelectLocation)();
 
-	//uiTriggerResetParameters
 	extern void(*const uiTriggerResetParameters)();
 
-	//uiTriggerResetSounds
 	extern void(*const uiTriggerResetSounds)();
 
 	// save a group.
@@ -1462,7 +1459,6 @@ namespace syscalls
 	// Adds notify text, can play a sound too.
 	extern void(*const uiSetHCNotifyText)(int a, int b);
 
-	//uiShowChatWindow()
 	extern void(*const uiShowChatWindow)();
 
 	// pops up all downed keys.
@@ -1471,7 +1467,6 @@ namespace syscalls
 	// spews all down keys.
 	extern void(*const uiSpewDownKeys)();
 
-	//uiShowVoteDialog
 	extern void(*const uiShowVoteDialog)();
 
 	// used direcly by UI
@@ -1489,22 +1484,17 @@ namespace syscalls
 	// Used to activate the consulate UI from hotkeys
 	extern void(*const uiConsulateUIInSelected)();
 
-	//enterAttackMoveMode
 	extern void(*const enterAttackMoveMode)();
 
-	//uiShowObjectivesDialog
 	extern void(*const uiShowObjectivesDialog)();
 
 	// Causes the currently displaying objective notification to fade out (or disappear), depending on the param passed in.
 	extern void(*const uiExpireCurrentObjectiveNotification)(bool a);
 
-	//uiPlaceTradeRouteWaypoint
 	extern void(*const uiPlaceTradeRouteWaypoint)();
 
-	//uiRemoveTradeRouteWaypoint
 	extern void(*const uiRemoveTradeRouteWaypoint)();
 
-	//uiSelectTransportUnit
 	extern void(*const uiSelectTransportUnit)();
 
 	// finds the next resource gatherer unit of the given resource type in the arbitrary order of unit ID, so that it can be called repeatedly to cycle.
@@ -1525,19 +1515,14 @@ namespace syscalls
 	// Shows the VP accel building from the unitID.
 	extern void(*const uiVPAccelClick)(int unitID);
 
-	//incrementUSP2SelectedUnitStack
 	extern void(*const incrementUSP2SelectedUnitStack)();
 
-	//decrementUSP2SelectedUnitStack
 	extern void(*const decrementUSP2SelectedUnitStack)();
 
-	//uiSetCameraStartLoc
 	extern void(*const uiSetCameraStartLoc)();
 
-	//uiShowCameraStartLoc
 	extern void(*const uiShowCameraStartLoc)();
 
-	//uiDeleteCameraStartLoc
 	extern void(*const uiDeleteCameraStartLoc)();
 
 	// Scrolls the game view.
@@ -1570,22 +1555,16 @@ namespace syscalls
 	// resets screen selection.
 	extern void(*const uiResetScreenSelect)();
 
-	//uiFindCrowd([findType],[noLookAt])
-	extern void(*const uiFindCrowd)(int a, bool b);
+	extern void(*const uiFindCrowd)(int findType, bool noLookAt);
 
-	//uiResetFindCrowd
 	extern void(*const uiResetFindCrowd)();
 
-	//uiShowStatPanel()
 	extern void(*const uiShowStatPanel)();
 
-	//uiShowDetailedHelp()
 	extern void(*const uiShowDetailedHelp)();
 
-	//uiShowCommandPanel()
 	extern void(*const uiShowCommandPanel)();
 
-	//uiMinimizeStats()
 	extern void(*const uiMinimizeStats)();
 
 	// Moves all military units to the pointer position.
@@ -1670,19 +1649,19 @@ namespace syscalls
 	extern void(*const uiNewScenario)();
 
 	// intended for ui use only.  Indicates that the increase sun inclination key has gone up/down.
-	extern void(*const sunIncreaseInclination)(int integerKeyState);
+	extern void(*const sunIncreaseInclination)(int keyState);
 
 	// intended for ui use only.  Indicates that the decrease sun inclination key has gone up/down.
-	extern void(*const sunDecreaseInclination)(int integerKeyState);
+	extern void(*const sunDecreaseInclination)(int keyState);
 
 	// intended for ui use only.  Indicates that the increase sun rotation key has gone up/down.
-	extern void(*const sunIncreaseRotation)(int integerKeyState);
+	extern void(*const sunIncreaseRotation)(int keyState);
 
 	// intended for ui use only.  Indicates that the decrease sun rotation key has gone up/down.
-	extern void(*const sunDecreaseRotation)(int integerKeyState);
+	extern void(*const sunDecreaseRotation)(int keyState);
 
-	//setSunPosition( [integerSunInclination] [integerSunRotation] [boolRelative] ) sets the sun height above the horizon and position in the world, The bool tells if the changes are relative
-	extern void(*const setSunPosition)(float a, float b, bool c);
+	// sets the sun height above the horizon and position in the world, The bool tells if the changes are relative
+	extern void(*const setSunPosition)(float sunInclination, float sunRotation, bool relative);
 
 	// abort the current cinematic.
 	extern void(*const abortCinematic)();
@@ -1738,8 +1717,7 @@ namespace syscalls
 	// drop back to the main menu
 	extern void(*const dropToMainMenu)();
 
-	//modelLoad(model XML file name)
-	extern bool(*const modelLoad)(string a);
+	extern bool(*const modelLoad)(string modelXMLFilename);
 
 	// change the cliff type for all cliffs on the map
 	extern void(*const changeCliffType)(string cliffName);
@@ -2074,35 +2052,27 @@ namespace syscalls
 	// make a river dude.
 	extern int(*const rmRiverCreate)(int areaID, string waterType, int breaks, int offset, int minR, int maxR);
 
-	//rmRiverSetConnections(riverID, start, end);
-	extern bool(*const rmRiverSetConnections)(int a, float b, float c, float d, float e);
+	extern bool(*const rmRiverSetConnections)(int riverID, float startX, float startZ, float endX, float endZ);
 
-	//rmRiverConnectRiver(riverID, riverID, pct, end);
-	extern bool(*const rmRiverConnectRiver)(int a, int b, float c, float d, float e);
+	extern bool(*const rmRiverConnectRiver)(int riverID, int river2ID, float pct, float end, float e);
 
 	// Add waypoint to a river.  Don't mix with rmRiverSetConnections or rmRiverConnectRiver
 	extern bool(*const rmRiverAddWaypoint)(int riverID, float xFraction, float zFraction);
 
-	//rmRiverSetBankNoiseParams(riverID, frequency, octaves, persistence, sineLength, sineAmt, variation);
-	extern bool(*const rmRiverSetBankNoiseParams)(int a, float b, int c, float d, float e, float f, float g);
+	extern bool(*const rmRiverSetBankNoiseParams)(int riverID, float frequency, int octaves, float persistence, float sineLength, float sineAmt, float variation);
 
-	//rmRiverSetShallowRadius(riverID, radius);
-	extern bool(*const rmRiverSetShallowRadius)(int a, int b);
+	extern bool(*const rmRiverSetShallowRadius)(int riverID, int radius);
 
-	//rmRiverAddShallow(riverID, distancePct);
-	extern bool(*const rmRiverAddShallow)(int a, float b);
+	extern bool(*const rmRiverAddShallow)(int riverID, float distancePct);
 
-	//rmRiverAddShallows(riverID, count, radius);
-	extern bool(*const rmRiverAddShallows)(int a, int b, int c);
+	extern bool(*const rmRiverAddShallows)(int riverID, int count, int radius);
 
-	//rmRiverAvoid(riverID, riverID2, minDist)
-	extern bool(*const rmRiverAvoid)(int a, int b, float c);
+	extern bool(*const rmRiverAvoid)(int riverID, int river2ID, float minDist);
 
-	//rmRiverBuild
-	extern bool(*const rmRiverBuild)(int a);
+	extern bool(*const rmRiverBuild)(int riverID);
 
-	//rmRiverReveal(int riverID, int extraTiles) -- reveals a river plus the specified number of extra tiles around it.
-	extern bool(*const rmRiverReveal)(int a, int b);
+	// reveals a river plus the specified number of extra tiles around it.
+	extern bool(*const rmRiverReveal)(int riverID, int extraTiles);
 
 	// the terrain buffer around the river, and the height of the banks above water level
 	extern bool(*const rmSetRiverFoundationParams)(int tileBuffer, float heightOffset);
@@ -2524,80 +2494,55 @@ namespace syscalls
 	// Returns the square root of x.
 	extern float(*const sqrt)(float x);
 
-	//rmSetVPFile(string filename)
-	extern void(*const rmSetVPFile)(string a);
+	extern void(*const rmSetVPFile)(string filename);
 
-	//rmCreateTrigger(string triggerName)
-	extern int(*const rmCreateTrigger)(string a);
+	extern int(*const rmCreateTrigger)(string triggerName);
 
-	//rmSwitchToTrigger(int triggerID)
-	extern bool(*const rmSwitchToTrigger)(int a);
+	extern bool(*const rmSwitchToTrigger)(int triggerID);
 
-	//rmTriggerID(string triggerName)
-	extern int(*const rmTriggerID)(string a);
+	extern int(*const rmTriggerID)(string triggerName);
 
-	//rmSetTriggerPriority(int priority)
-	extern int(*const rmSetTriggerPriority)(int a);
+	extern int(*const rmSetTriggerPriority)(int priority);
 
-	//rmSetTriggerActive(bool active)
-	extern int(*const rmSetTriggerActive)(bool a);
+	extern int(*const rmSetTriggerActive)(bool active);
 
-	//rmSetTriggerRunImmediately(bool runImmediately)
-	extern int(*const rmSetTriggerRunImmediately)(bool a);
+	extern int(*const rmSetTriggerRunImmediately)(bool runImmediately);
 
-	//rmSetTriggerLoop(bool loop)
-	extern int(*const rmSetTriggerLoop)(bool a);
+	extern int(*const rmSetTriggerLoop)(bool loop);
 
-	//rmAddTriggerCondition(string conditionType)
-	extern int(*const rmAddTriggerCondition)(string a);
+	extern int(*const rmAddTriggerCondition)(string conditionType);
 
-	//rmSetTriggerConditionParam(string paramName, string value, bool add)
-	extern bool(*const rmSetTriggerConditionParam)(string a, string b, bool c);
+	extern bool(*const rmSetTriggerConditionParam)(string paramName, string value, bool add);
 
-	//rmSetTriggerConditionParamInt(string paramName, int value, bool add)
-	extern bool(*const rmSetTriggerConditionParamInt)(string a, int b, bool c);
+	extern bool(*const rmSetTriggerConditionParamInt)(string paramName, int value, bool add);
 
-	//rmSetTriggerConditionParamFloat(string paramName, float value, bool add)
-	extern bool(*const rmSetTriggerConditionParamFloat)(string a, float b, bool c);
+	extern bool(*const rmSetTriggerConditionParamFloat)(string paramName, float value, bool add);
 
-	//rmSetTriggerConditionParamArmy(string paramName, int playerID, int armyID, bool add)
-	extern bool(*const rmSetTriggerConditionParamArmy)(string a, int b, int c, bool d);
+	extern bool(*const rmSetTriggerConditionParamArmy)(string paramName, int playerID, int armyID, bool add);
 
-	//rmAddTriggerEffect(string effectType)
-	extern bool(*const rmAddTriggerEffect)(string a);
+	extern bool(*const rmAddTriggerEffect)(string effectType);
 
-	//rmSetTriggerEffectParam(string paramName, string value, bool add)
-	extern int(*const rmSetTriggerEffectParam)(string a, string b, bool c);
+	extern int(*const rmSetTriggerEffectParam)(string paramName, string value, bool add);
 
-	//rmSetTriggerEffectParamInt(string paramName, int value, bool add)
-	extern bool(*const rmSetTriggerEffectParamInt)(string a, int b, bool c);
+	extern bool(*const rmSetTriggerEffectParamInt)(string paramName, int value, bool add);
 
-	//rmSetTriggerEffectParamFloat(string paramName, float value, bool add)
-	extern bool(*const rmSetTriggerEffectParamFloat)(string a, float b, bool c);
+	extern bool(*const rmSetTriggerEffectParamFloat)(string paramName, float value, bool add);
 
-	//rmSetTriggerEffectParamArmy(string paramName, int playerID, int armyID, bool add)
-	extern bool(*const rmSetTriggerEffectParamArmy)(string a, int b, int c, bool d);
+	extern bool(*const rmSetTriggerEffectParamArmy)(string paramName, int playerID, int armyID, bool add);
 
-	//rmCreateArmy(int playerID, string armyName)
-	extern int(*const rmCreateArmy)(int a, string b);
+	extern int(*const rmCreateArmy)(int playerID, string armyName);
 
-	//rmAddUnitsToArmy(int playerID, int armyID, int objectDefID)
-	extern bool(*const rmAddUnitsToArmy)(int a, int b, int c);
+	extern bool(*const rmAddUnitsToArmy)(int playerID, int armyID, int objectDefID);
 
-	//rmGetNumberUnitsPlaced(int objectDefID)
-	extern int(*const rmGetNumberUnitsPlaced)(int a);
+	extern int(*const rmGetNumberUnitsPlaced)(int objectDefID);
 
-	//rmGetUnitPlaced(int objectDefID, int index)
-	extern int(*const rmGetUnitPlaced)(int a, int b);
+	extern int(*const rmGetUnitPlaced)(int objectDefID, int index);
 
-	//rmGetUnitPlacedOfPlayer(int objectDefID, int playerID)
-	extern int(*const rmGetUnitPlacedOfPlayer)(int a, int b);
+	extern int(*const rmGetUnitPlacedOfPlayer)(int objectDefID, int playerID);
 
-	//rmDefineConstant(string name, int value)
-	extern bool(*const rmDefineConstant)(string a, int b);
+	extern bool(*const rmDefineConstant)(string name, int value);
 
-	//rmSetIgnoreForceToGaia(bool val)
-	extern void(*const rmSetIgnoreForceToGaia)(bool a);
+	extern void(*const rmSetIgnoreForceToGaia)(bool val);
 
 	// Creates a grouping.
 	extern int(*const rmCreateGrouping)(string name, string filename);
@@ -2911,8 +2856,7 @@ namespace syscalls
 	// Returns the given resource from the gameIndex game. If gameIndex is -1, this will return the avg of all games played.
 	extern float(*const aiPersonalityGetGameResource)(int playerHistoryIndex, int gameIndex, int resourceID);
 
-	//bool aiPersonalityGetDidIWinLastGameVS(int playerHistoryIndex)
-	extern bool(*const aiPersonalityGetDidIWinLastGameVS)(int a);
+	extern bool(*const aiPersonalityGetDidIWinLastGameVS)(int playerHistoryIndex);
 
 	// Returns the unit count from the gameIndex game. If gameIndex is -1, this will return the avg of all games played.
 	extern int(*const aiPersonalityGetGameUnitCount)(int playerHistoryIndex, int gameIndex, int unitType);
@@ -3502,7 +3446,7 @@ namespace syscalls
 	// Tells us if the AI thinks this is a water map or not.
 	extern bool(*const aiGetWaterMap)();
 
-	//Is this a certain maptype or not. (AIFishingUseful, AITransportRequired, AITransportUseful)
+	// Is this a certain maptype or not. (AIFishingUseful, AITransportRequired, AITransportUseful)
 	extern bool(*const aiIsMapType)(string mapType);
 
 	// Returns the number of cards in the Current HC.
@@ -4510,8 +4454,8 @@ namespace syscalls
 	// returns the id of the best building to repair.
 	extern int(*const kbFindBestBuildingToRepair)(vector position, float distance, float healthRatio, int repairUnderAttackUnitTypeID);
 
-	//void kbSetForwardBasePosition(vector position) set the explicit position that every forward base will use.
-	extern void(*const kbSetForwardBasePosition)(vector a);
+	// set the explicit position that every forward base will use.
+	extern void(*const kbSetForwardBasePosition)(vector position);
 
 	// sets the TargetSelector Factor value.
 	extern void(*const kbSetTargetSelectorFactor)(int type, float val);
@@ -5095,7 +5039,7 @@ namespace syscalls
 
 	extern void(*const trClearCounterDisplay)();
 
-	//r plays movies from the AVI directory
+	// plays movies from the AVI directory
 	extern void(*const trPlayMovie)(string fileName);
 
 	// returns false if a movie is currently playing
@@ -5638,7 +5582,7 @@ namespace syscalls
 	// Get ambient color
 	void ambientGetColor();
 
-	//reset the sun color to full
+	// reset the sun color to full
 	void resetAmbientColor();
 
 	// Set ambient color 2 to given RGB (0-255)
@@ -5653,7 +5597,7 @@ namespace syscalls
 	// Get sun color
 	void sunGetColor();
 
-	//reset the sun color to full
+	// reset the sun color to full
 	void resetSunColor();
 
 	// Set fake sun params for water
@@ -5671,28 +5615,28 @@ namespace syscalls
 	// sets scene bump scale
 	void setBumpScale(float scale = 0);
 
-	//unitPlayerFakify(fakePlayerIndex) sets the selected units to use the fake player indicated.
-	void unitPlayerFakify(int a = 0);
+	// sets the selected units to use the fake player indicated.
+	void unitPlayerFakify(int fakePlayerIndex = 0);
 
-	//unitPlayerDefakify() sets the selected units to stop using a fake player.
+	// sets the selected units to stop using a fake player.
 	void unitPlayerDefakify();
 
-	//sets tonemap params
+	// sets tonemap params
 	void setToneMapParams(float exposure = 0, float dispGamma = 0, float greyFStops = 0, float kneeLow = 0, float kneeHigh = 0, float ditherNoiseInten = 0);
 
-	//sets tonemap params
+	// sets tonemap params
 	void setBloomParams(float bloomThreshold = 0, float bloomColorR = 0, float bloomColorG = 0, float bloomColorB = 0, float bloomIntensity = 0, float bloomPass = 0, float bloomSigma = 0);
 
-	//sets LDR Bloom params
+	// sets LDR Bloom params
 	void setLDRBloomParams(float bloomColorR = 0, float bloomColorG = 0, float bloomColorB = 0, float bloomIntensity = 0, float bloomSigma = 0);
 
-	//sets bloom streak params
+	// sets bloom streak params
 	void setBloomStreakParams(float streakCount = 0, float Passes = 0, float ElementOffset = 0, float Exposure = 0, float Intensity = 0, float Falloff = 0, float streakRed = 0, float streakGreen = 0, float streakBlue = 0, float threshold = 0);
 
-	//sets bloom feedback params
+	// sets bloom feedback params
 	void setBloomFeedbackParams(float currentFrameContribution = 0, float lastFrameContribution = 0);
 
-	//sets Terrain Lighting Params
+	// sets Terrain Lighting Params
 	void setTerrainLightingParams(float bumpScale = 0, float specularPower = 0, float specularIntensity = 0, float terrainMetalness = 0);
 
 	// Applies a Lighting set
@@ -5707,7 +5651,7 @@ namespace syscalls
 	// sets the circular brush size
 	void brushCircularSize(float floatValue = 0);
 
-	//stop playing music
+	// stop playing music
 	void musicStop();
 
 	// set the current music volume (0.0 - 1.0)
@@ -5743,14 +5687,14 @@ namespace syscalls
 	// toggles between the two modes only if we're not in a BMultiplayer game.
 	void modeToggleBetweenIfNotMP(string stringMode1 = "None", string stringMode2 = "None");
 
-	//helpPrefix( string commandPrefix ) - Lists all of the commands that start with the given prefix
-	void helpPrefix(string a = "");
+	// Lists all of the commands that start with the given prefix
+	void helpPrefix(string commandPrefix = "");
 
-	//help( string commandSubstring ) - Lists all of the commands that contain the given substring
-	void help(string a = "");
+	// Lists all of the commands that contain the given substring
+	void help(string commandSubstring = "");
 
-	//helpText( string helptextSubstring ) - Lists all of the commands that contain the given substring in their help text.
-	void helpText(string a = "");
+	// Lists all of the commands that contain the given substring in their help text.
+	void helpText(string helptextSubstring = "");
 
 	// looks at given x,z location on terrain.
 	void lookAt(float x = 0, float z = 0);
@@ -5967,25 +5911,18 @@ namespace syscalls
 
 	// instructs the currently selected unit(s) to build the current proto unit cursor building type at the pointer location, with wall-like endpoint behavior.
 	void uiBuildWallAtPointer(bool a = false);
-
 	
 	void uiCreateRiverToggleWaypointMode();
-
 	
 	void uiPlaceRiverWaypoint();
-
 	
 	void uiRemoveRiverWaypoint();
-
 	
 	void uiCreateRiver();
-
 	
 	void uiCreateRandomRiver();
-
 	
 	void uiPlaceRiverShallow();
-
 	
 	void uiRemoveRiverShallow();
 
@@ -6184,10 +6121,10 @@ namespace syscalls
 	// intended for ui use only.  Indicates that the lower elevation button has gone up/down.
 	void uiLowerElevation(int integerKeyState = -1);
 
-	//uiUniformRaiseElevation - raises the terrain height uniformly in the brush region
+	// raises the terrain height uniformly in the brush region
 	void uiUniformRaiseElevation(int a = -1);
 
-	//uiUniformLowerElevation - lowers the terrain height uniformly in the brush region
+	// lowers the terrain height uniformly in the brush region
 	void uiUniformLowerElevation(int a = 0);
 
 	// intended for ui use only.  Indicates that the smooth button has gone up/down.
@@ -6520,13 +6457,10 @@ namespace syscalls
 	// save some triggers.
 	void uiExportTriggers(string a = "None");
 
-	//uiTriggerSelectLocation
 	void uiTriggerSelectLocation();
 
-	//uiTriggerResetParameters
 	void uiTriggerResetParameters();
 
-	//uiTriggerResetSounds
 	void uiTriggerResetSounds();
 
 	// save a group.
@@ -6664,7 +6598,6 @@ namespace syscalls
 	// Adds notify text, can play a sound too.
 	void uiSetHCNotifyText(int a = -1, int b = -1);
 
-	//uiShowChatWindow()
 	void uiShowChatWindow();
 
 	// pops up all downed keys.
@@ -6673,7 +6606,6 @@ namespace syscalls
 	// spews all down keys.
 	void uiSpewDownKeys();
 
-	//uiShowVoteDialog
 	void uiShowVoteDialog();
 
 	// used direcly by UI
@@ -6691,22 +6623,17 @@ namespace syscalls
 	// Used to activate the consulate UI from hotkeys
 	void uiConsulateUIInSelected();
 
-	//enterAttackMoveMode
 	void enterAttackMoveMode();
 
-	//uiShowObjectivesDialog
 	void uiShowObjectivesDialog();
 
 	// Causes the currently displaying objective notification to fade out (or disappear), depending on the param passed in.
 	void uiExpireCurrentObjectiveNotification(bool a = true);
 
-	//uiPlaceTradeRouteWaypoint
 	void uiPlaceTradeRouteWaypoint();
 
-	//uiRemoveTradeRouteWaypoint
 	void uiRemoveTradeRouteWaypoint();
 
-	//uiSelectTransportUnit
 	void uiSelectTransportUnit();
 
 	// finds the next resource gatherer unit of the given resource type in the arbitrary order of unit ID, so that it can be called repeatedly to cycle.
@@ -6727,19 +6654,14 @@ namespace syscalls
 	// Shows the VP accel building from the unitID.
 	void uiVPAccelClick(int unitID = -1);
 
-	//incrementUSP2SelectedUnitStack
 	void incrementUSP2SelectedUnitStack();
 
-	//decrementUSP2SelectedUnitStack
 	void decrementUSP2SelectedUnitStack();
 
-	//uiSetCameraStartLoc
 	void uiSetCameraStartLoc();
 
-	//uiShowCameraStartLoc
 	void uiShowCameraStartLoc();
 
-	//uiDeleteCameraStartLoc
 	void uiDeleteCameraStartLoc();
 
 	// Scrolls the game view.
@@ -6772,22 +6694,16 @@ namespace syscalls
 	// resets screen selection.
 	void uiResetScreenSelect();
 
-	//uiFindCrowd([findType],[noLookAt])
-	void uiFindCrowd(int a = 0, bool b = false);
+	void uiFindCrowd(int findType = 0, bool noLookAt = false);
 
-	//uiResetFindCrowd
 	void uiResetFindCrowd();
 
-	//uiShowStatPanel()
 	void uiShowStatPanel();
 
-	//uiShowDetailedHelp()
 	void uiShowDetailedHelp();
 
-	//uiShowCommandPanel()
 	void uiShowCommandPanel();
 
-	//uiMinimizeStats()
 	void uiMinimizeStats();
 
 	// Moves all military units to the pointer position.
@@ -6872,19 +6788,19 @@ namespace syscalls
 	void uiNewScenario();
 
 	// intended for ui use only.  Indicates that the increase sun inclination key has gone up/down.
-	void sunIncreaseInclination(int integerKeyState = 0);
+	void sunIncreaseInclination(int keyState = 0);
 
 	// intended for ui use only.  Indicates that the decrease sun inclination key has gone up/down.
-	void sunDecreaseInclination(int integerKeyState = 0);
+	void sunDecreaseInclination(int keyState = 0);
 
 	// intended for ui use only.  Indicates that the increase sun rotation key has gone up/down.
-	void sunIncreaseRotation(int integerKeyState = 0);
+	void sunIncreaseRotation(int keyState = 0);
 
 	// intended for ui use only.  Indicates that the decrease sun rotation key has gone up/down.
-	void sunDecreaseRotation(int integerKeyState = 0);
+	void sunDecreaseRotation(int keyState = 0);
 
-	//setSunPosition( [integerSunInclination] [integerSunRotation] [boolRelative] ) sets the sun height above the horizon and position in the world, The bool tells if the changes are relative
-	void setSunPosition(float a = 0, float b = 0, bool c = false);
+	// sets the sun height above the horizon and position in the world, The bool tells if the changes are relative
+	void setSunPosition(float sunInclination = 0, float sunRotation = 0, bool relative = false);
 
 	// abort the current cinematic.
 	void abortCinematic();
@@ -6940,8 +6856,7 @@ namespace syscalls
 	// drop back to the main menu
 	void dropToMainMenu();
 
-	//modelLoad(model XML file name)
-	bool modelLoad(string a = "");
+	bool modelLoad(string modelXMLFilename = "");
 
 	// change the cliff type for all cliffs on the map
 	void changeCliffType(string cliffName = "");
@@ -7276,35 +7191,27 @@ namespace syscalls
 	// make a river dude.
 	int rmRiverCreate(int areaID = -1, string waterType = "", int breaks = 5, int offset = 15, int minR = 5, int maxR = 10);
 
-	//rmRiverSetConnections(riverID, start, end);
-	bool rmRiverSetConnections(int a = -1, float b = 0, float c = 0, float d = 0, float e = 0);
+	bool rmRiverSetConnections(int riverID = -1, float startX = 0, float startZ = 0, float endX = 0, float endZ = 0);
 
-	//rmRiverConnectRiver(riverID, riverID, pct, end);
-	bool rmRiverConnectRiver(int a = -1, int b = -1, float c = 0, float d = 0, float e = 0);
+	bool rmRiverConnectRiver(int riverID = -1, int river2ID = -1, float pct = 0, float end = 0, float e = 0);
 
 	// Add waypoint to a river.  Don't mix with rmRiverSetConnections or rmRiverConnectRiver
 	bool rmRiverAddWaypoint(int riverID = -1, float xFraction = 0, float zFraction = 0);
 
-	//rmRiverSetBankNoiseParams(riverID, frequency, octaves, persistence, sineLength, sineAmt, variation);
-	bool rmRiverSetBankNoiseParams(int a = -1, float b = 0.05, int c = 5, float d = 0.5, float e = 10, float f = 0.667, float g = 0);
+	bool rmRiverSetBankNoiseParams(int riverID = -1, float frequency = 0.05, int octaves = 5, float persistence = 0.5, float sineLength = 10, float sineAmt = 0.667, float variation = 0);
 
-	//rmRiverSetShallowRadius(riverID, radius);
-	bool rmRiverSetShallowRadius(int a = -1, int b = 3);
+	bool rmRiverSetShallowRadius(int riverID = -1, int radius = 3);
 
-	//rmRiverAddShallow(riverID, distancePct);
-	bool rmRiverAddShallow(int a = -1, float b = 0);
+	bool rmRiverAddShallow(int riverID = -1, float distancePct = 0);
 
-	//rmRiverAddShallows(riverID, count, radius);
-	bool rmRiverAddShallows(int a = -1, int b = -1, int c = 3);
+	bool rmRiverAddShallows(int riverID = -1, int count = -1, int radius = 3);
 
-	//rmRiverAvoid(riverID, riverID2, minDist)
-	bool rmRiverAvoid(int a = -1, int b = -1, float c = 0);
+	bool rmRiverAvoid(int riverID = -1, int river2ID = -1, float minDist = 0);
 
-	//rmRiverBuild
-	bool rmRiverBuild(int a = -1);
+	bool rmRiverBuild(int riverID = -1);
 
-	//rmRiverReveal(int riverID, int extraTiles) -- reveals a river plus the specified number of extra tiles around it.
-	bool rmRiverReveal(int a = -1, int b = 0);
+	// reveals a river plus the specified number of extra tiles around it.
+	bool rmRiverReveal(int riverID = -1, int extraTiles = 0);
 
 	// the terrain buffer around the river, and the height of the banks above water level
 	bool rmSetRiverFoundationParams(int tileBuffer = 8, float heightOffset = 0.5);
@@ -7726,80 +7633,55 @@ namespace syscalls
 	// Returns the square root of x.
 	float sqrt(float x = 0);
 
-	//rmSetVPFile(string filename)
-	void rmSetVPFile(string a = "");
+	void rmSetVPFile(string filename = "");
 
-	//rmCreateTrigger(string triggerName)
-	int rmCreateTrigger(string a = "");
+	int rmCreateTrigger(string triggerName = "");
 
-	//rmSwitchToTrigger(int triggerID)
-	bool rmSwitchToTrigger(int a = -1);
+	bool rmSwitchToTrigger(int triggerID = -1);
 
-	//rmTriggerID(string triggerName)
-	int rmTriggerID(string a = "");
+	int rmTriggerID(string triggerName = "");
 
-	//rmSetTriggerPriority(int priority)
-	int rmSetTriggerPriority(int a = 2);
+	int rmSetTriggerPriority(int priority = 2);
 
-	//rmSetTriggerActive(bool active)
-	int rmSetTriggerActive(bool a = true);
+	int rmSetTriggerActive(bool active = true);
 
-	//rmSetTriggerRunImmediately(bool runImmediately)
-	int rmSetTriggerRunImmediately(bool a = false);
+	int rmSetTriggerRunImmediately(bool runImmediately = false);
 
-	//rmSetTriggerLoop(bool loop)
-	int rmSetTriggerLoop(bool a = false);
+	int rmSetTriggerLoop(bool loop = false);
 
-	//rmAddTriggerCondition(string conditionType)
-	int rmAddTriggerCondition(string a = "");
+	int rmAddTriggerCondition(string conditionType = "");
 
-	//rmSetTriggerConditionParam(string paramName, string value, bool add)
-	bool rmSetTriggerConditionParam(string a = "", string b = "", bool c = false);
+	bool rmSetTriggerConditionParam(string paramName = "", string value = "", bool add = false);
 
-	//rmSetTriggerConditionParamInt(string paramName, int value, bool add)
-	bool rmSetTriggerConditionParamInt(string a = "", int b = 0, bool c = false);
+	bool rmSetTriggerConditionParamInt(string paramName = "", int value = 0, bool add = false);
 
-	//rmSetTriggerConditionParamFloat(string paramName, float value, bool add)
-	bool rmSetTriggerConditionParamFloat(string a = "", float b = 0, bool c = false);
+	bool rmSetTriggerConditionParamFloat(string paramName = "", float value = 0, bool add = false);
 
-	//rmSetTriggerConditionParamArmy(string paramName, int playerID, int armyID, bool add)
-	bool rmSetTriggerConditionParamArmy(string a = "", int b = -1, int c = -1, bool d = false);
+	bool rmSetTriggerConditionParamArmy(string paramName = "", int playerID = -1, int armyID = -1, bool add = false);
 
-	//rmAddTriggerEffect(string effectType)
-	bool rmAddTriggerEffect(string a = "");
+	bool rmAddTriggerEffect(string effectType = "");
 
-	//rmSetTriggerEffectParam(string paramName, string value, bool add)
-	int rmSetTriggerEffectParam(string a = "", string b = "", bool c = false);
+	int rmSetTriggerEffectParam(string paramName = "", string value = "", bool add = false);
 
-	//rmSetTriggerEffectParamInt(string paramName, int value, bool add)
-	bool rmSetTriggerEffectParamInt(string a = "", int b = 0, bool c = false);
+	bool rmSetTriggerEffectParamInt(string paramName = "", int value = 0, bool add = false);
 
-	//rmSetTriggerEffectParamFloat(string paramName, float value, bool add)
-	bool rmSetTriggerEffectParamFloat(string a = "", float b = 0, bool c = false);
+	bool rmSetTriggerEffectParamFloat(string paramName = "", float value = 0, bool add = false);
 
-	//rmSetTriggerEffectParamArmy(string paramName, int playerID, int armyID, bool add)
-	bool rmSetTriggerEffectParamArmy(string a = "", int b = -1, int c = -1, bool d = false);
+	bool rmSetTriggerEffectParamArmy(string paramName = "", int playerID = -1, int armyID = -1, bool add = false);
 
-	//rmCreateArmy(int playerID, string armyName)
-	int rmCreateArmy(int a = -1, string b = "");
+	int rmCreateArmy(int playerID = -1, string armyName = "");
 
-	//rmAddUnitsToArmy(int playerID, int armyID, int objectDefID)
-	bool rmAddUnitsToArmy(int a = -1, int b = -1, int c = -1);
+	bool rmAddUnitsToArmy(int playerID = -1, int armyID = -1, int objectDefID = -1);
 
-	//rmGetNumberUnitsPlaced(int objectDefID)
-	int rmGetNumberUnitsPlaced(int a = -1);
+	int rmGetNumberUnitsPlaced(int objectDefID = -1);
 
-	//rmGetUnitPlaced(int objectDefID, int index)
-	int rmGetUnitPlaced(int a = -1, int b = -1);
+	int rmGetUnitPlaced(int objectDefID = -1, int index = -1);
 
-	//rmGetUnitPlacedOfPlayer(int objectDefID, int playerID)
-	int rmGetUnitPlacedOfPlayer(int a = -1, int b = -1);
+	int rmGetUnitPlacedOfPlayer(int objectDefID = -1, int playerID = -1);
 
-	//rmDefineConstant(string name, int value)
-	bool rmDefineConstant(string a = "", int b = -1);
+	bool rmDefineConstant(string name = "", int value = -1);
 
-	//rmSetIgnoreForceToGaia(bool val)
-	void rmSetIgnoreForceToGaia(bool a = false);
+	void rmSetIgnoreForceToGaia(bool val = false);
 
 	// Creates a grouping.
 	int rmCreateGrouping(string name = "", string filename = "");
@@ -8113,8 +7995,7 @@ namespace syscalls
 	// Returns the given resource from the gameIndex game. If gameIndex is -1, this will return the avg of all games played.
 	float aiPersonalityGetGameResource(int playerHistoryIndex = -1, int gameIndex = -1, int resourceID = -1);
 
-	//bool aiPersonalityGetDidIWinLastGameVS(int playerHistoryIndex)
-	bool aiPersonalityGetDidIWinLastGameVS(int a = -1);
+	bool aiPersonalityGetDidIWinLastGameVS(int playerHistoryIndex = -1);
 
 	// Returns the unit count from the gameIndex game. If gameIndex is -1, this will return the avg of all games played.
 	int aiPersonalityGetGameUnitCount(int playerHistoryIndex = -1, int gameIndex = -1, int unitType = -1);
@@ -8704,7 +8585,7 @@ namespace syscalls
 	// Tells us if the AI thinks this is a water map or not.
 	bool aiGetWaterMap();
 
-	//Is this a certain maptype or not. (AIFishingUseful, AITransportRequired, AITransportUseful)
+	// Is this a certain maptype or not. (AIFishingUseful, AITransportRequired, AITransportUseful)
 	bool aiIsMapType(string mapType = "AIFishingUseful");
 
 	// Returns the number of cards in the Current HC.
@@ -9712,8 +9593,8 @@ namespace syscalls
 	// returns the id of the best building to repair.
 	int kbFindBestBuildingToRepair(vector position = cInvalidVector, float distance = 50, float healthRatio = 1, int repairUnderAttackUnitTypeID = -1);
 
-	//void kbSetForwardBasePosition(vector position) set the explicit position that every forward base will use.
-	void kbSetForwardBasePosition(vector a = cInvalidVector);
+	// set the explicit position that every forward base will use.
+	void kbSetForwardBasePosition(vector position = cInvalidVector);
 
 	// sets the TargetSelector Factor value.
 	void kbSetTargetSelectorFactor(int type = -1, float val = 50);

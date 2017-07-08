@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "UHC.h"
 
+UHCInfo* pUHCInfo = nullptr;
+HANDLE hProcess = NULL;
+
 // override operator new and delete
 /*void* operator new(size_t size) {
 	auto _operator_new = reinterpret_cast<void* (__thiscall *)(int, size_t*)>(0x401234);
@@ -28,7 +31,7 @@ void FixWorkingPath() {
 
 }
 
-void EncryptString(LPWSTR dest, LPCWSTR src) {
+void EncryptCheatString(LPWSTR dest, LPCWSTR src) {
 	LPCWSTR lpPtr = src;
 	LPWSTR lpEncryptedPtr = dest;
 
@@ -56,7 +59,7 @@ void __stdcall UHCRegisterCheat(UHCInfo* info, LPCWSTR string, BOOL enable, void
 	DWORD length = lstrlenW(string);
 	LPWSTR lpEncrypted = new WCHAR[length * 2 + 1];
 
-	EncryptString(lpEncrypted, string);
+	EncryptCheatString(lpEncrypted, string);
 
 	if (!lpEncrypted)
 		return;
@@ -97,17 +100,15 @@ inline void SetRefTable(UHCRefTable& table, ConfigKey& key) {
 	table.Refs = key.Values.GetData();
 }
 
-UHCInfo* UHCInfo::Instance = nullptr;
-
 UHCInfo::UHCInfo() {
 	LPCWSTR szConfig = (LPCWSTR)0x00C65083;
+
 	//WCHAR szConfig[MAX_PATH];
 	//LPCWSTR lpStartup = (LPCWSTR)0xbeaf98;
-
-	Enable = 0;
-
 	//lstrcpyW(szConfig, lpStartup);
 	//lstrcatW(szConfig, L"uhc.cfg");
+
+	Enable = 0;
 
 	for (DWORD i = 0; i < TABLE_COUNT; i++) {
 		Tables[i].RefCount = 0;
@@ -134,7 +135,7 @@ UHCInfo::UHCInfo() {
 			SetRefTable(Tables[Farm], key);
 		}
 
-		else if (lstrcmpiA(key.Name, "rectFarmAnim") == 0) {
+		else if (lstrcmpiA(key.Name, "enableRectFarmAnim") == 0) {
 			Enable |= ENABLE_FARM_ANIM;
 			SetRefTable(Tables[RectFarm], key);
 		}
@@ -237,12 +238,12 @@ UHCInfo::~UHCInfo() {
 		delete[] NativeCivNames[i];
 }
 
-void LoadPlugins() {
+void UHCInfo::LoadPlugins() {
 	WIN32_FIND_DATAW fd;
 	HANDLE hFind = FindFirstFileW(L"*.upl", &fd);
 
 	UHCPluginInfo pluginInfo = {
-		UHCInfo::Instance,
+		this,
 		UHCRegisterCheat,
 		UHCRegisterSyscall,
 		UHCSyscallSetParam
@@ -260,8 +261,18 @@ void LoadPlugins() {
 
 			FARPROC pluginProc = GetProcAddress(hLib, "_UHCPluginMain@4");
 
-			if (pluginProc)
-				((int(__stdcall*)(UHCPluginInfo*))pluginProc)(&pluginInfo);
+			if (pluginProc) {
+				int exitCode;
+
+				exitCode = reinterpret_cast<int(__stdcall*)(UHCPluginInfo*)>(pluginProc)(&pluginInfo);
+
+#ifdef _DEBUG
+				WCHAR debugMsg[256];
+				wsprintfW(debugMsg, L"UHC Plugin \"%s\" returned with exit code %d.\n", fd.cFileName, exitCode);
+				OutputDebugStringW(debugMsg);
+#endif
+			}
+
 		} while (FindNextFileW(hFind, &fd));
 	}
 
@@ -270,7 +281,7 @@ void LoadPlugins() {
 
 extern "C" _declspec(dllexport)
 void APIENTRY UHCMain() {
-	HANDLE hProcess = GetCurrentProcess();
+	hProcess = GetCurrentProcess();
 
 	try
 	{
@@ -278,11 +289,9 @@ void APIENTRY UHCMain() {
 		MessageBoxA(0, "'UHC.dll' Loaded.", "UHC", MB_ICONINFORMATION);
 #endif
 
-		UHCInfo::Instance = new UHCInfo;
+		pUHCInfo = new UHCInfo;
 
-		UHCAsmInit(UHCInfo::Instance, hProcess);
-
-		DWORD enable = UHCInfo::Instance->Enable;
+		DWORD enable = pUHCInfo->Enable;
 
 		// Patch stuffs we enabled
 		if (enable & ENABLE_AI_LIMIT)
@@ -295,7 +304,7 @@ void APIENTRY UHCMain() {
 			PatchDeckLimit();
 
 		if (enable & (ENABLE_FARM_ANIM | ENABLE_PATCH_MARKET | ENABLE_BIGBUTTON))
-			PatchUnitChecking();
+			PatchUnitCheck();
 
 		if (enable & ENABLE_FARM_ANIM)
 			PatchFarmAnim();
@@ -304,7 +313,7 @@ void APIENTRY UHCMain() {
 			PatchMarketUnits();
 
 		if (enable & (ENABLE_ASIAN_CIVS | ENABLE_NATIVE_CIVS | ENABLE_BIGBUTTON))
-			PatchCivChecking();
+			PatchCivCheck();
 
 		if (enable & ENABLE_ASIAN_CIVS)
 			PatchAsianCivs();
@@ -331,7 +340,7 @@ void APIENTRY UHCMain() {
 			PatchRegistryPath();
 
 		// Load .upl plugins
-		LoadPlugins();
+		pUHCInfo->LoadPlugins();
 	}
 	catch (...)
 	{
@@ -344,10 +353,9 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_DETACH:
-		if (UHCInfo::Instance)
-			delete UHCInfo::Instance;
+		if (pUHCInfo)
+			delete pUHCInfo;
 	}
-
 
 	return TRUE;
 }
