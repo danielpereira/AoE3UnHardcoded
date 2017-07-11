@@ -33,7 +33,7 @@ How to use
 
 In order to use the code provided by this project, you'll need to download the latest stable Patcher in the _/Release_ directory and open your Age of Empires 3 TAD .exe with it.
 
-For more information about the Patcher, check the README.md file at the /Patcher directory.
+For more information about the Patcher, check the README.md file at the _/Patcher_ directory.
 
 
 Contributing

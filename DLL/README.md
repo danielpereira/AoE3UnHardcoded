@@ -61,6 +61,6 @@ Supported Properties
 Planned Properties
 ------------------
 
-* ExportUICivs - Defines which civilizations should get export UI, but not get any of the behaviour of Asian civs
-* FirePitUICivs - Defines which civilizations should get fire pit UI, but not get any of the behaviour of Native civs
+* **exportUICivs** - Defines which civilizations should get export UI, but not get any of the behaviour of Asian civs
+* **firePitUICivs** - Defines which civilizations should get fire pit UI, but not get any of the behaviour of Native civs
 
