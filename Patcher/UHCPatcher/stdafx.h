@@ -12,5 +12,5 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include <windows.h>
 
 #include "targetver.h"
-
 #include "Config.h"
+#include "stringUtilities.h"

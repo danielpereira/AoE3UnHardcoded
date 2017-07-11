@@ -199,4 +199,13 @@ PatchTeamLimit proc
 	ret
 PatchTeamLimit endp
 
+; Fame Restriction Removal
+; Allows using the 'Fame' resource for ProtoActions, like AutoGather or ModifyGather
+
+public stdcall PatchFameRestriction
+PatchFameRestriction proc
+	invoke PatchAddress, hProcess, 0051B026h, 00BD62F8h, 0
+	ret
+PatchFameRestriction endp
+
 end

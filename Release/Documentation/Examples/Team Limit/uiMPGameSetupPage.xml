@@ -1,0 +1,351 @@
+<!-- converted from XMB to XML -->
+
+<layout>
+	<gadget name="MPGameSetupPage-ScreenContainer" hidden="" type="gadget" size1024="0 0 1024 768" z="12">
+		<gadget name="mpsetup-LaunchPanel" type="gadget" size1024="0 0 1024 768" backgroundcolor="0 0 0" backgroundalpha="0.5" z="51" hidden="">
+			<gadget tilebackgroundhoriz="" name="mpsetup-LaunchPanel-Dialog" type="dialog" size1024="343 196 692 415" z="12" background="ui\core_ui\wood_thick_board_tile" windowzstyle="" closeonesc="" hidden="" tilebackground="">
+				<gadget tilebackgroundhoriz="" name="mpsetup-LaunchPanel-BordersTop" type="gadget" background="ui\file_system\border_top_middle" size1024="367 188 670 196" z="4" transparent=""/>
+				<gadget tilebackgroundhoriz="" name="mpsetup-LaunchPanel-BordersBottom" type="gadget" background="ui\file_system\border_bottom_middle" size1024="367 411 670 419" z="4" transparent=""/>
+				<gadget name="mpsetup-LaunchPanel-BordersLeft" type="gadget" background="ui\file_system\border_side_left" size1024="335 220 343 390" tilebackgroundvert="" transparent=""/>
+				<gadget name="mpsetup-LaunchPanel-BordersRight" type="gadget" background="ui\file_system\border_side_right" size1024="691 220 699 390" tilebackgroundvert="" z="4" transparent=""/>
+				<gadget name="mpsetup-LaunchPanel-BordersRightTop" type="gadget" background="ui\file_system\border_top_right" size1024="667 188 699 220" z="5" transparent="" clampbackground=""/>
+				<gadget name="mpsetup-LaunchPanel-BordersLeftTop" type="gadget" background="ui\file_system\border_top_left" size1024="335 188 367 220" z="5" transparent="" clampbackground=""/>
+				<gadget name="mpsetup-LaunchPanel-BordersRightBottom" type="gadget" background="ui\file_system\border_bottom_right" size1024="667 387 699 419" z="5" transparent="" clampbackground=""/>
+				<gadget name="mpsetup-LaunchPanel-BordersLeftBottom" type="gadget" background="ui\file_system\border_bottom_left" size1024="335 387 367 419" z="10" transparent="" clampbackground=""/>
+				<gadget name="mpsetup-LaunchPanel-TextBackground" type="gadget" size1024="354 213 679 359" z="4" background="ui\core_ui\metal_tile">
+					<gadget name="mpsetup-LaunchPanel-TextBackground-BordersTop" type="gadget" background="ui\core_ui\metal_trim_top" size1024="383 209 651 217" z="5" transparent=""/>
+					<gadget name="mpsetup-LaunchPanel-TextBackground-BordersBottom" type="gadget" background="ui\core_ui\metal_trim_bottom" size1024="382 356 650 364" z="16" transparent=""/>
+					<gadget name="mpsetup-LaunchPanel-TextBackground-BordersLeft" type="gadget" background="ui\core_ui\metal_trim_left" size1024="351 241 359 331" tilebackgroundvert="" transparent="" z="5"/>
+					<gadget name="mpsetup-LaunchPanel-TextBackground-BordersRight" type="gadget" background="ui\core_ui\metal_trim_right" size1024="675 241 682 331" tilebackgroundvert="" z="5" transparent=""/>
+					<gadget name="mpsetup-LaunchPanel-TextBackground-BordersRightTop" type="gadget" background="ui\core_ui\metal_trim_corner_topright" size1024="650 209 682 241" z="7" transparent="" clampbackground=""/>
+					<gadget name="mpsetup-LaunchPanel-TextBackground-BordersLeftTop" type="gadget" background="ui\core_ui\metal_trim_corner_topleft" size1024="351 209 383 241" z="7" transparent="" clampbackground=""/>
+					<gadget name="mpsetup-LaunchPanel-TextBackground-BordersRightBottom" type="gadget" background="ui\core_ui\metal_trim_corner_bottomright" size1024="650 332 682 364" z="6" transparent="" clampbackground=""/>
+					<gadget name="mpsetup-LaunchPanel-TextBackground-BordersLeftBottom" type="gadget" background="ui\core_ui\metal_trim_corner_bottomleft" size1024="351 332 383 364" z="6" transparent="" clampbackground=""/>
+					<gadget name="mpsetup-LaunchPanel-launchingtext" textcolor="255 208 0" textfontsize="30" textfont="PregameLarge" type="formatText" size1024="360 242 672 290" textcenterhoriz="" textcentervert="" z="11">$$22627$$Launching Game...</gadget>
+					<gadget name="mpsetup-LaunchPanel-launchingtext2" textcolor="255 208 0" textfontsize="18" textfont="PregameLabels" type="formatText" size1024="388 294 643 320" textcenterhoriz="" textcentervert="" z="13"/>
+				</gadget>
+				<gadget name="mpsetup-LaunchPanel-CancelBtn" mouseovertext="$$20030$$" type="stateButton" size1024="437 372 597 404" z="51" textfont="IngameButtons" textfontsize="18" textcolor="255 255 255" foreground="UI\button_Greek" statebuttonuseinternalstates="" textcenterhoriz="" textcentervert="" texturecoords="0 0 0.625 1">
+					$$18466$$Cancel
+					<stateentry background="ui\core_ui\button_large_normal"/>
+					<stateentry background="ui\core_ui\button_large_clicked"/>
+					<stateentry background="ui\core_ui\button_large_high"/>
+					<stateentry background="ui\core_ui\button_large_disable"/>
+				</gadget>
+			</gadget>
+		</gadget>
+		<gadget name="MPGameSetupPage-ConnectingScreen" hidden="" backgroundalpha="0.5" backgroundcolor="0 0 0" type="gadget" size1024="0 0 1024 768" z="50">
+			<gadget tilebackgroundhoriz="" name="MPGameSetupPage-ConnectingScreen-Dialog" type="dialog" size1024="343 196 692 415" z="12" background="ui\core_ui\wood_thick_board_tile" windowzstyle="" closeonesc="" hidden="" tilebackground="">
+				<gadget tilebackgroundhoriz="" name="MPGameSetupPage-ConnectingScreen-BordersTop" type="gadget" background="ui\file_system\border_top_middle" size1024="367 188 670 196" z="4" transparent=""/>
+				<gadget tilebackgroundhoriz="" name="MPGameSetupPage-ConnectingScreen-BordersBottom" type="gadget" background="ui\file_system\border_bottom_middle" size1024="367 411 670 419" z="4" transparent=""/>
+				<gadget name="MPGameSetupPage-ConnectingScreen-BordersLeft" type="gadget" background="ui\file_system\border_side_left" size1024="335 220 343 390" tilebackgroundvert="" transparent=""/>
+				<gadget name="MPGameSetupPage-ConnectingScreen-BordersRight" type="gadget" background="ui\file_system\border_side_right" size1024="691 220 699 390" tilebackgroundvert="" z="4" transparent=""/>
+				<gadget name="MPGameSetupPage-ConnectingScreen-BordersRightTop" type="gadget" background="ui\file_system\border_top_right" size1024="667 188 699 220" z="5" transparent="" clampbackground=""/>
+				<gadget name="MPGameSetupPage-ConnectingScreen-BordersLeftTop" type="gadget" background="ui\file_system\border_top_left" size1024="335 188 367 220" z="5" transparent="" clampbackground=""/>
+				<gadget name="MPGameSetupPage-ConnectingScreen-BordersRightBottom" type="gadget" background="ui\file_system\border_bottom_right" size1024="667 387 699 419" z="5" transparent="" clampbackground=""/>
+				<gadget name="MPGameSetupPage-ConnectingScreen-BordersLeftBottom" type="gadget" background="ui\file_system\border_bottom_left" size1024="335 387 367 419" z="10" transparent="" clampbackground=""/>
+				<gadget name="MPGameSetupPage-ConnectingScreen-TextBackground" type="gadget" size1024="354 213 679 359" z="4" background="ui\core_ui\metal_tile">
+					<gadget name="MPGameSetupPage-ConnectingScreen-TextBackground-BordersTop" type="gadget" background="ui\core_ui\metal_trim_top" size1024="383 209 651 217" z="5" transparent=""/>
+					<gadget name="MPGameSetupPage-ConnectingScreen-TextBackground-BordersBottom" type="gadget" background="ui\core_ui\metal_trim_bottom" size1024="382 356 650 364" z="16" transparent=""/>
+					<gadget name="MPGameSetupPage-ConnectingScreen-TextBackground-BordersLeft" type="gadget" background="ui\core_ui\metal_trim_left" size1024="351 241 359 331" tilebackgroundvert="" transparent="" z="5"/>
+					<gadget name="MPGameSetupPage-ConnectingScreen-TextBackground-BordersRight" type="gadget" background="ui\core_ui\metal_trim_right" size1024="675 241 682 331" tilebackgroundvert="" z="5" transparent=""/>
+					<gadget name="MPGameSetupPage-ConnectingScreen-TextBackground-BordersRightTop" type="gadget" background="ui\core_ui\metal_trim_corner_topright" size1024="650 209 682 241" z="7" transparent="" clampbackground=""/>
+					<gadget name="MPGameSetupPage-ConnectingScreen-TextBackground-BordersLeftTop" type="gadget" background="ui\core_ui\metal_trim_corner_topleft" size1024="351 209 383 241" z="7" transparent="" clampbackground=""/>
+					<gadget name="MPGameSetupPage-ConnectingScreen-TextBackground-BordersRightBottom" type="gadget" background="ui\core_ui\metal_trim_corner_bottomright" size1024="650 332 682 364" z="6" transparent="" clampbackground=""/>
+					<gadget name="MPGameSetupPage-ConnectingScreen-TextBackground-BordersLeftBottom" type="gadget" background="ui\core_ui\metal_trim_corner_bottomleft" size1024="351 332 383 364" z="6" transparent="" clampbackground=""/>
+					<gadget name="MPGameSetupPage-ConnectingScreen-Text" textcolor="255 208 0" textfontsize="30" textfont="PregameLarge" type="formatText" size1024="388 242 643 287" textcenterhoriz="" textcentervert="" z="11">$$19213$$Connecting....</gadget>
+				</gadget>
+				<gadget name="MPGameSetupPage-ConnectingScreen-Cancel" mouseovertext="$$20030$$" type="stateButton" size1024="436 372 596 404" z="51" textfont="IngameButtons" textfontsize="18" textcolor="255 255 255" foreground="UI\button_Greek" statebuttonuseinternalstates="" textcenterhoriz="" textcentervert="" texturecoords="0 0 0.625 1">
+					$$33157$$Leave Game
+					<stateentry background="ui\core_ui\button_large_normal"/>
+					<stateentry background="ui\core_ui\button_large_clicked"/>
+					<stateentry background="ui\core_ui\button_large_high"/>
+					<stateentry background="ui\core_ui\button_large_disable"/>
+				</gadget>
+			</gadget>
+		</gadget>
+		<gadget name="mpsetup-HCPickerContainer" hidden="" backgroundalpha="0.5" backgroundcolor="0 0 0" type="gadget" size1024="0 0 1024 768" z="25">
+			<gadget name="mpsetup-HCPickerPlaceholder" type="gadget" size1024="340 102 694 500"/>
+		</gadget>
+		<gadget name="mpsetup-page-gamesetup" type="gadget" size1024="0 0 1024 768" background="ui\multiplayer\lan_game_launch" texturecoords="0 0 1 0.75" z="11">
+			<gadget name="mpsetup-player1" type="gadget" size1024="50 71 682 128" background="ui\eso\eso_host_game" texturecoords="0.00390625 0.6484375 0.62109375 0.7041015625">
+				<gadget name="mpsetup-player1-Avatar" type="gadget" size1024="57 76 105 124" background="ui\eso\eso_portrait_08"/>
+				<gadget name="mpsetup-Player1-nametext" type="button" allowrightclick="1" useeventcode="1" textfont="ScrollFont" textfontsize="16" alpha="0.0" align="left" background="ui\eso\textbar" texturecoords="0 0 0.90625 0.8125" textcolor="0 0 0" size1024="113 85 345 111" z="11"/>
+				<gadget name="mpsetup-player1-xfer" type="gadget" size1024="114 86 346 112" usemask="" maskcolor="0 255 0" maskalpha=".5" maskvertical="" maskinvert="" maskflip="" z="1"/>
+				<gadget name="mpsetup-player1-team" mouseovertext="$$41640$$" type="textField" textfont="ScrollFont" textfontsize="16" size1024="462 78 575 98" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" textcolor="0 0 0">
+					<dropdown>$$36141$$Team 1</dropdown>
+					<dropdown>$$36142$$Team 2</dropdown>
+					<dropdown>$$36145$$Team ?</dropdown>
+                    <dropdown>$$36143$$Team 3</dropdown>
+                    <dropdown>$$36144$$Team 4</dropdown>
+				</gadget>
+				<gadget name="mpsetup-player1-teamColor" mouseovertext="$$41641$$" type="colorDropdown" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" dropdowndistance="120" textfont="Arial nobold nodrop" textfontsize="12" textcolor="0 0 0" fieldreadonly="" size1024="514 101 573 121">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player1-CivFlag" type="stateButton" size1024="356 75 442 125"/>
+				<gadget name="mpsetup-player1-HCLevel" type="formatText" textfont="PregameEntry" textfontsize="15" size1024="410 104 442 124" textcolor="255 255 255" backgroundcolor="0 0 0" backgroundalpha="0.5" textcenterhoriz="" textcentervert="" z="15" transparent=""/>
+				<gadget name="mpsetup-player1-HandicapLabel" type="gadget" mouseovertext="$$20033$$" background="ui\eso\handicap" size1024="448 100 472 124" z="8"/>
+				<gadget name="mpsetup-player1-Handicap" type="textField" fieldreadonly="" mouseovertext="$$20033$$" size1024="447 101 511 121" textcolor="0 0 0" textfont="PostgameTableEntrySmall" textfontsize="12" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player1-Latency" type="gadget" size1024="296 115 343 122" z="7" background="ui\eso\eso_host_game" texturecoords="0.3046875 0.7109375 0.3662109375 0.7255859375"/>
+				<gadget name="mpsetup-player1-ReadyLabel" type="formatText" textfont="ScrollFont" textfontsize="16" textcolor="253 193 1" textjustifyright="" size1024="583 78 639 98">$$20021$$Ready</gadget>
+				<gadget name="mpsetup-player1-Ready" mouseovertext="$$41686$$" type="checkButton" z="11" size1024="641 77 665 99" checkcheckedart="ui\core_ui\checkbox_green" checkuncheckedart="ui\core_ui\checkbox_red" sound="UI_DefaultPregameClickSet" checkborder1024="5 0"/>
+				<gadget name="mpsetup-player1-Highlight" type="gadget" size1024="50 71 682 128" z="1" hidden="" background="ui\eso\eso_host_game" texturecoords="0.00390625 0.7373046875 0.62109375 0.79296875"/>
+			</gadget>
+			<gadget name="mpsetup-player2" hidden="" type="gadget" size1024="50 134 682 191" background="ui\eso\eso_host_game" texturecoords="0.00390625 0.6484375 0.62109375 0.7041015625">
+				<gadget name="mpsetup-player2-Avatar" type="gadget" size1024="57 139 105 187" background="ui\eso\eso_portrait_08"/>
+				<gadget name="mpsetup-Player2-nametext" type="button" allowrightclick="1" useeventcode="1" textfont="ScrollFont" textfontsize="16" alpha="0.0" align="left" background="ui\eso\textbar" texturecoords="0 0 0.90625 0.8125" textcolor="0 0 0" size1024="113 148 345 174" z="11"/>
+				<gadget name="mpsetup-Player2-AIDropdown" mouseovertext="$$41687$$" type="textField" fieldreadonly="" size1024="113 148 345 174" textcolor="0 0 0" textfontsize="16" textcentervert="" textcenterhoriz="" textfont="ScrollFont" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" z="15">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player2-kick" type="button" foreground="ui\command\garrison_out" size1024="583 164 631 188" mouseovertext="$$22013$$Kick this player out of the game.  This option can only be used by the game host." z="12"/>
+				<gadget name="mpsetup-player2-xfer" type="gadget" size1024="114 149 346 175" usemask="" maskcolor="0 255 0" maskalpha=".5" maskvertical="" maskinvert="" maskflip="" z="1"/>
+				<gadget name="mpsetup-player2-team" mouseovertext="$$41640$$" type="textField" textfont="ScrollFont" textfontsize="16" size1024="462 141 575 161" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" textcolor="0 0 0">
+					<dropdown>$$36141$$Team 1</dropdown>
+					<dropdown>$$36142$$Team 2</dropdown>
+					<dropdown>$$36145$$Team ?</dropdown>
+                    <dropdown>$$36143$$Team 3</dropdown>
+                    <dropdown>$$36144$$Team 4</dropdown>
+				</gadget>
+				<gadget name="mpsetup-player2-teamColor" mouseovertext="$$41641$$" type="colorDropdown" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" dropdowndistance="120" textfont="Arial nobold nodrop" textfontsize="12" textcolor="0 0 0" fieldreadonly="" size1024="514 164 573 184">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player2-CivFlag" type="stateButton" size1024="356 138 442 188"/>
+				<gadget name="mpsetup-player2-HCLevel" type="formatText" textfont="PregameEntry" textfontsize="15" size1024="410 167 442 187" textcolor="255 255 255" backgroundcolor="0 0 0" backgroundalpha="0.5" textcenterhoriz="" textcentervert="" z="15" transparent=""/>
+				<gadget name="mpsetup-player2-HandicapLabel" type="gadget" mouseovertext="$$20033$$" background="ui\eso\handicap" size1024="448 163 472 187" z="8"/>
+				<gadget name="mpsetup-player2-Handicap" type="textField" fieldreadonly="" mouseovertext="$$20033$$" size1024="447 164 511 184" textcolor="0 0 0" textfont="PostgameTableEntrySmall" textfontsize="12" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player2-Latency" type="gadget" size1024="296 178 343 185" z="7" background="ui\eso\eso_host_game" texturecoords="0.3046875 0.7109375 0.3662109375 0.7255859375"/>
+				<gadget name="mpsetup-player2-ReadyLabel" type="formatText" textfont="ScrollFont" textfontsize="16" textcolor="253 193 1" textjustifyright="" size1024="583 141 639 161">$$20021$$Ready</gadget>
+				<gadget name="mpsetup-player2-Ready" mouseovertext="$$41686$$" type="checkButton" z="11" size1024="641 140 665 162" checkcheckedart="ui\core_ui\checkbox_green" checkuncheckedart="ui\core_ui\checkbox_red" sound="UI_DefaultPregameClickSet" checkborder1024="5 0"/>
+				<gadget name="mpsetup-player2-Highlight" type="gadget" size1024="50 134 682 191" z="1" hidden="" background="ui\eso\eso_host_game" texturecoords="0.00390625 0.7373046875 0.62109375 0.79296875"/>
+			</gadget>
+			<gadget name="mpsetup-player3" hidden="" type="gadget" size1024="50 197 682 254" background="ui\eso\eso_host_game" texturecoords="0.00390625 0.6484375 0.62109375 0.7041015625">
+				<gadget name="mpsetup-player3-Avatar" type="gadget" size1024="57 202 105 250" background="ui\eso\eso_portrait_08"/>
+				<gadget name="mpsetup-Player3-nametext" type="button" allowrightclick="1" useeventcode="1" textfont="ScrollFont" textfontsize="16" alpha="0.0" align="left" background="ui\eso\textbar" texturecoords="0 0 0.90625 0.8125" textcolor="0 0 0" size1024="113 211 345 237" z="11"/>
+				<gadget name="mpsetup-Player3-AIDropdown" mouseovertext="$$41687$$" type="textField" fieldreadonly="" size1024="113 211 345 237" textcolor="0 0 0" textfontsize="16" textcentervert="" textcenterhoriz="" textfont="ScrollFont" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" z="15">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player3-kick" type="button" foreground="ui\command\garrison_out" size1024="583 227 631 251" mouseovertext="$$22013$$Kick this player out of the game.  This option can only be used by the game host." z="12"/>
+				<gadget name="mpsetup-player3-xfer" type="gadget" size1024="114 212 346 238" usemask="" maskcolor="0 255 0" maskalpha=".5" maskvertical="" maskinvert="" maskflip="" z="1"/>
+				<gadget name="mpsetup-player3-team" mouseovertext="$$41640$$" type="textField" textfont="ScrollFont" textfontsize="16" size1024="462 204 575 224" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" textcolor="0 0 0">
+					<dropdown>$$36141$$Team 1</dropdown>
+					<dropdown>$$36142$$Team 2</dropdown>
+					<dropdown>$$36145$$Team ?</dropdown>
+                    <dropdown>$$36143$$Team 3</dropdown>
+                    <dropdown>$$36144$$Team 4</dropdown>
+				</gadget>
+				<gadget name="mpsetup-player3-teamColor" mouseovertext="$$41641$$" type="colorDropdown" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" dropdowndistance="120" textfont="Arial nobold nodrop" textfontsize="12" textcolor="0 0 0" fieldreadonly="" size1024="514 227 573 247">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player3-CivFlag" type="stateButton" size1024="356 201 442 251"/>
+				<gadget name="mpsetup-player3-HCLevel" type="formatText" textfont="PregameEntry" textfontsize="15" size1024="410 230 442 250" textcolor="255 255 255" backgroundcolor="0 0 0" backgroundalpha="0.5" textcenterhoriz="" textcentervert="" z="15" transparent=""/>
+				<gadget name="mpsetup-player3-HandicapLabel" type="gadget" mouseovertext="$$20033$$" background="ui\eso\handicap" size1024="448 226 472 250" z="8"/>
+				<gadget name="mpsetup-player3-Handicap" type="textField" fieldreadonly="" mouseovertext="$$20033$$" size1024="447 227 511 247" textcolor="0 0 0" textfont="PostgameTableEntrySmall" textfontsize="12" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player3-Latency" type="gadget" size1024="296 241 343 248" z="7" background="ui\eso\eso_host_game" texturecoords="0.3046875 0.7109375 0.3662109375 0.7255859375"/>
+				<gadget name="mpsetup-player3-ReadyLabel" type="formatText" textfont="ScrollFont" textfontsize="16" textcolor="253 193 1" textjustifyright="" size1024="583 204 639 224">$$20021$$Ready</gadget>
+				<gadget name="mpsetup-player3-Ready" mouseovertext="$$41686$$" type="checkButton" z="11" size1024="641 203 665 225" checkcheckedart="ui\core_ui\checkbox_green" checkuncheckedart="ui\core_ui\checkbox_red" sound="UI_DefaultPregameClickSet" checkborder1024="5 0"/>
+				<gadget name="mpsetup-player3-Highlight" type="gadget" size1024="50 197 682 254" z="1" hidden="" background="ui\eso\eso_host_game" texturecoords="0.00390625 0.7373046875 0.62109375 0.79296875"/>
+			</gadget>
+			<gadget name="mpsetup-player4" hidden="" type="gadget" size1024="50 260 682 317" background="ui\eso\eso_host_game" texturecoords="0.00390625 0.6484375 0.62109375 0.7041015625">
+				<gadget name="mpsetup-player4-Avatar" type="gadget" size1024="57 265 105 313" background="ui\eso\eso_portrait_08"/>
+				<gadget name="mpsetup-Player4-nametext" type="button" allowrightclick="1" useeventcode="1" textfont="ScrollFont" textfontsize="16" alpha="0.0" align="left" background="ui\eso\textbar" texturecoords="0 0 0.90625 0.8125" textcolor="0 0 0" size1024="113 274 345 300" z="11"/>
+				<gadget name="mpsetup-Player4-AIDropdown" mouseovertext="$$41687$$" type="textField" fieldreadonly="" size1024="113 274 345 300" textcolor="0 0 0" textfontsize="16" textcentervert="" textcenterhoriz="" textfont="ScrollFont" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" z="15">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player4-kick" type="button" foreground="ui\command\garrison_out" size1024="583 290 631 314" mouseovertext="$$22013$$Kick this player out of the game.  This option can only be used by the game host." z="12"/>
+				<gadget name="mpsetup-player4-xfer" type="gadget" size1024="114 275 346 301" usemask="" maskcolor="0 255 0" maskalpha=".5" maskvertical="" maskinvert="" maskflip="" z="1"/>
+				<gadget name="mpsetup-player4-team" mouseovertext="$$41640$$" type="textField" textfont="ScrollFont" textfontsize="16" size1024="462 267 575 287" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" textcolor="0 0 0">
+					<dropdown>$$36141$$Team 1</dropdown>
+					<dropdown>$$36142$$Team 2</dropdown>
+					<dropdown>$$36145$$Team ?</dropdown>
+                    <dropdown>$$36143$$Team 3</dropdown>
+                    <dropdown>$$36144$$Team 4</dropdown>
+				</gadget>
+				<gadget name="mpsetup-player4-teamColor" mouseovertext="$$41641$$" type="colorDropdown" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" dropdowndistance="120" textfont="Arial nobold nodrop" textfontsize="12" textcolor="0 0 0" fieldreadonly="" size1024="514 290 573 310">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player4-CivFlag" type="stateButton" size1024="356 264 442 314"/>
+				<gadget name="mpsetup-player4-HCLevel" type="formatText" textfont="PregameEntry" textfontsize="15" size1024="410 293 442 313" textcolor="255 255 255" backgroundcolor="0 0 0" backgroundalpha="0.5" textcenterhoriz="" textcentervert="" z="15" transparent=""/>
+				<gadget name="mpsetup-player4-HandicapLabel" type="gadget" mouseovertext="$$20033$$" background="ui\eso\handicap" size1024="448 289 472 313" z="8"/>
+				<gadget name="mpsetup-player4-Handicap" type="textField" fieldreadonly="" mouseovertext="$$20033$$" size1024="447 290 511 310" textcolor="0 0 0" textfont="PostgameTableEntrySmall" textfontsize="12" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player4-ReadyLabel" type="formatText" textfont="ScrollFont" textfontsize="16" textcolor="253 193 1" textjustifyright="" size1024="583 267 639 287">$$20021$$Ready</gadget>
+				<gadget name="mpsetup-player4-Ready" mouseovertext="$$41686$$" type="checkButton" z="11" size1024="641 266 665 288" checkcheckedart="ui\core_ui\checkbox_green" checkuncheckedart="ui\core_ui\checkbox_red" sound="UI_DefaultPregameClickSet" checkborder1024="5 0"/>
+				<gadget name="mpsetup-player4-Highlight" type="gadget" size1024="50 260 682 317" z="1" hidden="" background="ui\eso\eso_host_game" texturecoords="0.00390625 0.7373046875 0.62109375 0.79296875"/>
+			</gadget>
+			<gadget name="mpsetup-player5" hidden="" type="gadget" size1024="50 323 682 380" background="ui\eso\eso_host_game" texturecoords="0.00390625 0.6484375 0.62109375 0.7041015625">
+				<gadget name="mpsetup-player5-Avatar" type="gadget" size1024="57 328 105 376" background="ui\eso\eso_portrait_08"/>
+				<gadget name="mpsetup-Player5-nametext" type="button" allowrightclick="1" useeventcode="1" textfont="ScrollFont" textfontsize="16" alpha="0.0" align="left" background="ui\eso\textbar" texturecoords="0 0 0.90625 0.8125" textcolor="0 0 0" size1024="113 337 345 363" z="11"/>
+				<gadget name="mpsetup-Player5-AIDropdown" mouseovertext="$$41687$$" type="textField" fieldreadonly="" size1024="113 337 345 363" textcolor="0 0 0" textfontsize="16" textcentervert="" textcenterhoriz="" textfont="ScrollFont" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" z="15">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player5-kick" type="button" foreground="ui\command\garrison_out" size1024="583 353 631 377" mouseovertext="$$22013$$Kick this player out of the game.  This option can only be used by the game host." z="12"/>
+				<gadget name="mpsetup-player5-xfer" type="gadget" size1024="114 338 346 364" usemask="" maskcolor="0 255 0" maskalpha=".5" maskvertical="" maskinvert="" maskflip="" z="1"/>
+				<gadget name="mpsetup-player5-team" mouseovertext="$$41640$$" type="textField" textfont="ScrollFont" textfontsize="16" size1024="462 330 575 350" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" textcolor="0 0 0">
+					<dropdown>$$36141$$Team 1</dropdown>
+					<dropdown>$$36142$$Team 2</dropdown>
+					<dropdown>$$36145$$Team ?</dropdown>
+                    <dropdown>$$36143$$Team 3</dropdown>
+                    <dropdown>$$36144$$Team 4</dropdown>
+				</gadget>
+				<gadget name="mpsetup-player5-teamColor" mouseovertext="$$41641$$" type="colorDropdown" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" dropdowndistance="120" textfont="Arial nobold nodrop" textfontsize="12" textcolor="0 0 0" fieldreadonly="" size1024="514 353 573 373">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player5-CivFlag" type="stateButton" size1024="356 327 442 377"/>
+				<gadget name="mpsetup-player5-HCLevel" type="formatText" textfont="PregameEntry" textfontsize="15" size1024="410 356 442 376" textcolor="255 255 255" backgroundcolor="0 0 0" backgroundalpha="0.5" textcenterhoriz="" textcentervert="" z="15" transparent=""/>
+				<gadget name="mpsetup-player5-HandicapLabel" type="gadget" mouseovertext="$$20033$$" background="ui\eso\handicap" size1024="448 352 472 376" z="8"/>
+				<gadget name="mpsetup-player5-Handicap" type="textField" fieldreadonly="" mouseovertext="$$20033$$" size1024="447 353 511 373" textcolor="0 0 0" textfont="PostgameTableEntrySmall" textfontsize="12" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player5-Latency" type="gadget" size1024="296 367 343 374" z="7" background="ui\eso\eso_host_game" texturecoords="0.3046875 0.7109375 0.3662109375 0.7255859375"/>
+				<gadget name="mpsetup-player5-ReadyLabel" type="formatText" textfont="ScrollFont" textfontsize="16" textcolor="253 193 1" textjustifyright="" size1024="583 330 639 350">$$20021$$Ready</gadget>
+				<gadget name="mpsetup-player5-Ready" mouseovertext="$$41686$$" type="checkButton" z="11" size1024="641 329 665 351" checkcheckedart="ui\core_ui\checkbox_green" checkuncheckedart="ui\core_ui\checkbox_red" sound="UI_DefaultPregameClickSet" checkborder1024="5 0"/>
+				<gadget name="mpsetup-player5-Highlight" type="gadget" size1024="50 323 682 380" z="1" hidden="" background="ui\eso\eso_host_game" texturecoords="0.00390625 0.7373046875 0.62109375 0.79296875"/>
+			</gadget>
+			<gadget name="mpsetup-player6" hidden="" type="gadget" size1024="50 386 682 443" background="ui\eso\eso_host_game" texturecoords="0.00390625 0.6484375 0.62109375 0.7041015625">
+				<gadget name="mpsetup-player6-Avatar" type="gadget" size1024="57 391 105 439" background="ui\eso\eso_portrait_08"/>
+				<gadget name="mpsetup-Player6-nametext" type="button" allowrightclick="1" useeventcode="1" textfont="ScrollFont" textfontsize="16" alpha="0.0" align="left" background="ui\eso\textbar" texturecoords="0 0 0.90625 0.8125" textcolor="0 0 0" size1024="113 400 345 426" z="11"/>
+				<gadget name="mpsetup-Player6-AIDropdown" mouseovertext="$$41687$$" type="textField" fieldreadonly="" size1024="113 400 345 426" textcolor="0 0 0" textfontsize="16" textcentervert="" textcenterhoriz="" textfont="ScrollFont" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" z="15">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player6-kick" type="button" foreground="ui\command\garrison_out" size1024="583 416 631 440" mouseovertext="$$22013$$Kick this player out of the game.  This option can only be used by the game host." z="12"/>
+				<gadget name="mpsetup-player6-xfer" type="gadget" size1024="114 401 346 427" usemask="" maskcolor="0 255 0" maskalpha=".5" maskvertical="" maskinvert="" maskflip="" z="1"/>
+				<gadget name="mpsetup-player6-team" mouseovertext="$$41640$$" type="textField" textfont="ScrollFont" textfontsize="16" size1024="462 393 575 413" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" textcolor="0 0 0">
+					<dropdown>$$36141$$Team 1</dropdown>
+					<dropdown>$$36142$$Team 2</dropdown>
+					<dropdown>$$36145$$Team ?</dropdown>
+                    <dropdown>$$36143$$Team 3</dropdown>
+                    <dropdown>$$36144$$Team 4</dropdown>
+				</gadget>
+				<gadget name="mpsetup-player6-teamColor" mouseovertext="$$41641$$" type="colorDropdown" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" dropdowndistance="120" textfont="Arial nobold nodrop" textfontsize="12" textcolor="0 0 0" fieldreadonly="" size1024="514 416 573 436">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player6-CivFlag" type="stateButton" size1024="356 390 442 440"/>
+				<gadget name="mpsetup-player6-HCLevel" type="formatText" textfont="PregameEntry" textfontsize="15" size1024="410 419 442 439" textcolor="255 255 255" backgroundcolor="0 0 0" backgroundalpha="0.5" textcenterhoriz="" textcentervert="" z="15" transparent=""/>
+				<gadget name="mpsetup-player6-HandicapLabel" type="gadget" mouseovertext="$$20033$$" background="ui\eso\handicap" size1024="448 415 472 439" z="8"/>
+				<gadget name="mpsetup-player6-Handicap" type="textField" fieldreadonly="" mouseovertext="$$20033$$" size1024="447 416 511 436" textcolor="0 0 0" textfont="PostgameTableEntrySmall" textfontsize="12" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player6-Latency" type="gadget" size1024="296 430 343 437" z="7" background="ui\eso\eso_host_game" texturecoords="0.3046875 0.7109375 0.3662109375 0.7255859375"/>
+				<gadget name="mpsetup-player6-ReadyLabel" type="formatText" textfont="ScrollFont" textfontsize="16" textcolor="253 193 1" textjustifyright="" size1024="583 393 639 413">$$20021$$Ready</gadget>
+				<gadget name="mpsetup-player6-Ready" mouseovertext="$$41686$$" type="checkButton" z="11" size1024="641 392 665 414" checkcheckedart="ui\core_ui\checkbox_green" checkuncheckedart="ui\core_ui\checkbox_red" sound="UI_DefaultPregameClickSet" checkborder1024="5 0"/>
+				<gadget name="mpsetup-player6-Highlight" type="gadget" size1024="50 386 682 443" z="1" hidden="" background="ui\eso\eso_host_game" texturecoords="0.00390625 0.7373046875 0.62109375 0.79296875"/>
+			</gadget>
+			<gadget name="mpsetup-player7" hidden="" type="gadget" size1024="50 449 682 506" background="ui\eso\eso_host_game" texturecoords="0.00390625 0.6484375 0.62109375 0.7041015625">
+				<gadget name="mpsetup-player7-Avatar" type="gadget" size1024="57 454 105 502" background="ui\eso\eso_portrait_08"/>
+				<gadget name="mpsetup-Player7-nametext" type="button" allowrightclick="1" useeventcode="1" textfont="ScrollFont" textfontsize="16" alpha="0.0" align="left" background="ui\eso\textbar" texturecoords="0 0 0.90625 0.8125" textcolor="0 0 0" size1024="113 463 345 489" z="11"/>
+				<gadget name="mpsetup-Player7-AIDropdown" mouseovertext="$$41687$$" type="textField" fieldreadonly="" size1024="113 463 345 489" textcolor="0 0 0" textfontsize="16" textcentervert="" textcenterhoriz="" textfont="ScrollFont" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" z="15">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player7-kick" type="button" foreground="ui\command\garrison_out" size1024="583 479 631 503" mouseovertext="$$22013$$Kick this player out of the game.  This option can only be used by the game host." z="12"/>
+				<gadget name="mpsetup-player7-xfer" type="gadget" size1024="114 464 346 490" usemask="" maskcolor="0 255 0" maskalpha=".5" maskvertical="" maskinvert="" maskflip="" z="1"/>
+				<gadget name="mpsetup-player7-team" mouseovertext="$$41640$$" type="textField" textfont="ScrollFont" textfontsize="16" size1024="462 456 575 476" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" textcolor="0 0 0">
+					<dropdown>$$36141$$Team 1</dropdown>
+					<dropdown>$$36142$$Team 2</dropdown>
+					<dropdown>$$36145$$Team ?</dropdown>
+                    <dropdown>$$36143$$Team 3</dropdown>
+                    <dropdown>$$36144$$Team 4</dropdown>
+				</gadget>
+				<gadget name="mpsetup-player7-teamColor" mouseovertext="$$41641$$" type="colorDropdown" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" dropdowndistance="120" textfont="Arial nobold nodrop" textfontsize="12" textcolor="0 0 0" fieldreadonly="" size1024="514 479 573 499">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player7-CivFlag" type="stateButton" size1024="356 453 442 503"/>
+				<gadget name="mpsetup-player7-HCLevel" type="formatText" textfont="PregameEntry" textfontsize="15" size1024="410 482 442 502" textcolor="255 255 255" backgroundcolor="0 0 0" backgroundalpha="0.5" textcenterhoriz="" textcentervert="" z="15" transparent=""/>
+				<gadget name="mpsetup-player7-HandicapLabel" type="gadget" mouseovertext="$$20033$$" background="ui\eso\handicap" size1024="448 478 472 502" z="8"/>
+				<gadget name="mpsetup-player7-Handicap" type="textField" fieldreadonly="" mouseovertext="$$20033$$" size1024="447 479 511 499" textcolor="0 0 0" textfont="PostgameTableEntrySmall" textfontsize="12" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player7-Latency" type="gadget" size1024="296 493 343 500" z="7" background="ui\eso\eso_host_game" texturecoords="0.3046875 0.7109375 0.3662109375 0.7255859375"/>
+				<gadget name="mpsetup-player7-ReadyLabel" type="formatText" textfont="ScrollFont" textfontsize="16" textcolor="253 193 1" textjustifyright="" size1024="583 456 639 476">$$20021$$Ready</gadget>
+				<gadget name="mpsetup-player7-Ready" mouseovertext="$$41686$$" type="checkButton" z="11" size1024="641 455 665 477" checkcheckedart="ui\core_ui\checkbox_green" checkuncheckedart="ui\core_ui\checkbox_red" sound="UI_DefaultPregameClickSet" checkborder1024="5 0"/>
+				<gadget name="mpsetup-player7-Highlight" type="gadget" size1024="50 449 682 506" z="1" hidden="" background="ui\eso\eso_host_game" texturecoords="0.00390625 0.7373046875 0.62109375 0.79296875"/>
+			</gadget>
+			<gadget name="mpsetup-player8" hidden="" type="gadget" size1024="50 512 682 569" background="ui\eso\eso_host_game" texturecoords="0.00390625 0.6484375 0.62109375 0.7041015625">
+				<gadget name="mpsetup-player8-Avatar" type="gadget" size1024="57 517 105 565" background="ui\eso\eso_portrait_08"/>
+				<gadget name="mpsetup-Player8-nametext" type="button" allowrightclick="1" useeventcode="1" textfont="ScrollFont" textfontsize="16" alpha="0.0" align="left" background="ui\eso\textbar" texturecoords="0 0 0.90625 0.8125" textcolor="0 0 0" size1024="113 526 345 552" z="11"/>
+				<gadget name="mpsetup-Player8-AIDropdown" mouseovertext="$$41687$$" type="textField" fieldreadonly="" size1024="113 526 345 552" textcolor="0 0 0" textfontsize="16" textcentervert="" textcenterhoriz="" textfont="ScrollFont" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" z="15">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player8-kick" type="button" foreground="ui\command\garrison_out" size1024="583 542 631 566" mouseovertext="$$22013$$Kick this player out of the game.  This option can only be used by the game host." z="12"/>
+				<gadget name="mpsetup-player8-xfer" type="gadget" size1024="114 527 346 553" usemask="" maskcolor="0 255 0" maskalpha=".5" maskvertical="" maskinvert="" maskflip="" z="1"/>
+				<gadget name="mpsetup-player8-team" mouseovertext="$$41640$$" type="textField" textfont="ScrollFont" textfontsize="16" size1024="462 519 575 539" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" textcolor="0 0 0">
+					<dropdown>$$36141$$Team 1</dropdown>
+					<dropdown>$$36142$$Team 2</dropdown>
+					<dropdown>$$36145$$Team ?</dropdown>
+                    <dropdown>$$36143$$Team 3</dropdown>
+                    <dropdown>$$36144$$Team 4</dropdown>
+				</gadget>
+				<gadget name="mpsetup-player8-teamColor" mouseovertext="$$41641$$" type="colorDropdown" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" dropdowndistance="120" textfont="Arial nobold nodrop" textfontsize="12" textcolor="0 0 0" fieldreadonly="" size1024="514 542 573 562">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player8-CivFlag" type="stateButton" size1024="356 516 442 566"/>
+				<gadget name="mpsetup-player8-HCLevel" type="formatText" textfont="PregameEntry" textfontsize="15" size1024="410 545 442 565" textcolor="255 255 255" backgroundcolor="0 0 0" backgroundalpha="0.5" textcenterhoriz="" textcentervert="" z="15" transparent=""/>
+				<gadget name="mpsetup-player8-HandicapLabel" type="gadget" mouseovertext="$$20033$$" background="ui\eso\handicap" size1024="448 541 472 565" z="8"/>
+				<gadget name="mpsetup-player8-Handicap" type="textField" fieldreadonly="" mouseovertext="$$20033$$" size1024="447 542 511 562" textcolor="0 0 0" textfont="PostgameTableEntrySmall" textfontsize="12" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down">
+					<dropdown/>
+				</gadget>
+				<gadget name="mpsetup-player8-Latency" type="gadget" size1024="296 556 343 563" z="7" background="ui\eso\eso_host_game" texturecoords="0.3046875 0.7109375 0.3662109375 0.7255859375"/>
+				<gadget name="mpsetup-player8-ReadyLabel" type="formatText" textfont="ScrollFont" textfontsize="16" textcolor="253 193 1" textjustifyright="" size1024="583 519 639 539">$$20021$$Ready</gadget>
+				<gadget name="mpsetup-player8-Ready" mouseovertext="$$41686$$" type="checkButton" z="11" size1024="641 518 665 540" checkcheckedart="ui\core_ui\checkbox_green" checkuncheckedart="ui\core_ui\checkbox_red" sound="UI_DefaultPregameClickSet" checkborder1024="5 0"/>
+				<gadget name="mpsetup-player8-Highlight" type="gadget" size1024="50 512 682 569" z="1" hidden="" background="ui\eso\eso_host_game" texturecoords="0.00390625 0.7373046875 0.62109375 0.79296875"/>
+			</gadget>
+			<gadget textfontsize="14" textfont="PregameChat" tilebackground="" name="mpsetup-chat-area-chatoutput" type="simpleTextBox" size1024="61 595 671 712" textsimpleaddscrollstobottom="" scrollvert="" textcolor="255 255 255" wordwrap="" wordwrapspacing="20">
+				<vertscrollbar sliderbuttons="" slidervertical="" sliderupbtnset="sliderUpBtn_18" sliderdownbtnset="sliderDownBtn_18" sliderpipart="ui\file_system\slider_pip_horizontal" sliderareaart="ui\file_system\slider_background_vertical_18" background="ui\file_system\slider_background" z="50"/>
+			</gadget>
+			<gadget enableime="" tilebackground="" name="mpsetup-chat-area-chatinput" type="editBox" size1024="79 719 663 740" textcolor="255 255 255" textcentervert="" enterkey="" textfont="PregameChat" textfontsize="14" editboxmaxchars="200" mouseovertext="$$20032$$" sunkenbevel="" z="15"/>
+			<gadget sound="UI_brick" name="mpsetup-MapDisplay" type="button" size1024="798 146 926 274" donthighlight="" z="11" mouseovertext="This shows that map you will be playing."/>
+			<gadget name="mpsetup-CheckCustomMaps" type="checkButton" size1024="783 325 943 349" textfontsize="16" textfont="ScrollFont" mouseovertext="$$42360$$" textcolor="253 193 1" z="12">$$42359$$Custom Maps</gadget>
+			<gadget name="mpsetup-MapDropdown" mouseovertext="$$41642$$" type="textField" textfont="ScrollFont" textfontsize="16" textcolor="0 0 0" size1024="783 300 943 322" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down" z="12">
+				<dropdown/>
+			</gadget>
+			<gadget name="mpsetup-recordCheckButton" type="checkButton" size1024="782 708 936 732" textfontsize="16" mouseovertext="$$19136$$" textfont="ScrollFont" textcolor="253 193 1" z="3">$$36150$$Record Game</gadget>
+			<gadget name="mpsetup-cheatsCheckButton" type="checkButton" size1024="782 734 936 758" textfontsize="16" mouseovertext="$$19134$$" textfont="ScrollFont" textcolor="253 193 1" z="3">$$19135$$Allow Cheats</gadget>
+			<gadget name="mpsetup-HandiCheckButton" type="checkButton" size1024="782 682 936 706" textfontsize="16" mouseovertext="$$42186$$Enable Handicapping" textfont="ScrollFont" textcolor="253 193 1" z="3">$$19100$$Handicap</gadget>
+			<gadget name="mpsetup-FFACheckButton" type="checkButton" size1024="782 656 936 680" textfontsize="16" mouseovertext="$$37458$$Enable/Disable Free For All" textfont="ScrollFont" textcolor="253 193 1" z="3">$$36520$$Free For All</gadget>
+			<gadget name="mpsetup-GameTypeLabel" type="gadget" size1024="787 362 941 388" textfontsize="16" textfont="ScrollFont" textcolor="253 193 1" background="" z="3">$$36146$$Game Rules</gadget>
+			<gadget name="mpsetup-GameType" mouseovertext="$$46641$$" type="formatText" sunkenbevel="" size1024="783 393 943 417" textfontsize="16" textfont="ScrollFont" textcolor="0 0 0" z="3" background="ui\core_ui\dropdown_background2"/>
+			<gadget name="mpsetup-LabelStartingAge" type="gadget" size1024="787 433 941 457" textfontsize="16" textfont="ScrollFont" textcolor="253 193 1" background="" z="3">$$36148$$Starting Age</gadget>
+			<gadget name="mpsetup-StartingAgeSelection" type="textField" fieldreadonly="" size1024="783 465 943 489" textfontsize="16" textfont="ScrollFont" textcolor="0 0 0" z="3" listitemheight="32" background="ui\core_ui\dropdown_background2" mouseovertext="$$41643$$" dropdownbuttonart="ui\core_ui\minimize_down">
+				<dropdown/>
+			</gadget>
+			<gadget name="mpsetup-LabelDifficulty" type="gadget" size1024="800 504 928 530" textfontsize="16" textfont="ScrollFont" textcolor="253 193 1" background="" z="3">$$36147$$Difficulty</gadget>
+			<gadget name="mpsetup-DifficultyDropdown" type="textField" fieldreadonly="" size1024="783 535 943 559" textfontsize="16" textfont="ScrollFont" textcolor="0 0 0" z="3" listitemheight="32" background="ui\core_ui\dropdown_background2" mouseovertext="$$41644$$" dropdownbuttonart="ui\core_ui\minimize_down">
+				<dropdown>$$32605$$Sandbox</dropdown>
+				<dropdown>$$18297$$Easy</dropdown>
+				<dropdown>$$18298$$Moderate</dropdown>
+				<dropdown>$$18299$$Hard</dropdown>
+				<dropdown>$$18300$$Expert</dropdown>
+			</gadget>
+			<gadget name="mpsetup-LabelGameSpeed" type="gadget" size1024="787 588 941 614" textfontsize="16" textfont="ScrollFont" textcolor="253 193 1" background="" z="3">$$36149$$Game Speed</gadget>
+			<gadget name="mpsetup-GameSpeedDropdown" mouseovertext="$$37456$$" type="textField" fieldreadonly="" size1024="783 620 943 644" textfontsize="16" textfont="ScrollFont" textcolor="0 0 0" z="3" listitemheight="32" background="ui\core_ui\dropdown_background2" dropdownbuttonart="ui\core_ui\minimize_down">
+				<dropdown>$$36136$$Slow</dropdown>
+				<dropdown>$$36137$$Med</dropdown>
+				<dropdown>$$36138$$Fast</dropdown>
+			</gadget>
+			<gadget name="mpsetup-NumberPlayers" type="textField" textfont="ScrollFont" textfontsize="16" textcolor="0 0 0" size1024="805 84 921 104" listitemheight="32" background="ui\core_ui\dropdown_background2" mouseovertext="$$41646$$" dropdownbuttonart="ui\core_ui\minimize_down" z="12">
+				<dropdown>$$36122$$2 Players</dropdown>
+				<dropdown>$$36123$$3 Players</dropdown>
+				<dropdown>$$36124$$4 Players</dropdown>
+				<dropdown>$$36125$$5 Players</dropdown>
+				<dropdown>$$36126$$6 Players</dropdown>
+				<dropdown>$$36127$$7 Players</dropdown>
+				<dropdown>$$36128$$8 Players</dropdown>
+			</gadget>
+			<gadget name="mpsetup-cancelbutton" type="stateButton" bevelbutton="" statebuttonuseinternalstates="" textfont="PregameButtons" textfontsize="18" textcolor="255 255 255" textcenterhoriz="" textcentervert="" size1024="840 7 1000 39" mouseovertext="$$41683$$" z="11" texturecoords="0 0 0.625 1">
+				$$33157$$Leave Game
+				<stateentry background="ui\core_ui\button_large_normal"/>
+				<stateentry background="ui\core_ui\button_large_clicked"/>
+				<stateentry background="ui\core_ui\button_large_high"/>
+				<stateentry background="ui\core_ui\button_large_disable"/>
+			</gadget>
+			<gadget name="mpsetup-gamename-text" type="formatText" textfont="Arial" textfontsize="16" textcolor="253 193 1" textcenterhoriz="" textcentervert="" size1024="48 8 533 38" z="11" mouseovertext="$$22024$$This is the name of the game."/>
+			<gadget name="mpsetup-IPAddressLabel" type="formatText" textfont="ScrollFont" textcolor="255 255 255" textfontsize="16" size1024="542 8 635 28" z="11">$$20241$$IP Address:</gadget>
+			<gadget name="mpsetup-IPAddress" type="formatText" textfont="ScrollFont" textcolor="255 255 255" textfontsize="16" size1024="542 23 676 43" z="11">127.0.0.1</gadget>
+		</gadget>
+	</gadget>
+</layout>

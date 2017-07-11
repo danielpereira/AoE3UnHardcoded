@@ -282,7 +282,7 @@ code_cave_begin 00461BD8h
     mov eax,[eax]
     
     bb_check:
-    invoke TableIDExists,5,eax
+    invoke TableIDExists,BIGBUTTON_CIVS,eax
     test eax,eax
     je bb_back
     
@@ -291,7 +291,7 @@ code_cave_begin 00461BD8h
     test eax,eax
     je_rel32 00695955_1
     mov eax,[eax+08h]
-    invoke TableIDExists,6,eax
+    invoke TableIDExists,NO_BIGBUTTON_BLDS,eax
     test eax,eax
     je_rel32 00695955_2
     
@@ -347,12 +347,17 @@ code_cave_end 0052B587h
 
 ; Native Civs Patch #4 
 code_cave_begin 00453D5Eh
-    mov edx,eax
+    cmp dword ptr ds:[esp+4], 0
+	je npatch4_check
+	cmp eax, dword ptr ds:[00C6FB5Ch]
+	je npatch4_end
+
+	npatch4_check:
     invoke TableIDExists, NATIVE, eax
     test eax, eax
     jne npatch4_end
-    cmp dword ptr ds:[esp+4], 0
-    jmp_rel32 00453D63
+	xor al,al
+	retn 4
     
     npatch4_end:
     mov al, 1
@@ -431,7 +436,6 @@ PatchNativeCivs proc
 	invoke PatchAddress, hProcess, loc_0052B588, 0052B588h, 1
 
 	patch_code_cave 00453D5Eh, 00453D62h
-	invoke PatchAddress, hProcess, loc_00453D63, 00453D63h, 1
 
 	patch_code_cave 004904B5h, 004904BAh
 	invoke PatchAddress, hProcess, loc_00679E66, 00679E66h, 1
@@ -487,7 +491,7 @@ code_cave_begin 008DABA3h
     invoke getCivIDs, NATIVE
     mov ecx, dword ptr ds:[00C66234h]
     mov ecx, [ecx+140h]
-    invoke getCivIDs, 5
+    invoke getCivIDs, BIGBUTTON_CIVS
     mov edx, dword ptr ds:[00C66234h]
     jmp_rel32 008DABA9
 code_cave_end 008DABA8h

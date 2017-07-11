@@ -47,6 +47,61 @@ getids_end:
 
 getIDs ENDP
 
+getFarmRadiusData PROC stdcall id:DWORD
+	push edi
+	push esi
+	push ebx
+	xor eax,eax
+	mov edi, pUHCInfo
+	mov ecx,[edi].UHCInfo.FarmRadiusInfoCount
+	test ecx,ecx
+	je getfarmradiusdata_end
+	mov ebx, UHCRefTable
+	lea esi,[edi].UHCInfo.Tables
+	imul ebx,FARM
+	lea esi,[esi+ebx]
+	mov ecx,[esi]
+	test ecx,ecx
+	je getfarmradiusdata_end
+	mov ebx,id
+	mov esi,[esi+08]
+	dec ecx
+
+getfarmradiusdata_loop1:
+	mov edx,[esi+ecx*4]
+	cmp edx,ebx
+	je getfarmradiusdata_loop_end
+	dec ecx
+	jns getfarmradiusdata_loop1
+	jmp getfarmradiusdata_end
+
+getfarmradiusdata_loop_end:
+	mov ebx,ecx
+	inc ebx
+	mov ecx,[edi].UHCInfo.FarmRadiusInfoCount
+	mov edi,[edi].UHCInfo.FarmRadiusInfo
+	dec ecx
+
+getfarmradiusdata_loop2:
+	mov esi,[edi]
+	cmp esi,ebx
+	je getfarmradiusdata_loop2_found
+	add edi,UHCFarmRadius
+	dec ecx
+	jns getfarmradiusdata_loop2
+	jmp getfarmradiusdata_end
+
+getfarmradiusdata_loop2_found:
+	mov eax,edi	
+
+getfarmradiusdata_end:
+	pop ebx
+	pop esi
+	pop edi
+	ret
+
+getFarmRadiusData ENDP
+
 ; Farm animation
 ; Enable user-created buildings to play farming animations
 
@@ -128,18 +183,19 @@ code_cave_end 0050DE39h
 ;Farm Patch #3
 code_cave_begin 0073D41Ah
     je farm_patch3_sacred_field
-    mov edx, eax
     invoke TableIDExists, FARM, ebx
     test eax, eax
     jne farm_patch3_mill
     invoke TableIDExists, RECTFARM, ebx
     test eax, eax
     jne farm_patch3_mill
-    mov eax, edx
+    mov eax, dword ptr ds:[00C66234h]
+	mov eax, dword ptr [eax+140h]
     jmp_rel32 0073D427
     
 farm_patch3_mill:
-    mov eax, edx
+    mov eax, dword ptr ds:[00C66234h]
+	mov eax, dword ptr [eax+140h]
     jmp_rel32 0073D49B
     
 farm_patch3_sacred_field:
@@ -160,16 +216,16 @@ code_cave_end 008CECA4h
 
 ;Farm Patch #5    
 code_cave_begin 009DDB79h
-    mov ebx, eax
     invoke TableIDExists, FARM, ecx
     test eax, eax
-    mov eax, ebx
+	mov eax, dword ptr ds:[00C66234h]
+	mov eax,[eax+140h]
+	mov ecx,[edi+5Ch]
+	mov ecx,[ecx+4]
     je farm_patch5_back
-    xor ebx, ebx
     jmp_rel32 009DDBB4
     
 farm_patch5_back:
-    xor ebx, ebx
     cmp ecx, [eax+5E58h]
 code_cave_end 009DDB7Fh
 
@@ -218,10 +274,12 @@ code_cave_begin 009DDD80h
     mov ecx, [edi+5Ch]
     mov eax, [edx+140h]
     mov ecx, [ecx+04]
-    mov ebp, eax
     invoke TableIDExists, RECTFARM, ecx
     test eax, eax
-    mov eax, ebp
+	mov ecx, [edi+5Ch]
+	mov ecx, [ecx+04]
+	mov edx, dword ptr ds:[00C66234h]
+	mov eax, [edx+140h]
     jne_rel32 009DDD9E
     jmp_rel32 009DDD92
 code_cave_end 009DDD86h
@@ -341,6 +399,42 @@ PatchFarmAnim proc
 	ret
 PatchFarmAnim endp
 
+; Farm Radius
+; Allows user-created mill-like buildings to have a custom settler walking radius
+
+code_cave_begin 009DE04Dh
+	mov ecx,[edi+5Ch]
+	mov ecx,[ecx+4]
+	invoke getFarmRadiusData,ecx
+	test eax,eax
+	je fr_patch_back
+	mov edx,eax
+	mov ecx,[edx+04]
+	push ecx
+	push ebp
+	push 2
+	mov ecx,00C66588h
+	call_rel32 00422648
+	fstp dword ptr [esp+14h]
+	mov edx,[edx+08]
+	jmp_rel32 009DE06B
+
+fr_patch_back:
+	mov ecx,ds:[00C0BBE0h]
+code_cave_end 009DE053h
+
+public stdcall PatchFarmRadius
+PatchFarmRadius proc
+	
+	patch_code_cave 009DE04Dh, 009DE053h
+	invoke PatchAddress, hProcess, sub_00422648, 00422648h, 1
+	invoke PatchAddress, hProcess, loc_009DE06B, 009DE06Bh, 1
+
+	ret
+
+PatchFarmRadius endp
+
+
 ; Market
 ; Allows user-created buildings to use market features
 
@@ -403,6 +497,38 @@ PatchMarketUnits proc
 	ret
 PatchMarketUnits endp
 
+
+; Tactic Switching
+; Allows user-created buildings to switch tactics implemented through protounicommands
+
+code_cave_begin 005C161Ch
+	je_rel32 005C10F1
+	invoke TableIDExists, TACTIC_SWITCHING, eax
+	test eax,eax
+	jne_rel32 005C1A73
+code_cave_end 005C1622h
+
+code_cave_begin 006949CDh
+	mov ecx,esi
+	call_rel32 0044CB0A_1
+	invoke TableIDExists, TACTIC_SWITCHING, eax
+	test eax,eax
+	jne_rel32 00694CD4
+	mov eax, dword ptr ds:[00C66234h]
+code_cave_end 006949D2h
+
+public stdcall PatchTacticSwitching
+PatchTacticSwitching proc
+	patch_code_cave 005C161Ch, 005C1622h
+	invoke PatchAddress, hProcess, loc_005C10F1, 005C10F1h, 1
+	invoke PatchAddress, hProcess, loc_005C1A73, 005C1A73h, 1
+
+	patch_code_cave 006949CDh, 006949D2h
+	invoke PatchAddress, hProcess, sub_0044CB0A_1, 0044CB0Ah, 1
+	invoke PatchAddress, hProcess, loc_00694CD4, 00694CD4h, 1
+	ret
+PatchTacticSwitching endp
+
 ; Unit check
 ; Get farm and market IDs
 
@@ -415,7 +541,9 @@ code_cave_begin 005EE78Bh
 	mov ecx, edi
 	invoke getIDs, MARKET
 	mov ecx, edi
-	invoke getIDs, 6
+	invoke getIDs, NO_BIGBUTTON_BLDS
+	mov ecx, edi
+	invoke getIDs, TACTIC_SWITCHING
 code_cave_end 005EE78Bh
 
 public stdcall PatchUnitCheck

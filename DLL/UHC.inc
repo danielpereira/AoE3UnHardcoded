@@ -7,6 +7,9 @@ RECTFARM = 1
 MARKET = 2
 ASIAN = 3
 NATIVE = 4
+TACTIC_SWITCHING = 5
+BIGBUTTON_CIVS = 6
+NO_BIGBUTTON_BLDS = 7
 
 UHCRefTable struct
 	RefCount dd ?
@@ -27,7 +30,15 @@ UHCCheat ends
 
 UHCCheatPtr typedef ptr UHCCheat
 
-TABLE_COUNT = 7
+UHCFarmRadius struct
+	RefIndex dd ?
+	X dd ?
+	Z dd ?
+UHCFarmRadius ends
+
+UHCFarmRadiusPtr typedef ptr UHCFarmRadius
+
+TABLE_COUNT = 8
 GROUP_COUNT = 8
 
 UHCInfo struct
@@ -45,6 +56,8 @@ UHCInfo struct
 	AsianCivNames dd ?
 	NativeCivCount dd ?
 	NativeCivNames dd ?
+	FarmRadiusInfoCount dd ?
+	FarmRadiusInfo UHCFarmRadiusPtr ?
 UHCInfo ends
 
 UHCInfoPtr typedef ptr UHCInfo

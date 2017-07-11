@@ -11,5 +11,5 @@ typedef enum RESOURCE_ID {
 	EXPORT
 } RESOURCE_ID;
 
-extern char(__thiscall *const CheatAddResource)(void* playerData, __int32 resourceID, float resourceAmount, __int8 unk);
-extern void(__cdecl *const CheatSpawnUnit)(void* playerData, char* protoUnitName);
+extern char(__thiscall * const CheatAddResource)(void* playerData, __int32 resourceID, float resourceAmount, __int8 unk);
+extern void(__cdecl * const CheatSpawnUnit)(void* playerData, char* protoUnitName);

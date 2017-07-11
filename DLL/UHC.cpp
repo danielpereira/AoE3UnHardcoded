@@ -181,6 +181,26 @@ UHCInfo::UHCInfo() {
 			}
 		}
 
+		else if (!lstrcmpiA(key.Name, "farmingRadius")) {
+			Enable |= ENABLE_FARM_RADIUS;
+
+			size_t i = 0;
+
+			while (i + 2 < key.Values.GetNumElements()) {
+				UHCFarmRadius aux;
+				aux.RefIndex = atoi(key.Values[i]);
+				aux.X = (float) atof(key.Values[++i]);
+				aux.Z = (float) atof(key.Values[++i]);
+				FarmRadiusInfo.PushBack(aux);
+			}
+
+		}
+
+		else if (!lstrcmpiA(key.Name, "tacticSwitching")) {
+			Enable |= ENABLE_TACTIC_SWITCHING;
+			SetRefTable(Tables[TacticSwitching], key);
+		}
+
 		else if (lstrcmpiA(key.Name, "basePop") == 0 && key.Values.GetNumElements() == 1) {
 			Enable |= ENABLE_POP_LIMIT;
 			BasePop = atoi(key.Values[0]);
@@ -213,6 +233,9 @@ UHCInfo::UHCInfo() {
 
 		else if (lstrcmpiA(key.Name, "enableAllTeams") == 0)
 			Enable |= ENABLE_TEAM_LIMIT;
+
+		else if (lstrcmpiA(key.Name, "removeFameRestriction") == 0)
+			Enable |= REMOVE_FAME_RESTRICTION;
 	}
 }
 
@@ -309,6 +332,12 @@ void APIENTRY UHCMain() {
 		if (enable & ENABLE_FARM_ANIM)
 			PatchFarmAnim();
 
+		if (enable & ENABLE_FARM_RADIUS)
+			PatchFarmRadius();
+
+		if (enable & ENABLE_TACTIC_SWITCHING)
+			PatchTacticSwitching();
+
 		if (enable & ENABLE_PATCH_MARKET)
 			PatchMarketUnits();
 
@@ -338,6 +367,9 @@ void APIENTRY UHCMain() {
 
 		if (enable & ENABLE_REGISTRY_PATH)
 			PatchRegistryPath();
+
+		if (enable & REMOVE_FAME_RESTRICTION)
+			PatchFameRestriction();
 
 		// Load .upl plugins
 		pUHCInfo->LoadPlugins();

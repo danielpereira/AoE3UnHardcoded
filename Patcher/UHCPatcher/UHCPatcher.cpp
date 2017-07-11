@@ -119,16 +119,16 @@ UHC_PATCH_RESULT PatchExecutable(HWND hwndDlg) {
 
 	lstrcpyW(dirBuffer, exePath);
 
-	int lastSlashIndex;
+	int lastSlashIndex = lstrrchrW(dirBuffer, '\\');
+	dirBuffer[lastSlashIndex + 1] = '\0';
+	lstrcatW(dirBuffer, cfgFileRelPath);
 
-	for (int i = lstrlen(dirBuffer) - 1, stop = 0; i >= 0 && !stop; i--) {
-		if (dirBuffer[i] == '\\') {
-			lastSlashIndex = i;
-			dirBuffer[i + 1] = '\0';
-			lstrcatW(dirBuffer, cfgFileRelPath);
-			stop = 1;
-		}
-	}
+	int parentDirSlashIndex = lstrrchrW(dirBuffer, '\\');
+	dirBuffer[parentDirSlashIndex] = '\0';
+
+	CreateDirectoryW(dirBuffer, NULL);
+
+	dirBuffer[parentDirSlashIndex] = '\\';
 
 	cfgFile->Parse(dirBuffer);
 	cfgFile->ProcessData();
@@ -154,14 +154,6 @@ UHC_PATCH_RESULT PatchExecutable(HWND hwndDlg) {
 		CloseHandle(hLib);
 
 	return UHC_PATCH_SUCCESS;
-}
-
-BOOL StringCchLength(LPWSTR psz, size_t cchMax, size_t *pcch) {
-	size_t i;
-
-	for (i = 0, (*pcch) = 0; i < cchMax && psz[i] != '\0'; i++, (*pcch)++);
-
-	return (psz[i] == '\0');
 }
 
 BOOL ReadCFGPathFromExe(WCHAR* cfgFilePath) {
@@ -208,10 +200,10 @@ BOOL IsAValidExecutable(WCHAR* lpExePath, BOOL* backupExists) {
 			if (lpExePath[i] == '.') {
 				if (!lstrcmpiW(&lpExePath[i], L".exe")) {
 					HANDLE exeHandle = CreateFileW(lpExePath, 0, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+					DWORD executableSize = GetFileSize(exeHandle, NULL);
+					CloseHandle(exeHandle);
 
-					if (GetFileSize(exeHandle, NULL) != 11598648) {
-						CloseHandle(exeHandle);
-
+					if (executableSize != 11598648 && executableSize != 11591680) {
 						if (!(MessageBox(NULL, L"The supplied executable doesn't seem to be a valid AoE3 TAD executable\nDo you want to proceed with patching this file, anyway?", UHC_NAME, MB_ICONQUESTION | MB_YESNO) == IDYES))
 							return FALSE;
 					}
@@ -353,7 +345,8 @@ INT_PTR CALLBACK DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 				case IDC_AILIMIT:
 				case IDC_REVBANNERS:
 				case IDC_IGNOREREG:
-				case IDC_TEAMLIMIT: {
+				case IDC_TEAMLIMIT: 
+				case IDC_FAME_RESTRICTION: {
 					int chkBoxID = LOWORD(wParam);
 
 					if (IsDlgButtonChecked(hwndDlg, chkBoxID))

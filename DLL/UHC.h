@@ -9,7 +9,7 @@ struct UHCRefTable {
 	DWORD *RefIDs;
 };
 
-#define TABLE_COUNT 7
+#define TABLE_COUNT 8
 
 enum UHCTableName {
 	Farm,
@@ -17,6 +17,7 @@ enum UHCTableName {
 	Market,
 	Asian,
 	Native,
+	TacticSwitching,
 	BigButtonCivs,
 	NoBigButtonBlds
 };
@@ -63,6 +64,11 @@ struct UHCCheat {
 	LPVOID FunctionPtr;
 };
 
+struct UHCFarmRadius {
+	DWORD RefIndex;
+	float X, Z;
+};
+
 #define ENABLE_AI_LIMIT 0x1
 #define ENABLE_CHEAT 0x2
 #define ENABLE_DECK_LIMIT 0x4
@@ -76,6 +82,9 @@ struct UHCCheat {
 #define ENABLE_NATIVE_CIVS 0x400
 #define ENABLE_ASIAN_CIVS 0x800
 #define ENABLE_BIGBUTTON 0x1000
+#define ENABLE_FARM_RADIUS 0x2000
+#define ENABLE_TACTIC_SWITCHING 0x4000
+#define REMOVE_FAME_RESTRICTION 0x8000
 
 class UHCInfo {
 public:
@@ -87,6 +96,7 @@ public:
 	TArray<LPWSTR> Personalities;
 	TArray<LPWSTR> AsianCivNames;
 	TArray<LPWSTR> NativeCivNames;
+	TArray<UHCFarmRadius> FarmRadiusInfo;
 
 	UHCInfo();
 	~UHCInfo();
@@ -126,6 +136,9 @@ extern "C" {
 	void __stdcall PatchAsianCivs();
 	void __stdcall PatchNativeCivs();
 	void __stdcall PatchBigButton();
+	void __stdcall PatchFarmRadius();
+	void __stdcall PatchTacticSwitching();
+	void __stdcall PatchFameRestriction();
 
 	//void __stdcall PatchDumpSyscall();
 }

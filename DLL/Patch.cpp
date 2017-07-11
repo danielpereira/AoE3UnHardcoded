@@ -2,7 +2,7 @@
 #include "UHC.h"
 
 extern "C" BOOL __stdcall TableIDExists(DWORD dwTable, int id) {
-	if (dwTable < GROUP_COUNT)
+	if (dwTable >= TABLE_COUNT)
 		return FALSE;
 
 	UHCRefTable& table = pUHCInfo->Tables[dwTable];

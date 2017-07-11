@@ -152,6 +152,7 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="stringUtilities.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TArray.h" />
     <ClInclude Include="UHCPatcher.h" />
@@ -164,6 +165,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="stringUtilities.cpp" />
     <ClCompile Include="UHCPatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
