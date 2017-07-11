@@ -31,7 +31,7 @@ The development progress can be checked in the TODO file in root directory of th
 How to use
 ----------
 
-In order to use the code provided by this project, you'll need to download the Patcher in the /Patcher directory and open your Age of Empires 3 TAD .exe with it
+In order to use the code provided by this project, you'll need to download the latest stable Patcher in the _/Release_ directory and open your Age of Empires 3 TAD .exe with it.
 
 For more information about the Patcher, check the README.md file at the /Patcher directory.
 

@@ -16,12 +16,14 @@ Projects completed
 * Tribal Council Aging Up
 * GUI for the Patcher
 * Plugin system
+* Set farming radius manually
+* Rice Paddy hardcoding/Building Tactic switching
+* Usage of Fame resource in ProtoActions
 
 Projects in progress
 --------------------
   
-* Set farming radius manually
-* Rice Paddy hardcoding/Building Tactic switching
+* _TBD_
   
 Projects not yet started
 ------------------------

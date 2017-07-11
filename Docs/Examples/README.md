@@ -1,12 +1,14 @@
 # Examples
 
-This folder contains Visual C++ 2015 projects of demonstration UHC plugins, with the goal of explaining how basic custom syscalls and cheats can be implemented through the UHC Patch Plugin System.
+This folder contains examples of the usage of some of the UHC Patch features, most specifically, the UHC Plugin System, the UHC Configuration File and the Team Limit patch.
 
-Feel free to explore, analyze and even use in your modding projects the source codes of these examples.
+Feel free to explore, analyze and even use in your modding projects the source codes of these examples, when applicable.
 
 Contents
 --------
 
 * **UHCPluginDemo**: Implementation of two basic custom syscalls, aiTest and aiMsgBox, and of a complex cheat code, using AoE3 syscalls.
 * **UHCPluginDemo2**: Implementation of a basic cheat code using AoE3 cheat functions.
+* **Configuration File**: An example of the usage of the UHC Configuration file.
+* **Team Limit**: Pre-edited uiMPGameSetupPage.xml and uimpesogamesetuppage2.xml files for making the Team Limit patch functional in Multiplayer.
 
