@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 ï»¿# AoE3UnHardcode Patch Configuration File
-=======
-# AoE3UnHardcode Patch Configuration File
->>>>>>> parent of e830bd6... Cleaning
 
 The UHC Configuration file is a file that is read before the game starts up and that allows modders to define which UHC Patch features should be loaded and to extend or change hardcoded properties that can't be generalized just by pure coding, like farming animations, proper market behavior, maximum population capacity and so on...
 
@@ -23,19 +19,11 @@ The UHC Configuration file should follow the following structure:
     patchSetting2
     ...
 
-<<<<<<< HEAD
 As for UHC Patch v1.5, colons (â€œ:â€) should not be used to denote property names and the name of some properties have been changed. The Patcher should be able to convert a pre-v1.5 configuration file, so it can be read by the latest version of the UHC Patch, but, in case it doesnâ€™t, such file will have to be manually converted.
 
 Each one of the available properties of the UHC Configuration Files belongs to one of the following categories:
 * **Multi-value properties** - Accept a finite set of items and are used to assign a property (or a set of properties) to the given set of items, which may represent units or civilizations.
 * **Single-value properties** - Accept only one value and are used to assign a particular value to one of the settings of the patch or of the game itself. Those properties are denoted by an equal (â€œ=â€) sign, that explicitly indicates that a single particular value should be read and assigned to that property, as seen in the example code above. 
-=======
-As for UHC Patch v1.5, colons (“:”) should not be used to denote property names and the name of some properties have been changed. The Patcher should be able to convert a pre-v1.5 configuration file, so it can be read by the latest version of the UHC Patch, but, in case it doesn’t, such file will have to be manually converted.
-
-Each one of the available properties of the UHC Configuration Files belongs to one of the following categories:
-* **Multi-value properties** - Accept a finite set of items and are used to assign a property (or a set of properties) to the given set of items, which may represent units or civilizations.
-* **Single-value properties** - Accept only one value and are used to assign a particular value to one of the settings of the patch or of the game itself. Those properties are denoted by an equal (“=”) sign, that explicitly indicates that a single particular value should be read and assigned to that property, as seen in the example code above. 
->>>>>>> parent of e830bd6... Cleaning
 * **Struct properties** - Assign additional (and usually optional) values to particular items that are defined in an existing multi-value property. An item to which values will be assigned through a struct property is denoted by its index in the existing multi-value property, which is followed by the values that should be assigned to it.
 * **Patch Settings** - Enable a particular setting or option of the UHC Patch, and are usually set in the UHC Configuration File by the UHC Patcher.
 
@@ -52,26 +40,16 @@ Supported Properties
 * **tacticSwitching** - Defines the (additional) buildings that should support tactic switching through ProtoUnitCommands, like the Factory and the Rice Paddy do, in the original game.
 
 ### Single-value properties
-<<<<<<< HEAD
 * **basePop** - Defines the maximum base population to be used by the game. If itâ€™s not set, the default value is 200.
 * **extraPop** - Defines the maximum extra population to be used by the game. If itâ€™s not set, the default value is 50.
 * **deckCardCount** - Defines the maximum possible number of cards in a deck. If itâ€™s not set, the default value is 25.
-=======
-* **basePop** - Defines the maximum base population to be used by the game. If it’s not set, the default value is 200.
-* **extraPop** - Defines the maximum extra population to be used by the game. If it’s not set, the default value is 50.
-* **deckCardCount** - Defines the maximum possible number of cards in a deck. If it’s not set, the default value is 25.
->>>>>>> parent of e830bd6... Cleaning
 
 ### Struct properties
 * **farmingRadius** - Defines the maximum area in which villagers should be able to walk, while gathering resources from particular buildings defined in the _enableFarmAnim_ property.
 
 ### Patch Settings
 * **noAILimit** - Removes the hardcoded 14 AI/Civilization limit by making the game read all .personality files in the from the AI directory defined in the .exe (which should be \AI3, by default).
-<<<<<<< HEAD
 * **customRevolutionBanners** - Allows new revolutions to have banners above the revolutionaryâ€™s portrait in the Revolution UI.
-=======
-* **customRevolutionBanners** - Allows new revolutions to have banners above the revolutionary’s portrait in the Revolution UI.
->>>>>>> parent of e830bd6... Cleaning
 * **ignoreRegistryPath** - Makes the game read the AoE3 files from the folder in which the AoE3 .exe is located, instead of looking for a working path in the registry.
 * **enableAllTeams** - Enables team options 3 and 4 for Single Player and Multiplayer games.
 * **customSyscalls** - Allows the UHC Patch to load and register custom syscalls implemented through plugins.
