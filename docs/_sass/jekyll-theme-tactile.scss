@@ -106,12 +106,13 @@ header h2 {
 
 a.button {
   display: block;
-  float: center;
+  float: left;
   width: 150px;
   padding: 12px 8px 12px 8px;
   margin-right: 14px;
   font-size: 15px;
   font-weight: bold;
+  text-align: center;
   line-height: 25px;
   color: #303030;
   background: #fdfdfd; /* Old browsers */
