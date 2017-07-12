@@ -7,9 +7,10 @@
 
 ## Possible new gameplay features
 - [ ] Extend Selection Limit
+- [ ] Random Civilization Selection
 
 ## Modding
-- [ ] Make conversion ability work for units other than Threasure Guardians
+- [ ] Make conversion ability work for units other than Treasure Guardians
 - [ ] Implement support for the addition of new protounit commands
 - [ ] Implement support for the addition of new unit types
 - [ ] Implement support for assigning UI icons to unit types
