@@ -108,7 +108,7 @@ a.button {
   display: block;
   float: left;
   width: 150px;
-  padding: 7px 8px 12px 8px;
+  padding: 12px 8px 12px 8px;
   margin-right: 14px;
   font-size: 15px;
   font-weight: bold;
@@ -151,8 +151,9 @@ a.button:hover {
 
 a.button span {
   display: block;
-  height: 15px;
+  height: 23px;
   padding-left: 0px;
+  vertical-align: middle
 }
 
 #download-zip span {
