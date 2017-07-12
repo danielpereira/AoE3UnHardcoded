@@ -1,36 +1,27 @@
 # To Do 
 
-Projects completed
---------------------
+## Gameplay bugs
+- [ ] Heroes revive when stances are changed through hotkeys, despite of how much HPs they have
+- [ ] Teams 3 and 4 aren't shown properly for all players in a MP lobby
+- [ ] Investigate ways to improve the performance of the game
 
-* AI/Civilization Limit
-* Revolutionary Banners
-* Population Limit
-* HC card limit
-* Patcher
-* Farming animations
-* Market hardcoding
-* Export UI for Asian civs
-* Wonder Aging Up
-* Fire Pit UI for Native civs
-* Tribal Council Aging Up
-* GUI for the Patcher
-* Plugin system
-* Set farming radius manually
-* Rice Paddy hardcoding/Building Tactic switching
-* Usage of Fame resource in ProtoActions
+## Possible new gameplay features
+- [ ] Extend Selection Limit
 
-Projects in progress
---------------------
-  
-* _TBD_
-  
-Projects not yet started
-------------------------
+## Modding
+- [ ] Make conversion ability work for units other than Threasure Guardians
+- [ ] Implement support for the addition of new protounit commands
+- [ ] Implement support for the addition of new unit types
+- [ ] Implement support for assigning UI icons to unit types
+- [ ] Make Fame resource icon be shown in cards that cost that resource, somehow
+- [ ] Make Fame, Experience, and Shipment icons be shown in Politician screen
+- [ ] Add support for widescreen interface
+- [ ] Prevent Transform protounitcommand from affecting all selected units/buildings
+- [ ] Investigate ways to minimize the occurence of the 'replacetexture' bug
+- [ ] Implement support for assigning Export UI/Fire Pit UI for non-Asian/non-Native civs
 
-* Export UI and Fire Pit UI for non-Asian/non-Native civs
-* New Protounit Commmands
-* New Abilities
-* Selection limit
-* Hardcoding in MaxZoom property in gamey.cfg
-* etc.
+## Trigger scripting
+- [ ] Allow 'Modify Proto Unit' trigger to affect Attack and Rate of Fire
+
+## Misc
+- [ ] Allow the MaxZoom property in gamey.cfg to receive values greater than 60.0
