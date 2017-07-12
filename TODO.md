@@ -20,9 +20,15 @@
 - [ ] Prevent Transform protounitcommand from affecting all selected units/buildings
 - [ ] Investigate ways to minimize the occurence of the 'replacetexture' bug
 - [ ] Implement support for assigning Export UI/Fire Pit UI for non-Asian/non-Native civs
+- [ ] Add 'Security Mode' to the Plugin System
 
 ## Trigger scripting
 - [ ] Allow 'Modify Proto Unit' trigger to affect Attack and Rate of Fire
+
+## Patcher
+- [ ] Add command line options
+- [ ] Implement a feature to allow changing, from the Patcher, the names of files to be loaded by the game 
+- [ ] Consider remaking the GUI in a better framework
 
 ## Misc
 - [ ] Allow the MaxZoom property in gamey.cfg to receive values greater than 60.0
