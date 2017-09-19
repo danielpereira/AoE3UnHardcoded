@@ -4,10 +4,13 @@
 - [ ] Heroes revive when stances are changed through hotkeys, despite of how much HPs they have
 - [ ] Teams 3 and 4 aren't shown properly for all players in a MP lobby
 - [ ] Investigate ways to improve the performance of the game
+- [ ] Investigate ways of improving RM generation, to avoid bad mine, herdable and huntable placement
+- [ ] Add support for widescreen UIs
 
 ## Possible new gameplay features
 - [ ] Extend Selection Limit
 - [ ] Random Civilization Selection
+- [ ] Native support to 55 minute Treaty (NR 55)
 
 ## Modding
 - [ ] Make conversion ability work for units other than Treasure Guardians
@@ -21,6 +24,9 @@
 - [ ] Investigate ways to minimize the occurence of the 'replacetexture' bug
 - [ ] Implement support for assigning Export UI/Fire Pit UI for non-Asian/non-Native civs
 - [ ] Add 'Security Mode' to the Plugin System
+- [ ] Allow units to be classified as Idle Villagers without having AbstractVillager class (by allowing the ValidIdleVillager unit type to work without the AbstractVillager unit type)
+- [ ] Allow buildings to use animations Rice Paddy-like animations
+- [ ] Investigate the possibility of adding new resources
 
 ## Trigger scripting
 - [ ] Allow 'Modify Proto Unit' trigger to affect Attack and Rate of Fire
