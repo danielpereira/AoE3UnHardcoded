@@ -11,6 +11,7 @@
 - [ ] Extend Selection Limit
 - [ ] Random Civilization Selection
 - [ ] Native support to 55 minute Treaty (NR 55)
+- [ ] Native support for Regicide and Capture the Relic (which is mentioned in the executable) game modes
 
 ## Modding
 - [ ] Make conversion ability work for units other than Treasure Guardians
@@ -28,9 +29,10 @@
 - [ ] Allow buildings to use animations Rice Paddy-like animations
 - [ ] Investigate the possibility of adding new resources
 
-## Trigger scripting
+## Trigger and RM scripting
 - [ ] Allow 'Modify Proto Unit' trigger to affect Attack and Rate of Fire
-
+- [ ] Analyze the possibility of allowing the detection of Supremacy game mode through sycalls
+ 
 ## Patcher
 - [ ] Add command line options
 - [ ] Implement a feature to allow changing, from the Patcher, the names of files to be loaded by the game 
