@@ -234,8 +234,7 @@ code_cave_begin 008D6AC4h
     invoke TableIDExists, ASIAN, eax
     test eax, eax
     je_rel32 008D6B0C
-    jmp_rel32 008D6AF7
-code_cave_end 008D6AC9h
+code_cave_end 008D6AF7h
 
 ; Asian Civs Patch #3
 code_cave_begin 00818284h
@@ -246,24 +245,21 @@ code_cave_begin 00818284h
     invoke checkWonders, esi, edi
     test eax, eax
     je_rel32 008182EB
-    jmp_rel32 008182A9
-code_cave_end 00818288h
+code_cave_end 008182A9h
 
 public stdcall PatchAsianCivs
 PatchAsianCivs proc
 	patch_code_cave 00454F1Dh,  00454F22h
 	invoke PatchAddress, esi, loc_00454F2A,  00454F2Ah,  1
 
-	patch_code_cave 008D6AC4h,  008D6AC9h
+	patch_code_cave 008D6AC4h,  008D6AF7h
 	invoke PatchAddress,  hProcess,  loc_008D6ACC,  008D6ACCh,  1
     invoke PatchAddress,  hProcess,  loc_008D6B0C,  008D6B0Ch,  1
-    invoke PatchAddress,  hProcess,  loc_008D6AF7,  008D6AF7h,  1
 
-	patch_code_cave 00818284h,  00818288h
+	patch_code_cave 00818284h,  008182A9h
 	invoke PatchAddress,  hProcess,  sub_0049A2D8,  0049A2D8h,  1
     invoke PatchAddress,  hProcess,  loc_0081828D,  0081828Dh,  1
     invoke PatchAddress,  hProcess,  loc_008182EB,  008182EBh,  1
-    invoke PatchAddress,  hProcess,  loc_008182A9,  008182A9h,  1
 	ret
 PatchAsianCivs endp
 
@@ -296,16 +292,14 @@ code_cave_begin 00461BD8h
     je_rel32 00695955_2
     
     bb_back:
-    jmp_rel32 00461BDE
-code_cave_end 00461BDDh
+code_cave_end 00461BDEh
 
 public stdcall PatchBigButton
 
 PatchBigButton proc
 
-	patch_code_cave 00461BD8h, 00461BDDh
+	patch_code_cave 00461BD8h, 00461BDEh
 	invoke PatchAddress,hProcess,loc_00695955_1,00695955h,1
-	invoke PatchAddress,hProcess,loc_00461BDE,00461BDEh,1
 	invoke PatchAddress,hProcess,loc_00695955_2,00695955h,1
 	ret
 PatchBigButton endp
@@ -319,8 +313,7 @@ code_cave_begin 005126C1h
     invoke getCivIDs, NATIVE
     mov ecx,dword ptr ds:[00C66234h]
     mov ecx,[ecx+140h]
-    jmp_rel32 005126C7
-code_cave_end 005126C6h
+code_cave_end 005126C7h
  
 ; Native Civs Patch #2 
 code_cave_begin 0051271Fh
@@ -342,8 +335,7 @@ code_cave_begin 0052B581h
     mov ecx, edi
     invoke NatCivCheck1, ebx
     lea ecx, [esp+100h]
-    jmp_rel32 0052B588
-code_cave_end 0052B587h
+code_cave_end 0052B588h
 
 ; Native Civs Patch #4 
 code_cave_begin 00453D5Eh
@@ -370,8 +362,7 @@ code_cave_begin 004904B5h
     invoke TableIDExists, NATIVE, eax
     test eax, eax
     jne_rel32 00679E66_1
-    jmp_rel32 004904BB
-code_cave_end 004904BAh
+code_cave_end 004904BBh
 
 ; Native Civs Patch #6   
 code_cave_begin 004ECD6Bh
@@ -380,8 +371,7 @@ code_cave_begin 004ECD6Bh
     invoke TableIDExists, NATIVE, eax
     test eax, eax
     jne_rel32 004ECD7D_1
-    jmp_rel32 004ECD73
-code_cave_end 004ECD71h
+code_cave_end 004ECD73h
 
 ; Native Civs Patch #7   
 code_cave_begin 0067B0A5h
@@ -390,17 +380,16 @@ code_cave_begin 0067B0A5h
     invoke TableIDExists, NATIVE, eax
     test eax, eax
     jne_rel32 0067B0BB_1
-    jmp_rel32 0067B0AD
-code_cave_end 0067B0AAh
+code_cave_end 0067B0ADh
 
 ; Native Civs Patch #8    
 code_cave_begin 008D47C9h
-    je_rel32 008D47CF
+    je npatch8_end
     invoke TableIDExists, NATIVE, eax
     test eax, eax
     je_rel32 008D4894
-    jmp_rel32 008D47CF_1
-code_cave_end 008D47CEh
+npatch8_end:
+code_cave_end 008D47CFh
 
 ; Native Civs Patch #9    
 code_cave_begin 008D52AFh
@@ -408,7 +397,6 @@ code_cave_begin 008D52AFh
     invoke TableIDExists, NATIVE, eax
     test eax, eax
     jne_rel32 008D53B4_1
-    jmp_rel32 008D52B5
 code_cave_end 008D52B5h
 
 ; Native Civs Patch #10     
@@ -419,52 +407,42 @@ code_cave_begin 0081ADEBh
     test eax, eax
     jne_rel32 0081AE59
     cmp [esp+10h], ebx
-    jmp_rel32 0081ADF3
-code_cave_end 0081ADF2h
+code_cave_end 0081ADF3h
 
 public stdcall PatchNativeCivs
 
 PatchNativeCivs proc
 
-	patch_code_cave 005126C1h, 005126C6h
-	invoke PatchAddress, hProcess, loc_005126C7, 005126C7h, 1
+	patch_code_cave 005126C1h, 005126C7h
 
 	patch_code_cave 0051271Fh, 00512724h
 	invoke PatchAddress, hProcess, loc_0051272A, 0051272Ah, 1
 
-	patch_code_cave 0052B581h, 0052B587h
-	invoke PatchAddress, hProcess, loc_0052B588, 0052B588h, 1
+	patch_code_cave 0052B581h, 0052B588h
 
 	patch_code_cave 00453D5Eh, 00453D62h
 
-	patch_code_cave 004904B5h, 004904BAh
+	patch_code_cave 004904B5h, 004904BBh
 	invoke PatchAddress, hProcess, loc_00679E66, 00679E66h, 1
     invoke PatchAddress, hProcess, loc_00679E66_1, 00679E66h, 1
-    invoke PatchAddress, hProcess, loc_004904BB, 004904BBh, 1
 
-	patch_code_cave 004ECD6Bh, 004ECD71h
+	patch_code_cave 004ECD6Bh, 004ECD73h
 	invoke PatchAddress, hProcess, loc_004ECD7D, 004ECD7Dh, 1
     invoke PatchAddress, hProcess, loc_004ECD7D_1, 004ECD7Dh, 1
-    invoke PatchAddress, hProcess, loc_004ECD73, 004ECD73h, 1
 
-	patch_code_cave 0067B0A5h, 0067B0AAh
+	patch_code_cave 0067B0A5h, 0067B0ADh
 	invoke PatchAddress, hProcess, loc_0067B0BB, 0067B0BBh, 1
 	invoke PatchAddress, hProcess, loc_0067B0BB_1, 0067B0BBh, 1
-    invoke PatchAddress, hProcess, loc_0067B0AD, 0067B0ADh, 1
 
-	patch_code_cave 008D47C9h, 008D47CEh
-	invoke PatchAddress, hProcess,loc_008D47CF,008D47CFh,1
+	patch_code_cave 008D47C9h, 008D47CFh
 	invoke PatchAddress, hProcess,loc_008D4894,008D4894h,1
-	invoke PatchAddress, hProcess,loc_008D47CF_1,008D47CFh,1
 
 	patch_code_cave 008D52AFh, 008D52B5h
 	invoke PatchAddress, hProcess, loc_008D53B4, 008D53B4h, 1
 	invoke PatchAddress, hProcess, loc_008D53B4_1, 008D53B4h, 1
-	invoke PatchAddress, hProcess, loc_008D52B5, 008D52B5h, 1
 
-	patch_code_cave 0081ADEBh, 0081ADF2h
+	patch_code_cave 0081ADEBh, 0081ADF3h
 	invoke PatchAddress, hProcess, loc_0081AE59, 0081AE59h, 1
-	invoke PatchAddress, hProcess, loc_0081ADF3, 0081ADF3h, 1
 
 	ret
 PatchNativeCivs endp

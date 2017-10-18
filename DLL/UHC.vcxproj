@@ -79,7 +79,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>C:\Program Files (x86)\SteamLibrary\steamapps\common\Age Of Empires 3\bin</OutDir>
+    <OutDir>D:\Program Files (x86)\SteamLibrary\steamapps\common\Age Of Empires 3\bin</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -152,7 +152,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CheatFunctions.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Disasm.h" />
     <ClInclude Include="stdafx.h" />
@@ -162,7 +161,6 @@
     <ClInclude Include="UHC.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CheatFunctions.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="Disasm.cpp" />
     <ClCompile Include="Patch.cpp" />

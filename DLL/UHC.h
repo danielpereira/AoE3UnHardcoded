@@ -39,7 +39,7 @@ struct UHCSyscallParam {
 struct UHCSyscall {
 	DWORD RetType;
 	LPCSTR Name;
-	LPVOID Ptr;
+	LPCVOID Ptr;
 	LPCSTR Comment;
 	DWORD ParamCount;
 	UHCSyscallParam* Params;
@@ -111,12 +111,13 @@ extern "C" {
 	extern UHCInfo* pUHCInfo;
 	extern HANDLE hProcess;
 
-	void __stdcall UHCRegisterCheat(UHCInfo* info, LPCWSTR string, BOOL enable, void (__stdcall * fPtr)(void*));
+	void UHCRegisterCheat(LPCSTR string, BOOL enable, void (__stdcall * fPtr)(void*));
 
-	UHCSyscall& __stdcall UHCRegisterSyscall(UHCInfo* info, UHCSyscallGroupName groupName,
-		DWORD retType, LPCSTR name, LPVOID fPtr, DWORD paramCount, LPCSTR comment);
+	UHCSyscall& UHCRegisterSyscall(UHCSyscallGroupName groupName, DWORD retType, LPCSTR name, LPCVOID fPtr, DWORD paramCount, LPCSTR comment);
 
-	void __stdcall UHCSyscallSetParam(UHCSyscall& syscall, DWORD paramId, DWORD type, LPCVOID defaultVal);
+	void UHCSyscallSetParam(UHCSyscall& syscall, DWORD paramId, DWORD type, LPCVOID defaultVal);
+
+	bool CheatAddResource(void* playerData, int resourceID, float resourceAmount, bool unk);
 
 	// ASM stuffs
 	void __stdcall UHCAsmInit(UHCInfo* info, HANDLE hProcess);
@@ -144,12 +145,13 @@ extern "C" {
 }
 
 struct UHCPluginInfo {
-	UHCInfo* info;
+	void(*RegisterCheat)(LPCSTR string, BOOL enable, void(__stdcall * fPtr)(void*));
 
-	void (__stdcall *RegisterCheat)(UHCInfo* info, LPCWSTR string, BOOL enable, void(__stdcall * fPtr)(void*));
+	UHCSyscall&(*RegisterSyscall)(UHCSyscallGroupName groupName, DWORD retType, LPCSTR name, LPCVOID fPtr, DWORD paramCount, LPCSTR comment);
 
-	UHCSyscall& (__stdcall *RegisterSyscall)(UHCInfo* info, UHCSyscallGroupName groupName,
-		DWORD retType, LPCSTR name, LPVOID fPtr, DWORD paramCount, LPCSTR comment);
+	void(*SyscallSetParam)(UHCSyscall& syscall, DWORD paramId, DWORD type, LPCVOID defaultVal);
 
-	void(__stdcall *SyscallSetParam)(UHCSyscall& syscall, DWORD paramId, DWORD type, LPCVOID defaultVal);
+	bool(*CheatAddResource)(void* playerData, int resourceID, float resourceAmount, bool unk);
+
+	void(*CheatSpawnUnit)(void* playerData, const char* protoUnitName);
 };

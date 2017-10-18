@@ -22,16 +22,22 @@ extern "C" void __stdcall PatchAddress(HANDLE hProcess, DWORD lpBaseAddress, DWO
 #define SRC_SIZE 16
 #define JMP_REL32_SIZE 5
 
-extern "C" void __stdcall PatchCodeCave(HANDLE hProcess, DWORD dwAddress, DWORD dwAddressEnd, 
-	DWORD dwCCAddress, DWORD dwCCAddressEnd)
+extern "C" void __stdcall PatchCodeCave(HANDLE hProcess, DWORD dwAddress, DWORD dwAddressEnd, DWORD dwCCAddress, DWORD dwCCAddressEnd)
 {
-	DWORD dwSize = 0, flProtect, flOldProtect = PAGE_EXECUTE_READWRITE, dwBytes;
+	// minimum instructions' size larger than 32 bit relative jump
+	DWORD dwSize = dwAddressEnd - dwAddress;
+
+	DWORD flProtect, flOldProtect = PAGE_EXECUTE_READWRITE;
+	DWORD dwBytes;
 	BYTE lpBuffer[SRC_SIZE];
 
-	if (dwAddress == dwAddressEnd) {
+	if (dwSize < JMP_REL32_SIZE) {
 		BYTE lpInsBuffer[16], lpRestoreBuffer[32];
 		PBYTE lpRestoration, lpIns, lpRestore;
-		DWORD dwAddressDest, dwInsSize, dwAddressCount = 0, dwRestoreSize;
+		DWORD dwAddressDest, dwInsSize, dwRestoreSize;
+
+		// Restored relative instructions' jump addresses
+		DWORD dwAddressCount = 0;
 		PDWORD lpAddresses[4];
 
 		// Allocate space for restored code and a jump from the address to base address
@@ -40,7 +46,7 @@ extern "C" void __stdcall PatchCodeCave(HANDLE hProcess, DWORD dwAddress, DWORD 
 
 		lpRestore = lpRestoreBuffer;
 
-		// determine instruction backup size
+		// determine restored instructions' size
 		do
 		{
 			lpIns = lpInsBuffer;

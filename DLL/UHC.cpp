@@ -4,6 +4,14 @@
 UHCInfo* pUHCInfo = nullptr;
 HANDLE hProcess = NULL;
 
+UHCPluginInfo pluginInfo = {
+	UHCRegisterCheat,
+	UHCRegisterSyscall,
+	UHCSyscallSetParam,
+	CheatAddResource,
+	reinterpret_cast<void(*)(void*, const char*)>(0x007B4F03)
+};
+
 // override operator new and delete
 /*void* operator new(size_t size) {
 	auto _operator_new = reinterpret_cast<void* (__thiscall *)(int, size_t*)>(0x401234);
@@ -55,24 +63,25 @@ void EncryptCheatString(LPWSTR dest, LPCWSTR src) {
 	*lpEncryptedPtr = 0;
 }
 
-void __stdcall UHCRegisterCheat(UHCInfo* info, LPCWSTR string, BOOL enable, void(__stdcall * fPtr)(void*)) {
-	DWORD length = lstrlenW(string);
+void UHCRegisterCheat(LPCSTR string, BOOL enable, void(__stdcall * fPtr)(void*)) {
+	DWORD length = lstrlenA(string);
+	LPWSTR lpString = new WCHAR[length + 1];
 	LPWSTR lpEncrypted = new WCHAR[length * 2 + 1];
 
-	EncryptCheatString(lpEncrypted, string);
+	mbstowcs(lpString, string, length + 1);
 
-	if (!lpEncrypted)
-		return;
+	EncryptCheatString(lpEncrypted, lpString);
 
-	UHCCheat& cheat = info->Cheats.InsertEmptyBack();
+	delete[] lpString;
+
+	UHCCheat& cheat = pUHCInfo->Cheats.InsertEmptyBack();
 	cheat.String = lpEncrypted;
 	cheat.Enable = enable;
 	cheat.FunctionPtr = fPtr;
 }
 
-UHCSyscall& __stdcall UHCRegisterSyscall(UHCInfo* info, UHCSyscallGroupName groupName,
-	DWORD retType, LPCSTR name, LPVOID fPtr, DWORD paramCount, LPCSTR comment) {
-	TArray<UHCSyscall>& group = info->SyscallGroups[groupName];
+UHCSyscall& UHCRegisterSyscall(UHCSyscallGroupName groupName, DWORD retType, LPCSTR name, LPCVOID fPtr, DWORD paramCount, LPCSTR comment) {
+	TArray<UHCSyscall>& group = pUHCInfo->SyscallGroups[groupName];
 
 	UHCSyscall& syscall = group.InsertEmptyBack();
 	syscall.Params = new UHCSyscallParam[paramCount];
@@ -86,12 +95,17 @@ UHCSyscall& __stdcall UHCRegisterSyscall(UHCInfo* info, UHCSyscallGroupName grou
 	return syscall;
 }
 
-void __stdcall UHCSyscallSetParam(UHCSyscall& syscall, DWORD paramId, DWORD type, LPCVOID defaultVal) {
+void UHCSyscallSetParam(UHCSyscall& syscall, DWORD paramId, DWORD type, LPCVOID defaultVal) {
 	if (paramId >= syscall.ParamCount)
 		return;
 
 	syscall.Params[paramId].Type = type;
 	syscall.Params[paramId].Default = defaultVal;
+}
+
+bool CheatAddResource(void* playerData, int resourceID, float resourceAmount, bool unk)
+{
+	return reinterpret_cast<bool(__thiscall*)(void*, int, float, bool)>(0x0049A98A)(playerData, resourceID, resourceAmount, unk);
 }
 
 inline void SetRefTable(UHCRefTable& table, ConfigKey& key) {
@@ -265,13 +279,6 @@ void UHCInfo::LoadPlugins() {
 	WIN32_FIND_DATAW fd;
 	HANDLE hFind = FindFirstFileW(L"*.upl", &fd);
 
-	UHCPluginInfo pluginInfo = {
-		this,
-		UHCRegisterCheat,
-		UHCRegisterSyscall,
-		UHCSyscallSetParam
-	};
-
 	if (hFind != INVALID_HANDLE_VALUE) {
 
 		do {
@@ -282,12 +289,12 @@ void UHCInfo::LoadPlugins() {
 			if (!hLib)
 				continue;
 
-			FARPROC pluginProc = GetProcAddress(hLib, "_UHCPluginMain@4");
+			FARPROC pluginProc = GetProcAddress(hLib, "UHCPluginMain");
 
 			if (pluginProc) {
 				int exitCode;
 
-				exitCode = reinterpret_cast<int(__stdcall*)(UHCPluginInfo*)>(pluginProc)(&pluginInfo);
+				exitCode = reinterpret_cast<int(*)(UHCPluginInfo*)>(pluginProc)(&pluginInfo);
 
 #ifdef _DEBUG
 				WCHAR debugMsg[256];
@@ -372,7 +379,8 @@ void APIENTRY UHCMain() {
 			PatchFameRestriction();
 
 		// Load .upl plugins
-		pUHCInfo->LoadPlugins();
+		if (enable & (ENABLE_CHEAT | ENABLE_SYSCALL))
+			pUHCInfo->LoadPlugins();
 	}
 	catch (...)
 	{

@@ -177,8 +177,7 @@ farm_patch2_check_r:
     invoke TableIDExists, RECTFARM, ecx
     test eax, eax
     je_rel32 004EDD6C
-    jmp_rel32 0050DF51
-code_cave_end 0050DE39h
+code_cave_end 0050DF51h
 
 ;Farm Patch #3
 code_cave_begin 0073D41Ah
@@ -265,8 +264,7 @@ code_cave_begin 006A8FE1h
     invoke TableIDExists, FARM, eax
     test eax, eax
     je_rel32 006A900C
-    jmp_rel32 006A8FEA_1
-code_cave_end 006A8FE7h
+code_cave_end 006A8FEAh
 
 ;Rect Farm Patch #1
 code_cave_begin 009DDD80h
@@ -281,8 +279,7 @@ code_cave_begin 009DDD80h
 	mov edx, dword ptr ds:[00C66234h]
 	mov eax, [edx+140h]
     jne_rel32 009DDD9E
-    jmp_rel32 009DDD92
-code_cave_end 009DDD86h
+code_cave_end 009DDD92h
 
 ;Rect Farm Patch #2
 code_cave_begin 004741F0h
@@ -348,9 +345,8 @@ PatchFarmAnim proc
     invoke PatchAddress, hProcess, loc_004E3069, 004E3069h, 1
     invoke PatchAddress, hProcess, loc_006A8A55, 006A8A55h, 1
     
-    patch_code_cave 0050DE33h, 0050DE39h
+    patch_code_cave 0050DE33h, 0050DF51h
     invoke PatchAddress, hProcess, loc_006A8E67_1, 006A8E67h, 1
-    invoke PatchAddress, hProcess, loc_0050DF51, 0050DF51h, 1
     invoke PatchAddress, hProcess, loc_006A8E67, 006A8E67h, 1
     invoke PatchAddress, hProcess, loc_004EDD6C, 004EDD6Ch, 1
     
@@ -375,15 +371,13 @@ PatchFarmAnim proc
     invoke PatchAddress, hProcess, loc_00586E11, 00586E11h, 1
     invoke PatchAddress, hProcess, loc_00586E11_1, 00586E11h, 1
 
-    patch_code_cave 006A8FE1h, 006A8FE7h
+    patch_code_cave 006A8FE1h, 006A8FEAh
     invoke PatchAddress, hProcess, sub_0044CB0A, 0044CB0Ah, 1
     invoke PatchAddress, hProcess, loc_006A8FEA, 006A8FEAh, 1
-    invoke PatchAddress, hProcess, loc_006A8FEA_1, 006A8FEAh, 1
     invoke PatchAddress, hProcess, loc_006A900C, 006A900Ch, 1
     
-    patch_code_cave 009DDD80h, 009DDD86h
+    patch_code_cave 009DDD80h, 009DDD92h
     invoke PatchAddress, hProcess, loc_009DDD9E, 009DDD9Eh, 1
-    invoke PatchAddress, hProcess, loc_009DDD92, 009DDD92h, 1
     
     patch_code_cave 004741F0h, 004741F6h
     invoke PatchAddress, hProcess, loc_004743DD, 004743DDh, 1

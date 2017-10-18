@@ -15,7 +15,7 @@ extern "C" BOOL __stdcall TableIDExists(DWORD dwTable, int id) {
 }
 
 extern "C" void __stdcall RegisterSyscallGroup(UHCSyscallGroupName name, LPVOID _this) {
-	auto SyscallRegister = reinterpret_cast<BOOL(__thiscall *)(LPVOID _this, LPCSTR name, LPVOID fPtr, DWORD retType)>(0x624f52);
+	auto SyscallRegister = reinterpret_cast<BOOL(__thiscall *)(LPVOID _this, LPCSTR name, LPCVOID fPtr, DWORD retType)>(0x624f52);
 	auto SyscallPrintf = reinterpret_cast<int(*)(LPVOID _this, LPCSTR format, ...)>(0xa44b95);
 	auto SyscallFree = reinterpret_cast<int(__thiscall *)(LPVOID _this)>(0xa44c0b);
 	auto SyscallGetName = reinterpret_cast<LPCSTR(__thiscall *)(LPVOID _this)> (0xa44bee);
