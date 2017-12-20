@@ -131,7 +131,7 @@ UHC_PATCH_RESULT PatchExecutable(HWND hwndDlg) {
 	dirBuffer[parentDirSlashIndex] = '\\';
 
 	cfgFile->Parse(dirBuffer);
-	cfgFile->ProcessData();
+	cfgFile->ProcessData(&patchSettings);
 
 	if (!cfgFile->WriteToFile(dirBuffer, patchSettings))
 		MessageBoxW(hwndDlg, L"The patcher has failed to write to the supplied configuration file\n\nIn order to apply the intended patch settings,\n you will have to edit it manually.\n\nRefer to the official UHC Configuration File documentation for more information.", UHC_NAME, MB_ICONINFORMATION | MB_OK);

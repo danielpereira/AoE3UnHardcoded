@@ -18,7 +18,7 @@ public:
 	~Config();
 
 	BOOL Parse(LPCWSTR lpConfigName);
-	void ProcessData();
+	void ProcessData(DWORD* dwSettings);
 	BOOL WriteToFile(LPCWSTR lpConfigFileName, DWORD dwSettings);
 
 	inline TArray<ConfigKey>& GetKeys() { return m_Keys; }

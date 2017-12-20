@@ -4,6 +4,9 @@
 UHCInfo* pUHCInfo = nullptr;
 HANDLE hProcess = NULL;
 
+LPWSTR hcXpIconPath = L"ui\\home_city\\xp_hc_icon";
+LPWSTR hcFameIconPath = L"ui\\home_city\\fame_hc_icon";
+
 UHCPluginInfo pluginInfo = {
 	UHCRegisterCheat,
 	UHCRegisterSyscall,

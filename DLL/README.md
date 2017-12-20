@@ -54,7 +54,7 @@ Supported Properties
 * **enableAllTeams** - Enables team options 3 and 4 for Single Player and Multiplayer games.
 * **customSyscalls** - Allows the UHC Patch to load and register custom syscalls implemented through plugins.
 * **customCheats** - Allows the UHC Patch to load and register custom cheats implemented through plugins.
-* **removeFameRestriction** - Allows the usage of the Fame Resource in ProtoActions, like AutoGather and ModifyGather.
+* **removeFameRestriction** - Allows the usage of the Fame Resource in ProtoActions, like AutoGather and ModifyGather, and enables proper displaying of Fame, Experience and Shipment costs in the politicians screen and HC cards
 
 
 

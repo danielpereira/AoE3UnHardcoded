@@ -18,8 +18,8 @@
 - [ ] Implement support for the addition of new protounit commands
 - [ ] Implement support for the addition of new unit types
 - [ ] Implement support for assigning UI icons to unit types
-- [ ] Make Fame resource icon be shown in cards that cost that resource, somehow
-- [ ] Make Fame, Experience, and Shipment icons be shown in Politician screen
+- [X] Make Fame resource icon be shown in cards that cost that resource, somehow
+- [X] Make Fame, Experience, and Shipment icons be shown in Politician screen
 - [ ] Add support for widescreen interface
 - [ ] Prevent Transform protounitcommand from affecting all selected units/buildings
 - [ ] Investigate ways to minimize the occurence of the 'replacetexture' bug

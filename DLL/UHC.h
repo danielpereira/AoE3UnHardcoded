@@ -97,6 +97,8 @@ public:
 	TArray<LPWSTR> AsianCivNames;
 	TArray<LPWSTR> NativeCivNames;
 	TArray<UHCFarmRadius> FarmRadiusInfo;
+	DWORD HCXpIconData;
+	DWORD HCFameIconData;
 
 	UHCInfo();
 	~UHCInfo();
@@ -110,6 +112,9 @@ private:
 extern "C" {
 	extern UHCInfo* pUHCInfo;
 	extern HANDLE hProcess;
+
+	extern LPWSTR hcXpIconPath;
+	extern LPWSTR hcFameIconPath;
 
 	void UHCRegisterCheat(LPCSTR string, BOOL enable, void (__stdcall * fPtr)(void*));
 
@@ -140,6 +145,8 @@ extern "C" {
 	void __stdcall PatchFarmRadius();
 	void __stdcall PatchTacticSwitching();
 	void __stdcall PatchFameRestriction();
+
+	BOOL __stdcall TableIDExists(DWORD dwTable, int id);
 
 	//void __stdcall PatchDumpSyscall();
 }

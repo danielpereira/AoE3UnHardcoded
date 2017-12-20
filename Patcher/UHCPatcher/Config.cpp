@@ -137,8 +137,7 @@ RET:
 	return result;
 }
 
-void Config::ProcessData() {
-	DWORD dwSettings = 0;
+void Config::ProcessData(DWORD* dwSettings) {
 	LPSTR conversionTable[9][2] = { {"AsianCivs:", "asianCivs"}, {"BasePop:", "basePop"}, {"BigButtonCivs:", "bigButtonCivs"}, {"ExtraPop:", "extraPop"}, {"FarmAnim:", "enableFarmAnim"}, {"MarketUnits:", "marketUnits"}, {"NativeCivs:", "nativeCivs"}, {"NotBigButtonBlds:", "noBigButtonBlds"}, {"RectFarmAnim:", "enableRectFarmAnim"}};
 
 	for (size_t i = 0; i < m_Keys.GetNumElements(); i++) {
@@ -150,6 +149,7 @@ void Config::ProcessData() {
 				detected = 1;
 			}
 		}
+
 	}
 }
 
@@ -158,7 +158,8 @@ BOOL Config::WriteToFile(LPCWSTR lpConfigFileName, DWORD dwSettings) {
 	DWORD bytesWritten;
 
 	if (cfgFile != INVALID_HANDLE_VALUE) {
-		LPSTR settingTable[5] = { "noAILimit", "customRevolutionBanners", "ignoreRegistryPath", "enableAllTeams", "removeFameRestriction" };
+		LPSTR settingTable[7] = { "noAILimit", "customRevolutionBanners", "ignoreRegistryPath", "enableAllTeams", "removeFameRestriction" };
+		LPSTR otherSettings[2] = { "customCheats", "customSyscalls" };
 		LPSTR valueTable[3] = { "basePop", "extraPop", "deckCardCount" };
 
 		for (int i = 0; i < 5; i++) {
@@ -170,6 +171,7 @@ BOOL Config::WriteToFile(LPCWSTR lpConfigFileName, DWORD dwSettings) {
 
 		for (size_t i = 0; i < m_Keys.GetNumElements(); i++) {
 			BOOL isSettingString = FALSE;
+			BOOL isHiddenSettingString = FALSE;
 			BOOL isValueString = FALSE;
 
 			for (int j = 0, detected = 0; j < 5 && !detected; j++) {
@@ -200,6 +202,19 @@ BOOL Config::WriteToFile(LPCWSTR lpConfigFileName, DWORD dwSettings) {
 							WriteFile(cfgFile, " ", 1, &bytesWritten, NULL);
 							WriteFile(cfgFile, m_Keys[i].Values[j], lstrlenA(m_Keys[i].Values[j]), &bytesWritten, NULL);
 						}
+						WriteFile(cfgFile, "\r\n", 2, &bytesWritten, NULL);
+					}
+				}
+				else {
+					for (int j = 0, detected = 0; j < 2 && !detected; j++) {
+						if (!lstrcmpiA(otherSettings[j], m_Keys[i].Name)) {
+							isHiddenSettingString = TRUE;
+							detected = 1;
+						}
+					}
+
+					if (isHiddenSettingString) {
+						WriteFile(cfgFile, m_Keys[i].Name, lstrlenA(m_Keys[i].Name), &bytesWritten, NULL);
 						WriteFile(cfgFile, "\r\n", 2, &bytesWritten, NULL);
 					}
 				}

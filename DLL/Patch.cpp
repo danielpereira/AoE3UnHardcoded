@@ -2,15 +2,22 @@
 #include "UHC.h"
 
 extern "C" BOOL __stdcall TableIDExists(DWORD dwTable, int id) {
-	if (dwTable >= TABLE_COUNT)
+	__asm push ecx
+
+	if (dwTable >= TABLE_COUNT) {
+		__asm pop ecx
 		return FALSE;
+	}
 
 	UHCRefTable& table = pUHCInfo->Tables[dwTable];
 	for (DWORD i = 0; i < table.RefCount; i++) {
-		if (table.RefIDs[i] == id)
+		if (table.RefIDs[i] == id) {
+			__asm pop ecx
 			return TRUE;
+		}
 	}
 
+	__asm pop ecx
 	return FALSE;
 }
 

@@ -58,6 +58,8 @@ UHCInfo struct
 	NativeCivNames dd ?
 	FarmRadiusInfoCount dd ?
 	FarmRadiusInfo UHCFarmRadiusPtr ?
+	HCXpIconData dd ?
+	HCFameIconData dd ?
 UHCInfo ends
 
 UHCInfoPtr typedef ptr UHCInfo

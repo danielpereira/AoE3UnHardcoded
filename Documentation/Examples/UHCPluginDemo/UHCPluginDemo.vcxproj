@@ -71,13 +71,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>D:\Program Files (x86)\SteamLibrary\steamapps\common\Age Of Empires 3\bin</OutDir>
+    <TargetExt>.upl</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>C:\Program Files (x86)\Microsoft Games\Age of Empires III</OutDir>
+    <OutDir>D:\Program Files (x86)\SteamLibrary\steamapps\common\Age Of Empires 3\bin</OutDir>
     <TargetExt>.upl</TargetExt>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
   </PropertyGroup>

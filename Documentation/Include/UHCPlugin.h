@@ -1,15 +1,15 @@
-#ifndef _UHC_H
-#define _UHC_H
+#ifndef _UHCPLUGIN_H
+#define _UHCPLUGIN_H
 
 #include "syscalls.h"
 
 enum UHCSyscallType {
-	Void = 1,
-	Integer = 2,
-	Float = 4,
-	Bool = 8,
-	String = 16,
-	Vector = 32
+	SyscallVoid = 1,
+	SyscallInteger = 2,
+	SyscallFloat = 4,
+	SyscallBool = 8,
+	SyscallString = 16,
+	SyscallVector = 32
 };
 
 enum UHCSyscallGroupName {
@@ -23,18 +23,35 @@ enum UHCSyscallGroupName {
 	GroupXS
 };
 
-struct UHCInfo;
 struct UHCSyscall;
 
+typedef enum RESOURCE_ID {
+	GOLD,
+	WOOD,
+	FOOD,
+	FAME,
+	ID_4,
+	XP,
+	SHIPMENTS,
+	EXPORT
+} RESOURCE_ID;
+
+#if defined(__MINGW32__) || defined(_MSC_VER)
+#define CHEATCALL __stdcall
+#elif defined(__GNUC__) || defined(__GNUG__)
+#define CHEATCALL __attribute__((stdcall))
+#endif
+
 struct UHCPluginInfo {
-	UHCInfo* info;
+	void(*RegisterCheat)(const char* string, bool enable, void(CHEATCALL * fPtr)(void*));
 
-	void(__stdcall *RegisterCheat)(UHCInfo* info, const wchar_t* string, bool enable, void(__stdcall * fPtr)(void*));
+	UHCSyscall&(*RegisterSyscall)(UHCSyscallGroupName groupName, unsigned int retType, const char* name, const void* fPtr, unsigned int paramCount, const char* comment);
 
-	UHCSyscall& (__stdcall *RegisterSyscall)(UHCInfo* info, UHCSyscallGroupName groupName,
-		__int32 retType, const char* name, void* fPtr, __int32 paramCount, const char* comment);
+	void(*SyscallSetParam)(UHCSyscall& syscall, unsigned int paramId, unsigned int type, const void* defaultVal);
 
-	void(__stdcall *SyscallSetParam)(UHCSyscall& syscall, __int32 paramId, __int32 type, const void* defaultVal);
+	bool(*CheatAddResource)(void* playerData, int resourceID, float resourceAmount, bool unk);
+
+	void(*CheatSpawnUnit)(void* playerData, const char* protoUnitName);
 };
 
 #endif
