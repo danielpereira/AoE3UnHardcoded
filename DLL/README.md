@@ -24,7 +24,7 @@ As for UHC Patch v1.5, colons (“:”) should not be used to denote property na
 Each one of the available properties of the UHC Configuration Files belongs to one of the following categories:
 * **Multi-value properties** - Accept a finite set of items and are used to assign a property (or a set of properties) to the given set of items, which may represent units or civilizations.
 * **Single-value properties** - Accept only one value and are used to assign a particular value to one of the settings of the patch or of the game itself. Those properties are denoted by an equal (“=”) sign, that explicitly indicates that a single particular value should be read and assigned to that property, as seen in the example code above. 
-* **Struct properties** - Assign additional (and usually optional) values to particular items that are defined in an existing multi-value property. An item to which values will be assigned through a struct property is denoted by its index in the existing multi-value property, which is followed by the values that should be assigned to it.
+* **Struct properties** - Used to define properties that require more than one argument per item
 * **Patch Settings** - Enable a particular setting or option of the UHC Patch, and are usually set in the UHC Configuration File by the UHC Patcher.
 
 
@@ -46,6 +46,8 @@ Supported Properties
 
 ### Struct properties
 * **farmingRadius** - Defines the maximum area in which villagers should be able to walk, while gathering resources from particular buildings defined in the _enableFarmAnim_ property.
+* **attackTypeIcons** - Assigns UI icons and stringtable IDs to existing attack types in the game.
+* **explorerUnits** - Defines units which should receive custom explorer or monk names and/or should deliver a knockout message once they are killed, in case they are heroes.
 
 ### Patch Settings
 * **noAILimit** - Removes the hardcoded 14 AI/Civilization limit by making the game read all .personality files in the from the AI directory defined in the .exe (which should be \AI3, by default).

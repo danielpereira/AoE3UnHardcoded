@@ -10,6 +10,9 @@ NATIVE = 4
 TACTIC_SWITCHING = 5
 BIGBUTTON_CIVS = 6
 NO_BIGBUTTON_BLDS = 7
+ATTACK_TYPE_ICONS = 8
+TWO_SCOUT_CIVS = 9
+EXPLORER_UNITS = 10
 
 UHCRefTable struct
 	RefCount dd ?
@@ -36,9 +39,22 @@ UHCFarmRadius struct
 	Z dd ?
 UHCFarmRadius ends
 
-UHCFarmRadiusPtr typedef ptr UHCFarmRadius
+UHCTypeIcons struct
+	IconPath dd ?
+	StringID dd ?
+	IconData dd ?
+UHCTypeIcons ends
 
-TABLE_COUNT = 8
+UHCExplorer struct
+	ExplorerType dd ?
+	DeathStringID dd ?
+UHCExplorer ends
+
+UHCFarmRadiusPtr typedef ptr UHCFarmRadius
+UHCTypeIconsPtr typedef ptr UHCTypeIcons
+UHCExplorerPtr typedef ptr UHCExplorer
+
+TABLE_COUNT = 11
 GROUP_COUNT = 8
 
 UHCInfo struct
@@ -58,6 +74,10 @@ UHCInfo struct
 	NativeCivNames dd ?
 	FarmRadiusInfoCount dd ?
 	FarmRadiusInfo UHCFarmRadiusPtr ?
+	TypeIconInfoCount dd ?
+	TypeIconInfo UHCTypeIconsPtr ?
+	ExplorerInfoCount dd ?
+	ExplorerInfo UHCExplorerPtr ?
 	HCXpIconData dd ?
 	HCFameIconData dd ?
 UHCInfo ends

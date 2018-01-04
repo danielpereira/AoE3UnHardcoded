@@ -44,7 +44,6 @@ getids_end:
 	pop esi
 	pop edi
     ret
-
 getIDs ENDP
 
 getFarmRadiusData PROC stdcall id:DWORD
@@ -99,8 +98,169 @@ getfarmradiusdata_end:
 	pop esi
 	pop edi
 	ret
-
 getFarmRadiusData ENDP
+
+getRefTableIndex PROC stdcall dwTable:DWORD, id:DWORD
+    push edi
+	push esi
+	push ebx
+    mov eax, UHCRefTable
+    mov ebx, dwTable
+    imul eax, ebx
+    mov ebx, pUHCInfo
+	lea ebx, [ebx].UHCInfo.Tables
+    lea ebx, [ebx+eax]
+    mov eax, [ebx].UHCRefTable.RefCount
+    test eax,eax
+    je getRefTableIndex_end
+    
+    mov esi, [ebx].UHCRefTable.RefIDs
+    mov edi, id
+    
+    getRefTableIndex_loop:
+	dec eax
+	js getRefTableIndex_end
+    cmp edi,dword ptr ds:[esi+eax*4]
+    jne getRefTableIndex_loop
+    
+    getRefTableIndex_valid:
+    pop ebx
+	pop esi
+	pop edi
+    ret
+    
+    getRefTableIndex_end:
+    or eax, -1
+    pop ebx
+	pop esi
+	pop edi
+    ret
+getRefTableIndex ENDP
+
+getAttackTypeIconData PROC stdcall refTableIndex:DWORD
+	push edi
+	push esi
+	push ebx
+	xor eax,eax
+	mov edi, pUHCInfo
+	mov esi, [edi].UHCInfo.TypeIconInfoCount
+	dec esi
+	mov ebx, refTableIndex
+	cmp ebx, esi
+	jg getAttackTypeIconData_end
+	mov edi, [edi].UHCInfo.TypeIconInfo
+	mov eax, UHCTypeIcons
+	imul eax, ebx
+	lea eax, [edi+eax]
+
+	getAttackTypeIconData_end:
+	pop ebx
+	pop esi
+	pop edi
+	ret
+getAttackTypeIconData ENDP
+
+getExplorerData PROC stdcall refTableIndex:DWORD
+	push edi
+	push esi
+	push ebx
+	xor eax,eax
+	mov edi, pUHCInfo
+	mov esi, [edi].UHCInfo.ExplorerInfoCount
+	dec esi
+	mov ebx, refTableIndex
+	cmp ebx, esi
+	jg getAttackTypeIconData_end
+	mov edi, [edi].UHCInfo.ExplorerInfo
+	mov eax, UHCExplorer
+	imul eax, ebx
+	lea eax, [edi+eax]
+
+	getAttackTypeIconData_end:
+	pop ebx
+	pop esi
+	pop edi
+	ret
+getExplorerData ENDP
+
+getAttackTypeIDs PROC stdcall thisPtr:DWORD
+	push edi
+	push esi
+	push ebx
+	mov ebx, UHCRefTable
+	mov eax, ATTACK_TYPE_ICONS
+	imul ebx, eax
+	mov edi, pUHCInfo
+	lea edi, [edi].UHCInfo.Tables
+	lea edi, [edi+ebx]
+	mov ebx, [edi].UHCRefTable.RefCount
+	test ebx, ebx
+	je getAttackTypeIDs_end
+	mov esi, [edi].UHCRefTable.Refs
+	mov edi, [edi].UHCRefTable.RefIDs
+	
+	getAttackTypeIDs_loop:
+	dec ebx
+	js getAttackTypeIDs_end
+	mov eax, [esi+ebx*4]
+	push eax
+	mov ecx, thisPtr
+	mov eax, 0058E685h
+	call eax
+	lea ecx, [edi+ebx*4]
+	push ecx
+	push eax
+	mov eax, [esi+ebx*4]
+	push eax
+	mov ecx, thisPtr
+	mov eax, 0040295Bh
+	call eax
+	test eax,eax
+	jne getAttackTypeIDs_loop
+	or eax, -1
+	mov [edi+ebx*4], eax
+	jmp getAttackTypeIDs_loop
+
+	getAttackTypeIDs_end:
+	pop ebx
+	pop esi
+	pop edi
+	ret
+getAttackTypeIDs ENDP
+
+getIconData PROC stdcall thisPtr:DWORD
+	push edi
+	push esi
+	push ebx
+	mov edi, pUHCInfo
+	mov ebx, [edi].UHCInfo.TypeIconInfoCount
+	test ebx, ebx
+	je getIconData_end
+	mov esi, [edi].UHCInfo.TypeIconInfo
+
+	getIconData_loop:
+	lea edi, [esi]
+	push -1
+	push 0
+	push 0
+	mov eax, [edi].UHCTypeIcons.IconPath
+	push eax
+	mov ecx, thisPtr
+	mov eax, 0058E3EBh
+	call eax
+	lea ecx, [edi].UHCTypeIcons.IconData
+	mov [ecx], eax
+	add esi, UHCFarmRadius
+	dec ebx
+	jne getIconData_loop
+
+	getIconData_end:
+	pop ebx
+	pop esi
+	pop edi
+	
+	ret
+getIconData ENDP
 
 ; Farm animation
 ; Enable user-created buildings to play farming animations
@@ -523,6 +683,113 @@ PatchTacticSwitching proc
 	ret
 PatchTacticSwitching endp
 
+
+; Unit Type Icons #1
+
+code_cave_begin 0051C945h
+	invoke getAttackTypeIDs,esi
+code_cave_end 0051C945h
+
+; Unit Type Icons #2
+
+code_cave_begin 005C2287h
+	invoke getIconData, edi
+	mov ecx, edi
+code_cave_end 005C2287h
+
+; Unit Type Icons #3
+
+code_cave_begin 0069B909h
+	invoke getRefTableIndex, ATTACK_TYPE_ICONS, esi
+	cmp eax, -1
+	je type_icons_patch3_end
+	invoke getAttackTypeIconData, eax
+	push eax
+	mov ecx, [eax].UHCTypeIcons.IconData
+	push ecx
+	lea edx, [esp+30h]
+	push 00BA2078h
+	push edx
+	call_rel32 00444EFB
+	add esp, 0Ch
+	pop eax
+	mov eax, [eax].UHCTypeIcons.StringID
+	push eax
+	jmp_rel32 004D7F44
+
+	type_icons_patch3_end:
+	mov ecx, dword ptr ds:[00C66234h]
+	mov eax, [ecx+140h]
+	mov eax, [eax+19B0h]
+code_cave_end 0069B909h
+
+public stdcall PatchAttackTypeIcons
+PatchAttackTypeIcons proc
+	patch_code_cave 0051C945h, 0051C945h
+
+	patch_code_cave 005C2287h, 005C2287h
+
+	patch_code_cave 0069B909h, 0069B909h
+	invoke PatchAddress, hProcess, sub_00444EFB, 00444EFBh, 1
+	invoke PatchAddress, hProcess, loc_004D7F44, 004D7F44h, 1
+	ret
+PatchAttackTypeIcons endp
+
+
+; New Explorers
+
+; Custom Name
+
+code_cave_begin 006A012Ah
+	mov eax, dword ptr ds:[ebp+08]
+	invoke getRefTableIndex, EXPLORER_UNITS, eax
+	cmp eax, -1
+	je new_explorers_patch1_end
+	invoke getExplorerData, eax
+	mov eax, [eax].UHCExplorer.ExplorerType
+	cmp eax, 1
+	je_rel32 006A0179
+	test eax, eax
+	je_rel32 006A0203
+	jmp_rel32 006A01B8
+
+	new_explorers_patch1_end:
+	mov eax, [edi+84h]
+	lea ecx, [eax+18h]
+	call_rel32 00401F47
+code_cave_end 006A0132h
+
+; Death Message
+
+code_cave_begin 0050B01Fh
+	mov edx, [esi+10h]
+	mov eax, [edx+5Ch]
+	mov eax, [eax+4]
+	invoke getRefTableIndex, EXPLORER_UNITS, eax
+	cmp eax, -1
+	je new_explorers_patch2_end
+	invoke getExplorerData, eax
+	mov eax, [eax].UHCExplorer.DeathStringID
+	push eax
+	jmp_rel32 0050B039
+
+	new_explorers_patch2_end:
+code_cave_end 0050B01Fh
+
+public stdcall PatchExplorerUnits
+PatchExplorerUnits proc
+	patch_code_cave 006A012Ah, 006A0132h
+	invoke PatchAddress, hProcess, loc_006A0179, 006A0179h, 1
+	invoke PatchAddress, hProcess, loc_006A01B8, 006A01B8h, 1
+	invoke PatchAddress, hProcess, loc_006A0203, 006A0203h, 1
+	invoke PatchAddress, hProcess, sub_00401F47, 00401F47h, 1
+
+	patch_code_cave 0050B01Fh, 0050B01Fh
+	invoke PatchAddress, hProcess, loc_0050B039, 0050B039h, 1
+
+	ret
+PatchExplorerUnits endp
+
 ; Unit check
 ; Get farm and market IDs
 
@@ -538,6 +805,8 @@ code_cave_begin 005EE78Bh
 	invoke getIDs, NO_BIGBUTTON_BLDS
 	mov ecx, edi
 	invoke getIDs, TACTIC_SWITCHING
+	mov ecx, edi
+	invoke getIDs, EXPLORER_UNITS
 code_cave_end 005EE78Bh
 
 public stdcall PatchUnitCheck

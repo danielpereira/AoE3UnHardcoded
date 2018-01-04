@@ -205,12 +205,61 @@ UHCInfo::UHCInfo() {
 
 			while (i + 2 < key.Values.GetNumElements()) {
 				UHCFarmRadius aux;
-				aux.RefIndex = atoi(key.Values[i]);
-				aux.X = (float) atof(key.Values[++i]);
-				aux.Z = (float) atof(key.Values[++i]);
+				aux.RefIndex = atoi(key.Values[i++]);
+				aux.X = (float) atof(key.Values[i++]);
+				aux.Z = (float) atof(key.Values[i++]);
 				FarmRadiusInfo.PushBack(aux);
 			}
 
+		}
+
+		else if (!lstrcmpiA(key.Name, "attackTypeIcons")) {
+			if (!(key.Values.GetNumElements() % 3)) {
+				Enable |= ENABLE_TYPE_ICONS;
+
+				Tables[AttackTypeIcons].RefCount = key.Values.GetNumElements() / 3;
+				Tables[AttackTypeIcons].Refs = new LPSTR[Tables[AttackTypeIcons].RefCount];
+				Tables[AttackTypeIcons].RefIDs = new DWORD[Tables[AttackTypeIcons].RefCount];
+
+				size_t i = 0, j = 0;
+
+				while (i + 2 < key.Values.GetNumElements()) {
+					UHCTypeIcons aux;
+
+					Tables[AttackTypeIcons].Refs[j++] = key.Values[i++];
+					aux.StringID = atoi(key.Values[i++]);
+					size_t length = lstrlenA(key.Values[i]) + 1;
+					aux.IconPath = new WCHAR[length];
+					mbstowcs(aux.IconPath, key.Values[i++], length);
+					TypeIconsInfo.PushBack(aux);
+				}
+			}
+		}
+
+		else if (!lstrcmpiA(key.Name, "explorerUnits")) {
+			if (!(key.Values.GetNumElements() % 3)) {
+				Enable |= ENABLE_NEW_EXPLORERS;
+
+				Tables[ExplorerUnits].RefCount = key.Values.GetNumElements() / 3;
+				Tables[ExplorerUnits].Refs = new LPSTR[Tables[ExplorerUnits].RefCount];
+				Tables[ExplorerUnits].RefIDs = new DWORD[Tables[ExplorerUnits].RefCount];
+
+				size_t i = 0, j = 0;
+
+				while (i + 2 < key.Values.GetNumElements()) {
+					UHCExplorer aux;
+
+					Tables[ExplorerUnits].Refs[j++] = key.Values[i++];
+					aux.Type = atoi(key.Values[i++]);
+					aux.DeathStringID = atoi(key.Values[i++]);
+					ExplorerInfo.PushBack(aux);
+				}
+			}
+		}
+
+		else if (lstrcmpiA(key.Name, "twoScoutCivs") == 0) {
+			Enable |= ENABLE_TWO_SCOUT_CIVS;
+			SetRefTable(Tables[TwoScoutCivs], key);
 		}
 
 		else if (!lstrcmpiA(key.Name, "tacticSwitching")) {
@@ -336,7 +385,7 @@ void APIENTRY UHCMain() {
 		if (enable & ENABLE_DECK_LIMIT)
 			PatchDeckLimit();
 
-		if (enable & (ENABLE_FARM_ANIM | ENABLE_PATCH_MARKET | ENABLE_BIGBUTTON))
+		if (enable & (ENABLE_FARM_ANIM | ENABLE_PATCH_MARKET | ENABLE_BIGBUTTON | ENABLE_NEW_EXPLORERS))
 			PatchUnitCheck();
 
 		if (enable & ENABLE_FARM_ANIM)
@@ -348,10 +397,16 @@ void APIENTRY UHCMain() {
 		if (enable & ENABLE_TACTIC_SWITCHING)
 			PatchTacticSwitching();
 
+		if (enable & ENABLE_TYPE_ICONS)
+			PatchAttackTypeIcons();
+
 		if (enable & ENABLE_PATCH_MARKET)
 			PatchMarketUnits();
 
-		if (enable & (ENABLE_ASIAN_CIVS | ENABLE_NATIVE_CIVS | ENABLE_BIGBUTTON))
+		if (enable & ENABLE_NEW_EXPLORERS)
+			PatchExplorerUnits();
+
+		if (enable & (ENABLE_ASIAN_CIVS | ENABLE_NATIVE_CIVS | ENABLE_BIGBUTTON | ENABLE_TWO_SCOUT_CIVS))
 			PatchCivCheck();
 
 		if (enable & ENABLE_ASIAN_CIVS)
@@ -361,6 +416,9 @@ void APIENTRY UHCMain() {
 			PatchNativeCivs();
 		
 		if (enable & ENABLE_BIGBUTTON)
+			PatchTwoScoutCivs();
+
+		if (enable & ENABLE_TWO_SCOUT_CIVS)
 			PatchBigButton();
 
 		if (enable & ENABLE_POP_LIMIT)

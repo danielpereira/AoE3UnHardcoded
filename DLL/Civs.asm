@@ -447,6 +447,64 @@ PatchNativeCivs proc
 	ret
 PatchNativeCivs endp
 
+; Two Scouts/Explorers Civs
+
+code_cave_begin 0077EBB2h
+	mov eax, [esi+1DCh]
+	invoke TableIDExists, TWO_SCOUT_CIVS, eax
+	test eax, eax
+	je two_scout_patch1_end
+	mov bl, al
+	mov byte ptr ds:[esp+0Fh], bl
+	mov byte ptr ds:[esp+0Eh], 0
+	jmp_rel32 0077EBF6
+
+	two_scout_patch1_end:
+code_cave_end 0077EBB2h	
+
+code_cave_begin 0077EF29h
+	invoke TableIDExists, TWO_SCOUT_CIVS, eax
+	test eax, eax
+	jne_rel32 0077EF68
+	mov eax, dword ptr ds:[esp+14h]
+	push eax
+	call_rel32 008D0318
+code_cave_end 0077EF2Fh
+
+code_cave_begin 0077DDD2h
+	mov eax, [esi+1DCh]
+	invoke TableIDExists, TWO_SCOUT_CIVS, eax
+	test eax, eax
+	jne_rel32 0077DE16
+code_cave_end 0077DDD2h
+
+code_cave_begin 0077DFF4h
+	mov eax, [esi+1DCh]
+	invoke TableIDExists, TWO_SCOUT_CIVS, eax
+	test eax, eax
+	jne_rel32 0077E039
+code_cave_end 0077DFF4h
+
+public stdcall PatchTwoScoutCivs
+
+PatchTwoScoutCivs proc
+
+	patch_code_cave 0077EBB2h, 0077EBB2h
+	invoke PatchAddress, hProcess, loc_0077EBF6, 0077EBF6h, 1
+
+	patch_code_cave 0077EF29h, 0077EF2Fh
+	invoke PatchAddress, hProcess, loc_0077EF68, 0077EF68h, 1
+	invoke PatchAddress, hProcess, sub_008D0318, 008D0318h, 1
+
+	patch_code_cave 0077DDD2h, 0077DDD2h
+	invoke PatchAddress, hProcess, loc_0077DE16, 0077DE16h, 1
+
+	patch_code_cave 0077DFF4h, 0077DFF4h
+	invoke PatchAddress, hProcess, loc_0077E039, 0077E039h, 1
+
+	ret
+PatchTwoScoutCivs endp
+
 ; Civ check
 
 code_cave_begin 008D0318h
@@ -456,6 +514,9 @@ code_cave_begin 008D0318h
     mov ecx, dword ptr ds:[00C66234h]
     mov ecx, [ecx+140h]
     invoke getCivIDs, NATIVE
+	mov ecx, dword ptr ds:[00C66234h]
+    mov ecx, [ecx+140h]
+    invoke getCivIDs, TWO_SCOUT_CIVS
     mov eax, dword ptr ds:[00C66234h]
     jmp_rel32 008D031D
 code_cave_end 008D031Ch

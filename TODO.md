@@ -17,7 +17,7 @@
 - [ ] Make conversion ability work for units other than Treasure Guardians
 - [ ] Implement support for the addition of new protounit commands
 - [ ] Implement support for the addition of new unit types
-- [ ] Implement support for assigning UI icons to unit types
+- [X] Implement support for assigning UI icons to unit types
 - [X] Make Fame resource icon be shown in cards that cost that resource, somehow
 - [X] Make Fame, Experience, and Shipment icons be shown in Politician screen
 - [ ] Add support for widescreen interface

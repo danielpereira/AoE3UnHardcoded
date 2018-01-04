@@ -9,7 +9,7 @@ struct UHCRefTable {
 	DWORD *RefIDs;
 };
 
-#define TABLE_COUNT 8
+#define TABLE_COUNT 11
 
 enum UHCTableName {
 	Farm,
@@ -19,7 +19,10 @@ enum UHCTableName {
 	Native,
 	TacticSwitching,
 	BigButtonCivs,
-	NoBigButtonBlds
+	NoBigButtonBlds,
+	AttackTypeIcons,
+	TwoScoutCivs,
+	ExplorerUnits
 };
 
 enum UHCSyscallType {
@@ -69,6 +72,15 @@ struct UHCFarmRadius {
 	float X, Z;
 };
 
+struct UHCTypeIcons {
+	LPWSTR IconPath;
+	DWORD StringID, IconData;
+};
+
+struct UHCExplorer {
+	DWORD Type, DeathStringID;
+};
+
 #define ENABLE_AI_LIMIT 0x1
 #define ENABLE_CHEAT 0x2
 #define ENABLE_DECK_LIMIT 0x4
@@ -85,6 +97,9 @@ struct UHCFarmRadius {
 #define ENABLE_FARM_RADIUS 0x2000
 #define ENABLE_TACTIC_SWITCHING 0x4000
 #define REMOVE_FAME_RESTRICTION 0x8000
+#define ENABLE_TYPE_ICONS 0x10000
+#define ENABLE_TWO_SCOUT_CIVS 0x20000
+#define ENABLE_NEW_EXPLORERS 0x40000
 
 class UHCInfo {
 public:
@@ -97,6 +112,8 @@ public:
 	TArray<LPWSTR> AsianCivNames;
 	TArray<LPWSTR> NativeCivNames;
 	TArray<UHCFarmRadius> FarmRadiusInfo;
+	TArray<UHCTypeIcons> TypeIconsInfo;
+	TArray<UHCExplorer> ExplorerInfo;
 	DWORD HCXpIconData;
 	DWORD HCFameIconData;
 
@@ -145,6 +162,9 @@ extern "C" {
 	void __stdcall PatchFarmRadius();
 	void __stdcall PatchTacticSwitching();
 	void __stdcall PatchFameRestriction();
+	void __stdcall PatchAttackTypeIcons();
+	void __stdcall PatchTwoScoutCivs();
+	void __stdcall PatchExplorerUnits();
 
 	BOOL __stdcall TableIDExists(DWORD dwTable, int id);
 
