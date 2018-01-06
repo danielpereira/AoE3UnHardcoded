@@ -346,7 +346,8 @@ INT_PTR CALLBACK DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 				case IDC_REVBANNERS:
 				case IDC_IGNOREREG:
 				case IDC_TEAMLIMIT: 
-				case IDC_FAME_RESTRICTION: {
+				case IDC_FAME_RESTRICTION: 
+				case IDC_CONV_RESTRICTION: {
 					int chkBoxID = LOWORD(wParam);
 
 					if (IsDlgButtonChecked(hwndDlg, chkBoxID))

@@ -158,11 +158,11 @@ BOOL Config::WriteToFile(LPCWSTR lpConfigFileName, DWORD dwSettings) {
 	DWORD bytesWritten;
 
 	if (cfgFile != INVALID_HANDLE_VALUE) {
-		LPSTR settingTable[7] = { "noAILimit", "customRevolutionBanners", "ignoreRegistryPath", "enableAllTeams", "removeFameRestriction" };
+		LPSTR settingTable[6] = { "noAILimit", "customRevolutionBanners", "ignoreRegistryPath", "enableAllTeams", "removeFameRestriction", "removeConversionRestriction" };
 		LPSTR otherSettings[2] = { "customCheats", "customSyscalls" };
 		LPSTR valueTable[3] = { "basePop", "extraPop", "deckCardCount" };
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 6; i++) {
 			if (dwSettings & (1 << i)) {
 				WriteFile(cfgFile, settingTable[i], lstrlenA(settingTable[i]), &bytesWritten, NULL);
 				WriteFile(cfgFile, "\r\n", 2, &bytesWritten, NULL);
@@ -174,7 +174,7 @@ BOOL Config::WriteToFile(LPCWSTR lpConfigFileName, DWORD dwSettings) {
 			BOOL isHiddenSettingString = FALSE;
 			BOOL isValueString = FALSE;
 
-			for (int j = 0, detected = 0; j < 5 && !detected; j++) {
+			for (int j = 0, detected = 0; j < 6 && !detected; j++) {
 				if (!lstrcmpiA(settingTable[j], m_Keys[i].Name)) {
 					isSettingString = TRUE;
 					detected = 1;

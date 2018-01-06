@@ -14,7 +14,7 @@
 - [ ] Native support for Regicide and Capture the Relic (which is mentioned in the executable) game modes
 
 ## Modding
-- [ ] Make conversion ability work for units other than Treasure Guardians
+- [X] Make conversion ability work for units other than Treasure Guardians
 - [ ] Implement support for the addition of new protounit commands
 - [ ] Implement support for the addition of new unit types
 - [X] Implement support for assigning UI icons to unit types

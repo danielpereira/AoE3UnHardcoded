@@ -57,7 +57,7 @@ Supported Properties
 * **customSyscalls** - Allows the UHC Patch to load and register custom syscalls implemented through plugins.
 * **customCheats** - Allows the UHC Patch to load and register custom cheats implemented through plugins.
 * **removeFameRestriction** - Allows the usage of the Fame Resource in ProtoActions, like AutoGather and ModifyGather, and enables proper displaying of Fame, Experience and Shipment costs in the politicians screen and HC cards
-
+* **removeConversionRestriction** - Allows the usage of the ConvertGuardian tactic unit action on units that aren’t linked to a treasure, which effectively allows the usage of that action in powers that affect classes other than the Guardian class
 
 
 Planned Properties

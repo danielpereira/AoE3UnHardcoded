@@ -563,4 +563,19 @@ PatchFameRestriction proc
 	ret
 PatchFameRestriction endp
 
+; Conversion Restriction
+; Allows the ConvertGuardian power/ability to be used on units that do not belong to a treasure
+
+public stdcall PatchConversionRestriction
+PatchConversionRestriction proc
+	sub esp, 4
+	mov word ptr ds:[esp], 9090h
+	lea eax, [esp]
+
+	invoke PatchData, hProcess, 009D5B6Ch, eax, 2
+
+	add esp, 4
+	ret
+PatchConversionRestriction endp
+
 end

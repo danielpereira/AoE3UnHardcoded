@@ -100,6 +100,7 @@ struct UHCExplorer {
 #define ENABLE_TYPE_ICONS 0x10000
 #define ENABLE_TWO_SCOUT_CIVS 0x20000
 #define ENABLE_NEW_EXPLORERS 0x40000
+#define REMOVE_CONVERSION_RESTRICTION 0x80000
 
 class UHCInfo {
 public:
@@ -165,6 +166,7 @@ extern "C" {
 	void __stdcall PatchAttackTypeIcons();
 	void __stdcall PatchTwoScoutCivs();
 	void __stdcall PatchExplorerUnits();
+	void __stdcall PatchConversionRestriction();
 
 	BOOL __stdcall TableIDExists(DWORD dwTable, int id);
 

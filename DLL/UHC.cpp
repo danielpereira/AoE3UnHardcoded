@@ -302,6 +302,9 @@ UHCInfo::UHCInfo() {
 
 		else if (lstrcmpiA(key.Name, "removeFameRestriction") == 0)
 			Enable |= REMOVE_FAME_RESTRICTION;
+
+		else if (lstrcmpiA(key.Name, "removeConversionRestriction") == 0)
+			Enable |= REMOVE_CONVERSION_RESTRICTION;
 	}
 }
 
@@ -438,6 +441,9 @@ void APIENTRY UHCMain() {
 
 		if (enable & REMOVE_FAME_RESTRICTION)
 			PatchFameRestriction();
+
+		if (enable & REMOVE_CONVERSION_RESTRICTION)
+			PatchConversionRestriction();
 
 		// Load .upl plugins
 		if (enable & (ENABLE_CHEAT | ENABLE_SYSCALL))
