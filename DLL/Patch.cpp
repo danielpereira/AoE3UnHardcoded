@@ -3,22 +3,23 @@
 
 extern "C" BOOL __stdcall TableIDExists(DWORD dwTable, int id) {
 	__asm push ecx
+	BOOL result = FALSE;
 
 	if (dwTable >= TABLE_COUNT) {
-		__asm pop ecx
-		return FALSE;
+		goto DONE;
 	}
 
 	UHCRefTable& table = pUHCInfo->Tables[dwTable];
 	for (DWORD i = 0; i < table.RefCount; i++) {
 		if (table.RefIDs[i] == id) {
-			__asm pop ecx
-			return TRUE;
+			result = TRUE;
+			goto DONE;
 		}
 	}
 
+DONE:
 	__asm pop ecx
-	return FALSE;
+	return result;
 }
 
 extern "C" void __stdcall RegisterSyscallGroup(UHCSyscallGroupName name, LPVOID _this) {

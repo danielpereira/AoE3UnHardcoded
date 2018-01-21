@@ -83,7 +83,7 @@ void UHCRegisterCheat(LPCSTR string, BOOL enable, void(__stdcall * fPtr)(void*))
 	cheat.FunctionPtr = fPtr;
 }
 
-UHCSyscall& UHCRegisterSyscall(UHCSyscallGroupName groupName, DWORD retType, LPCSTR name, LPCVOID fPtr, DWORD paramCount, LPCSTR comment) {
+UHCSyscall& UHCRegisterSyscall(DWORD groupName, DWORD retType, LPCSTR name, LPCVOID fPtr, DWORD paramCount, LPCSTR comment) {
 	TArray<UHCSyscall>& group = pUHCInfo->SyscallGroups[groupName];
 
 	UHCSyscall& syscall = group.InsertEmptyBack();
@@ -306,6 +306,8 @@ UHCInfo::UHCInfo() {
 		else if (lstrcmpiA(key.Name, "removeConversionRestriction") == 0)
 			Enable |= REMOVE_CONVERSION_RESTRICTION;
 	}
+
+	ZydisDecoderInit(&Decoder, ZYDIS_MACHINE_MODE_LONG_COMPAT_32, ZYDIS_ADDRESS_WIDTH_32);
 }
 
 UHCInfo::~UHCInfo() {

@@ -15,6 +15,8 @@ extern hProcess:DWORD
 
 LoadPersonalities proto stdcall
 
+patch_begin AILimit
+
 code_cave_begin 00603B0Bh
 	invoke LoadPersonalities
 	mov edi, pUHCInfo
@@ -24,14 +26,12 @@ code_cave_begin 00603B0Bh
 	mov dword ptr ss:[esp + 050h], esi
 code_cave_end 00603C4Fh
 
-public stdcall PatchAILimit
-PatchAILimit proc
-	patch_code_cave 00603B0Bh, 00603C4Fh
-	ret
-PatchAILimit endp
+patch_end AILimit
 
 ; Deck limit
 ; Increases maximum deck card count to 40
+
+patch_begin DeckLimit
 
 code_cave_begin 007EF026h
 	mov ecx, pUHCInfo
@@ -42,14 +42,12 @@ code_cave_begin 007EF026h
 deck_end:
 code_cave_end 007EF030h
 
-public stdcall PatchDeckLimit
-PatchDeckLimit proc
-	patch_code_cave 007EF026h, 007EF030h
-	ret
-PatchDeckLimit endp
+patch_end DeckLimit
 
 ; Pop limit
 ; Removes maximum base population and extra population limit (refer to PopulationCapExtra in Techtree)
+
+patch_begin PopLimit
 
 code_cave_begin 004581F3h
 	mov esi, pUHCInfo
@@ -72,16 +70,15 @@ check_pop_extra:
 pop_end:
 code_cave_end 0045823Fh
 
-public stdcall PatchPopLimit
-PatchPopLimit proc
-	patch_code_cave 004581F3h, 0045823Fh
-	ret
-PatchPopLimit endp
+patch_end PopLimit
 
 ; Team limit
 ; Unlocks team 3 and 4 for both singleplayer and multiplayer
 
 ; singleplayer
+
+patch_begin TeamLimit
+
 code_cave_begin 07A0709h
 	push 08D2Fh ; Team 3 String ID
 	lea ecx, [esp + 014h]
@@ -194,277 +191,274 @@ team4_mp:
 	add esp, 028h
 	retn 0Ch
 
-public stdcall PatchTeamLimit
-PatchTeamLimit proc
-	patch_code_cave 07A0709h, 07A0709h
-	patch_code_cave 077674Ah, 077674Ah
-	ret
-PatchTeamLimit endp
+patch_end TeamLimit
 
 ; Politician Screen Resource Restriction Patch #1
 
+patch_begin FameRestriction
+
 code_cave_begin 0080E490h
 	lea ecx, [esp+28h]
-    call_rel32 0058F070
-    push 3
-    lea ecx, [esp+34h]
-    call_rel32 0044EFFF
-    push ecx
-    fstp dword ptr ds:[esp]
-    push 3
-    lea  ecx, [esp+30h]
-    call_rel32 0058EF83
-    mov edx, dword ptr ds:[00C66234h]
-    mov ebx, [edx]
-    mov ecx, esi
-    call_rel32 004539D3
-    push eax
-    push 1
-    push 1
-    push 1
-    lea eax, [esp+28h]
-    push eax
-    lea ecx, [esp+3Ch]
-    push ecx
-    mov ecx, dword ptr ds: [00C66234h]
-    call dword ptr ds:[ebx+134h]
-    push -1
-    push -1
-    lea edx, [esp+20h]
-    push edx
-    lea ecx, [esp+20h]
-    call_rel32 004439E3
-    push -1
-    push -1
-    push 00B9FFDCh
-    lea ecx, [esp+20h]
-    call_rel32 00443960
+	call_rel32 0058F070h
+	push 3
+	lea ecx, [esp+34h]
+	call_rel32 0044EFFFh
+	push ecx
+	fstp dword ptr ds:[esp]
+	push 3
+	lea  ecx, [esp+30h]
+	call_rel32 0058EF83h
+	mov edx, dword ptr ds:[00C66234h]
+	mov ebx, [edx]
+	mov ecx, esi
+	call_rel32 004539D3h
+	push eax
+	push 1
+	push 1
+	push 1
+	lea eax, [esp+28h]
+	push eax
+	lea ecx, [esp+3Ch]
+	push ecx
+	mov ecx, dword ptr ds: [00C66234h]
+	call dword ptr ds:[ebx+134h]
+	push -1
+	push -1
+	lea edx, [esp+20h]
+	push edx
+	lea ecx, [esp+20h]
+	call_rel32 004439E3h
+	push -1
+	push -1
+	push 00B9FFDCh
+	lea ecx, [esp+20h]
+	call_rel32 00443960h
 	lea ecx, [esp+28h]
-    call_rel32 0058F070_1
-    push 5
-    lea ecx, [esp+34h]
-    call_rel32 0044EFFF_1
-    push ecx
-    fstp dword ptr ds:[esp]
-    push 5
-    lea  ecx, [esp+30h]
-    call_rel32 0058EF83_1
-    mov edx, dword ptr ds:[00C66234h]
-    mov ebx, [edx]
-    mov ecx, esi
-    call_rel32 004539D3_1
-    push eax
-    push 1
-    push 1
-    push 1
-    lea eax, [esp+28h]
-    push eax
-    lea ecx, [esp+3Ch]
-    push ecx
-    mov ecx, dword ptr ds: [00C66234h]
-    call dword ptr ds:[ebx+134h]
-    push -1
-    push -1
-    lea edx, [esp+20h]
-    push edx
-    lea ecx, [esp+20h]
-    call_rel32 004439E3_1
-    push -1
-    push -1
-    push 00B9FFDCh
-    lea ecx, [esp+20h]
-    call_rel32 00443960_1
+	call_rel32 0058F070h
+	push 5
+	lea ecx, [esp+34h]
+	call_rel32 0044EFFFh
+	push ecx
+	fstp dword ptr ds:[esp]
+	push 5
+	lea  ecx, [esp+30h]
+	call_rel32 0058EF83h
+	mov edx, dword ptr ds:[00C66234h]
+	mov ebx, [edx]
+	mov ecx, esi
+	call_rel32 004539D3h
+	push eax
+	push 1
+	push 1
+	push 1
+	lea eax, [esp+28h]
+	push eax
+	lea ecx, [esp+3Ch]
+	push ecx
+	mov ecx, dword ptr ds: [00C66234h]
+	call dword ptr ds:[ebx+134h]
+	push -1
+	push -1
+	lea edx, [esp+20h]
+	push edx
+	lea ecx, [esp+20h]
+	call_rel32 004439E3h
+	push -1
+	push -1
+	push 00B9FFDCh
+	lea ecx, [esp+20h]
+	call_rel32 00443960h
 	lea ecx, [esp+28h]
-    call_rel32 0058F070_2
-    push 6
-    lea ecx, [esp+34h]
-    call_rel32 0044EFFF_2
-    push ecx
-    fstp dword ptr ds:[esp]
-    push 6
-    lea  ecx, [esp+30h]
-    call_rel32 0058EF83_2
-    mov edx, dword ptr ds:[00C66234h]
-    mov ebx, [edx]
-    mov ecx, esi
-    call_rel32 004539D3_2
-    push eax
-    push 1
-    push 1
-    push 1
-    lea eax, [esp+28h]
-    push eax
-    lea ecx, [esp+3Ch]
-    push ecx
-    mov ecx, dword ptr ds: [00C66234h]
-    call dword ptr ds:[ebx+134h]
-    push -1
-    push -1
-    lea edx, [esp+20h]
-    push edx
-    lea ecx, [esp+20h]
-    call_rel32 004439E3_2
-    push -1
-    push -1
-    push 00B9FFDCh
-    lea ecx, [esp+20h]
-    call_rel32 00443960_2
+	call_rel32 0058F070h
+	push 6
+	lea ecx, [esp+34h]
+	call_rel32 0044EFFFh
+	push ecx
+	fstp dword ptr ds:[esp]
+	push 6
+	lea  ecx, [esp+30h]
+	call_rel32 0058EF83h
+	mov edx, dword ptr ds:[00C66234h]
+	mov ebx, [edx]
+	mov ecx, esi
+	call_rel32 004539D3h
+	push eax
+	push 1
+	push 1
+	push 1
+	lea eax, [esp+28h]
+	push eax
+	lea ecx, [esp+3Ch]
+	push ecx
+	mov ecx, dword ptr ds: [00C66234h]
+	call dword ptr ds:[ebx+134h]
+	push -1
+	push -1
+	lea edx, [esp+20h]
+	push edx
+	lea ecx, [esp+20h]
+	call_rel32 004439E3h
+	push -1
+	push -1
+	push 00B9FFDCh
+	lea ecx, [esp+20h]
+	call_rel32 00443960h
 code_cave_end 0080E490h
 
 ; Politician Screen Resource Restriction Patch #2
 
 code_cave_begin 0081943Dh
 	lea ecx, [esp+28h]
-    call_rel32 0058F070_3
-    push 3
-    lea ecx, [esp+34h]
-    call_rel32 0044EFFF_3
-    push ecx
-    fstp dword ptr ds:[esp]
-    push 3
-    lea  ecx, [esp+30h]
-    call_rel32 0058EF83_3
-    mov edx, dword ptr ds:[00C66234h]
-    mov ebx, [edx]
-    mov ecx, esi
-    call_rel32 004539D3_3
-    push eax
-    push 1
-    push 1
-    push 1
-    lea eax, [esp+28h]
-    push eax
-    lea ecx, [esp+3Ch]
-    push ecx
-    mov ecx, dword ptr ds: [00C66234h]
-    call dword ptr ds:[ebx+134h]
-    push -1
-    push -1
-    lea edx, [esp+20h]
-    push edx
-    lea ecx, [esp+20h]
-    call_rel32 004439E3_3
-    push -1
-    push -1
-    push 00B9FFDCh
-    lea ecx, [esp+20h]
-    call_rel32 00443960_3
+	call_rel32 0058F070h
+	push 3
+	lea ecx, [esp+34h]
+	call_rel32 0044EFFFh
+	push ecx
+	fstp dword ptr ds:[esp]
+	push 3
+	lea  ecx, [esp+30h]
+	call_rel32 0058EF83h
+	mov edx, dword ptr ds:[00C66234h]
+	mov ebx, [edx]
+	mov ecx, esi
+	call_rel32 004539D3h
+	push eax
+	push 1
+	push 1
+	push 1
+	lea eax, [esp+28h]
+	push eax
+	lea ecx, [esp+3Ch]
+	push ecx
+	mov ecx, dword ptr ds: [00C66234h]
+	call dword ptr ds:[ebx+134h]
+	push -1
+	push -1
+	lea edx, [esp+20h]
+	push edx
+	lea ecx, [esp+20h]
+	call_rel32 004439E3h
+	push -1
+	push -1
+	push 00B9FFDCh
+	lea ecx, [esp+20h]
+	call_rel32 00443960h
 	lea ecx, [esp+28h]
-    call_rel32 0058F070_4
-    push 5
-    lea ecx, [esp+34h]
-    call_rel32 0044EFFF_4
-    push ecx
-    fstp dword ptr ds:[esp]
-    push 5
-    lea  ecx, [esp+30h]
-    call_rel32 0058EF83_4
-    mov edx, dword ptr ds:[00C66234h]
-    mov ebx, [edx]
-    mov ecx, esi
-    call_rel32 004539D3_4
-    push eax
-    push 1
-    push 1
-    push 1
-    lea eax, [esp+28h]
-    push eax
-    lea ecx, [esp+3Ch]
-    push ecx
-    mov ecx, dword ptr ds: [00C66234h]
-    call dword ptr ds:[ebx+134h]
-    push -1
-    push -1
-    lea edx, [esp+20h]
-    push edx
-    lea ecx, [esp+20h]
-    call_rel32 004439E3_4
-    push -1
-    push -1
-    push 00B9FFDCh
-    lea ecx, [esp+20h]
-    call_rel32 00443960_4
+	call_rel32 0058F070h
+	push 5
+	lea ecx, [esp+34h]
+	call_rel32 0044EFFFh
+	push ecx
+	fstp dword ptr ds:[esp]
+	push 5
+	lea  ecx, [esp+30h]
+	call_rel32 0058EF83h
+	mov edx, dword ptr ds:[00C66234h]
+	mov ebx, [edx]
+	mov ecx, esi
+	call_rel32 004539D3h
+	push eax
+	push 1
+	push 1
+	push 1
+	lea eax, [esp+28h]
+	push eax
+	lea ecx, [esp+3Ch]
+	push ecx
+	mov ecx, dword ptr ds: [00C66234h]
+	call dword ptr ds:[ebx+134h]
+	push -1
+	push -1
+	lea edx, [esp+20h]
+	push edx
+	lea ecx, [esp+20h]
+	call_rel32 004439E3h
+	push -1
+	push -1
+	push 00B9FFDCh
+	lea ecx, [esp+20h]
+	call_rel32 00443960h
 	lea ecx, [esp+28h]
-    call_rel32 0058F070_5
-    push 6
-    lea ecx, [esp+34h]
-    call_rel32 0044EFFF_5
-    push ecx
-    fstp dword ptr ds:[esp]
-    push 6
-    lea  ecx, [esp+30h]
-    call_rel32 0058EF83_5
-    mov edx, dword ptr ds:[00C66234h]
-    mov ebx, [edx]
-    mov ecx, esi
-    call_rel32 004539D3_5
-    push eax
-    push 1
-    push 1
-    push 1
-    lea eax, [esp+28h]
-    push eax
-    lea ecx, [esp+3Ch]
-    push ecx
-    mov ecx, dword ptr ds: [00C66234h]
-    call dword ptr ds:[ebx+134h]
-    push -1
-    push -1
-    lea edx, [esp+20h]
-    push edx
-    lea ecx, [esp+20h]
-    call_rel32 004439E3_5
-    push -1
-    push -1
-    push 00B9FFDCh
-    lea ecx, [esp+20h]
-    call_rel32 00443960_5
+	call_rel32 0058F070h
+	push 6
+	lea ecx, [esp+34h]
+	call_rel32 0044EFFFh
+	push ecx
+	fstp dword ptr ds:[esp]
+	push 6
+	lea  ecx, [esp+30h]
+	call_rel32 0058EF83h
+	mov edx, dword ptr ds:[00C66234h]
+	mov ebx, [edx]
+	mov ecx, esi
+	call_rel32 004539D3h
+	push eax
+	push 1
+	push 1
+	push 1
+	lea eax, [esp+28h]
+	push eax
+	lea ecx, [esp+3Ch]
+	push ecx
+	mov ecx, dword ptr ds: [00C66234h]
+	call dword ptr ds:[ebx+134h]
+	push -1
+	push -1
+	lea edx, [esp+20h]
+	push edx
+	lea ecx, [esp+20h]
+	call_rel32 004439E3h
+	push -1
+	push -1
+	push 00B9FFDCh
+	lea ecx, [esp+20h]
+	call_rel32 00443960h
 	lea ecx, [esp+28h]
-    call_rel32 0058F070_6
-    push 7
-    lea ecx, [esp+34h]
-    call_rel32 0044EFFF_6
-    push ecx
-    fstp dword ptr ds:[esp]
-    push 7
-    lea  ecx, [esp+30h]
-    call_rel32 0058EF83_6
-    mov edx, dword ptr ds:[00C66234h]
-    mov ebx, [edx]
-    mov ecx, esi
-    call_rel32 004539D3_6
-    push eax
-    push 1
-    push 1
-    push 1
-    lea eax, [esp+28h]
-    push eax
-    lea ecx, [esp+3Ch]
-    push ecx
-    mov ecx, dword ptr ds: [00C66234h]
-    call dword ptr ds:[ebx+134h]
-    push -1
-    push -1
-    lea edx, [esp+20h]
-    push edx
-    lea ecx, [esp+20h]
-    call_rel32 004439E3_6
-    push -1
-    push -1
-    push 00B9FFDCh
-    lea ecx, [esp+20h]
-    call_rel32 00443960_6
+	call_rel32 0058F070h
+	push 7
+	lea ecx, [esp+34h]
+	call_rel32 0044EFFFh
+	push ecx
+	fstp dword ptr ds:[esp]
+	push 7
+	lea  ecx, [esp+30h]
+	call_rel32 0058EF83h
+	mov edx, dword ptr ds:[00C66234h]
+	mov ebx, [edx]
+	mov ecx, esi
+	call_rel32 004539D3h
+	push eax
+	push 1
+	push 1
+	push 1
+	lea eax, [esp+28h]
+	push eax
+	lea ecx, [esp+3Ch]
+	push ecx
+	mov ecx, dword ptr ds: [00C66234h]
+	call dword ptr ds:[ebx+134h]
+	push -1
+	push -1
+	lea edx, [esp+20h]
+	push edx
+	lea ecx, [esp+20h]
+	call_rel32 004439E3h
+	push -1
+	push -1
+	push 00B9FFDCh
+	lea ecx, [esp+20h]
+	call_rel32 00443960h
 code_cave_end 0081943Dh
 
 code_cave_begin 005C1E1Fh
-	call_rel32 0058E3EB
+	call_rel32 0058E3EBh
 	mov dword ptr ds:[esi+168h],eax
 	push -1
 	push 0
 	push 0
 	push hcXpIconPath
 	mov ecx,edi
-	call_rel32 0058E3EB_1
+	call_rel32 0058E3EBh
 	mov ecx, pUHCInfo
 	lea ecx,[ecx].UHCInfo.HCXpIconData
 	mov [ecx],eax
@@ -473,7 +467,7 @@ code_cave_begin 005C1E1Fh
 	push 0
 	push hcFameIconPath
 	mov ecx,edi
-	call_rel32 0058E3EB_2
+	call_rel32 0058E3EBh
 	mov ecx, pUHCInfo
 	lea ecx,[ecx].UHCInfo.HCFameIconData
 	mov [ecx],eax
@@ -484,84 +478,16 @@ code_cave_begin 005C1E1Fh
 	mov ecx,edi
 code_cave_end 005C1E37h
 
-DisplayFameIcon:
+case 009A218Ch
 	mov eax, pUHCInfo
 	mov eax, [eax].UHCInfo.HCFameIconData
-	jmp_rel32 009A2098
-
-DisplayXPIcon:
+	jmp_rel32 009A2098h
+case 009A2194h
 	mov eax, pUHCInfo
 	mov eax, [eax].UHCInfo.HCXpIconData
-	jmp_rel32 009A2098_1
+	jmp_rel32 009A2098h
 
-
-; Resource Restriction Removal
-; Allows using the 'Fame' resource for ProtoActions, like AutoGather or ModifyGather
-; Also removes resource restrictions in politician screens and HC cards
-
-public stdcall PatchFameRestriction
-PatchFameRestriction proc
-	invoke PatchAddress, hProcess, 0051B026h, 00BD62F8h, 0
-
-	patch_code_cave 0080E490h,  0080E490h
-	invoke PatchAddress, hProcess, sub_0058F070, 0058F070h, 1
-	invoke PatchAddress, hProcess, sub_0044EFFF, 0044EFFFh, 1
-	invoke PatchAddress, hProcess, sub_0058EF83, 0058EF83h, 1
-	invoke PatchAddress, hProcess, sub_004539D3, 004539D3h, 1
-	invoke PatchAddress, hProcess, sub_004439E3, 004439E3h, 1
-	invoke PatchAddress, hProcess, sub_00443960, 00443960h, 1
-	invoke PatchAddress, hProcess, sub_0058F070_1, 0058F070h, 1
-	invoke PatchAddress, hProcess, sub_0044EFFF_1, 0044EFFFh, 1
-	invoke PatchAddress, hProcess, sub_0058EF83_1, 0058EF83h, 1
-	invoke PatchAddress, hProcess, sub_004539D3_1, 004539D3h, 1
-	invoke PatchAddress, hProcess, sub_004439E3_1, 004439E3h, 1
-	invoke PatchAddress, hProcess, sub_00443960_1, 00443960h, 1
-	invoke PatchAddress, hProcess, sub_0058F070_2, 0058F070h, 1
-	invoke PatchAddress, hProcess, sub_0044EFFF_2, 0044EFFFh, 1
-	invoke PatchAddress, hProcess, sub_0058EF83_2, 0058EF83h, 1
-	invoke PatchAddress, hProcess, sub_004539D3_2, 004539D3h, 1
-	invoke PatchAddress, hProcess, sub_004439E3_2, 004439E3h, 1
-	invoke PatchAddress, hProcess, sub_00443960_2, 00443960h, 1
-
-	patch_code_cave 0081943Dh,  0081943Dh
-	invoke PatchAddress, hProcess, sub_0058F070_3, 0058F070h, 1
-	invoke PatchAddress, hProcess, sub_0044EFFF_3, 0044EFFFh, 1
-	invoke PatchAddress, hProcess, sub_0058EF83_3, 0058EF83h, 1
-	invoke PatchAddress, hProcess, sub_004539D3_3, 004539D3h, 1
-	invoke PatchAddress, hProcess, sub_004439E3_3, 004439E3h, 1
-	invoke PatchAddress, hProcess, sub_00443960_3, 00443960h, 1
-	invoke PatchAddress, hProcess, sub_0058F070_4, 0058F070h, 1
-	invoke PatchAddress, hProcess, sub_0044EFFF_4, 0044EFFFh, 1
-	invoke PatchAddress, hProcess, sub_0058EF83_4, 0058EF83h, 1
-	invoke PatchAddress, hProcess, sub_004539D3_4, 004539D3h, 1
-	invoke PatchAddress, hProcess, sub_004439E3_4, 004439E3h, 1
-	invoke PatchAddress, hProcess, sub_00443960_4, 00443960h, 1
-	invoke PatchAddress, hProcess, sub_0058F070_5, 0058F070h, 1
-	invoke PatchAddress, hProcess, sub_0044EFFF_5, 0044EFFFh, 1
-	invoke PatchAddress, hProcess, sub_0058EF83_5, 0058EF83h, 1
-	invoke PatchAddress, hProcess, sub_004539D3_5, 004539D3h, 1
-	invoke PatchAddress, hProcess, sub_004439E3_5, 004439E3h, 1
-	invoke PatchAddress, hProcess, sub_00443960_5, 00443960h, 1
-	invoke PatchAddress, hProcess, sub_0058F070_6, 0058F070h, 1
-	invoke PatchAddress, hProcess, sub_0044EFFF_6, 0044EFFFh, 1
-	invoke PatchAddress, hProcess, sub_0058EF83_6, 0058EF83h, 1
-	invoke PatchAddress, hProcess, sub_004539D3_6, 004539D3h, 1
-	invoke PatchAddress, hProcess, sub_004439E3_6, 004439E3h, 1
-	invoke PatchAddress, hProcess, sub_00443960_6, 00443960h, 1
-
-	patch_code_cave 005C1E1Fh,  005C1E37h
-	invoke PatchAddress, hProcess, sub_0058E3EB, 0058E3EBh, 1
-	invoke PatchAddress, hProcess, sub_0058E3EB_1, 0058E3EBh, 1
-	invoke PatchAddress, hProcess, sub_0058E3EB_2, 0058E3EBh, 1
-
-	invoke PatchAddress, hProcess, 009A218Ch, DisplayFameIcon, 0
-	invoke PatchAddress, hProcess, loc_009A2098, 009A2098h, 1
-
-	invoke PatchAddress, hProcess, 009A2194h, DisplayXPIcon, 0
-	invoke PatchAddress, hProcess, loc_009A2098_1, 009A2098h, 1
-
-	ret
-PatchFameRestriction endp
+patch_end FameRestriction
 
 ; Conversion Restriction
 ; Allows the ConvertGuardian power/ability to be used on units that do not belong to a treasure

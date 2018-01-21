@@ -2,6 +2,7 @@
 
 #include "TArray.h"
 #include "Config.h"
+#include <Zydis/Zydis.h>
 
 struct UHCRefTable {
 	DWORD RefCount;
@@ -64,7 +65,7 @@ enum UHCSyscallGroupName {
 struct UHCCheat {
 	LPCWSTR String;
 	BOOL Enable;
-	LPVOID FunctionPtr;
+	void(__stdcall * FunctionPtr)(void*);
 };
 
 struct UHCFarmRadius {
@@ -118,6 +119,8 @@ public:
 	DWORD HCXpIconData;
 	DWORD HCFameIconData;
 
+	ZydisDecoder Decoder;
+
 	UHCInfo();
 	~UHCInfo();
 
@@ -136,7 +139,7 @@ extern "C" {
 
 	void UHCRegisterCheat(LPCSTR string, BOOL enable, void (__stdcall * fPtr)(void*));
 
-	UHCSyscall& UHCRegisterSyscall(UHCSyscallGroupName groupName, DWORD retType, LPCSTR name, LPCVOID fPtr, DWORD paramCount, LPCSTR comment);
+	UHCSyscall& UHCRegisterSyscall(DWORD groupName, DWORD retType, LPCSTR name, LPCVOID fPtr, DWORD paramCount, LPCSTR comment);
 
 	void UHCSyscallSetParam(UHCSyscall& syscall, DWORD paramId, DWORD type, LPCVOID defaultVal);
 
@@ -174,13 +177,13 @@ extern "C" {
 }
 
 struct UHCPluginInfo {
-	void(*RegisterCheat)(LPCSTR string, BOOL enable, void(__stdcall * fPtr)(void*));
+	void(*const RegisterCheat)(LPCSTR string, BOOL enable, void(__stdcall * fPtr)(void*));
 
-	UHCSyscall&(*RegisterSyscall)(UHCSyscallGroupName groupName, DWORD retType, LPCSTR name, LPCVOID fPtr, DWORD paramCount, LPCSTR comment);
+	UHCSyscall&(*const RegisterSyscall)(DWORD groupName, DWORD retType, LPCSTR name, LPCVOID fPtr, DWORD paramCount, LPCSTR comment);
 
-	void(*SyscallSetParam)(UHCSyscall& syscall, DWORD paramId, DWORD type, LPCVOID defaultVal);
+	void(*const SyscallSetParam)(UHCSyscall& syscall, DWORD paramId, DWORD type, LPCVOID defaultVal);
 
-	bool(*CheatAddResource)(void* playerData, int resourceID, float resourceAmount, bool unk);
+	bool(*const CheatAddResource)(void* playerData, int resourceID, float resourceAmount, bool unk);
 
-	void(*CheatSpawnUnit)(void* playerData, const char* protoUnitName);
+	void(*const CheatSpawnUnit)(void* playerData, const char* protoUnitName);
 };

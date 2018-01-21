@@ -3,12 +3,11 @@ option casemap :none
 
 include UHC.inc
 
-extern pUHCInfo:UHCInfoPtr
-extern hProcess:DWORD
-
 .code
 
 CheckRevBanner proto stdcall lpTechName:DWORD, lpThis:DWORD, lpPathObject:DWORD
+
+patch_begin RevBanner
 
 code_cave_begin 0081A7CCh
 	jnz rev_check
@@ -35,11 +34,6 @@ rev_check:
 rev_check_end:
 code_cave_end 0081A7ECh
 
-public stdcall PatchRevBanner
-PatchRevBanner proc
-	patch_code_cave 0081A7CCh, 0081A7ECh
-	invoke PatchAddress, hProcess, loc_0081A7F1h, 0081A7F1h, 1
-	ret
-PatchRevBanner endp
+patch_end RevBanner
 
 end

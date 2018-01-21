@@ -3,9 +3,6 @@ option casemap :none
 
 include UHC.inc
 
-extern pUHCInfo:UHCInfoPtr
-extern hProcess:DWORD
-
 .code
 
 RegisterSyscallGroup proto stdcall groupName:DWORD, :DWORD
@@ -18,6 +15,8 @@ GroupTR = 04h
 GroupUI = 05h
 GroupUI2 = 06h
 GroupXS = 07h
+
+patch_begin Syscall
 
 ; AI
 code_cave_begin 07294F4h
@@ -59,17 +58,6 @@ code_cave_begin 06257D9h
 	invoke RegisterSyscallGroup, GroupXS, esi
 code_cave_end 06257D9h
 
-public stdcall PatchSyscall
-PatchSyscall proc
-	patch_code_cave 07294F4h, 07294F4h ; AI
-	patch_code_cave 05B5E08h, 05B5E08h ; HC
-	patch_code_cave 0885D14h, 0885D14h ; KB
-	patch_code_cave 060B8BFh, 060B8BFh ; RM
-	patch_code_cave 0988E03h, 0988E03h ; TR
-	patch_code_cave 0539542h, 0539542h ; UI
-	patch_code_cave 053575Eh, 053575Eh ; UI2
-	patch_code_cave 06257D9h, 06257D9h ; XS
-	ret
-PatchSyscall endp
+patch_end Syscall
 
 end

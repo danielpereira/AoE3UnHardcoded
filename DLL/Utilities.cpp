@@ -1,48 +1,79 @@
 #include "stdafx.h"
-#include "Disasm.h"
+#include "UHC.h"
 
-// Patches a 32 bit address
-extern "C" void __stdcall PatchAddress(HANDLE hProcess, DWORD lpBaseAddress, DWORD lpDestAddress, BOOL bRelAddr) {
-	DWORD flProtect, flOldProtect = PAGE_EXECUTE_READWRITE, dwBytesWritten;
-	DWORD* lpAddress;
-	const DWORD dwAddressSize = 4;
+extern "C" BOOL __stdcall PatchAddress(HANDLE hProcess, UINT_PTR lpBaseAddress, UINT_PTR lpDestAddress, BOOL bRelAddr) {
+	DWORD flProtect, flOldProtect = PAGE_EXECUTE_READWRITE;
+	SIZE_T dwBytesWritten;
+	UINT_PTR* lpAddress;
+	BOOL result;
 
-	lpAddress = (DWORD*)lpBaseAddress;
+	lpAddress = (UINT_PTR*)lpBaseAddress;
 
-	VirtualProtectEx(hProcess, lpAddress, dwAddressSize, PAGE_EXECUTE_READWRITE, &flOldProtect);
+	result = VirtualProtectEx(hProcess, lpAddress, sizeof(UINT_PTR), PAGE_EXECUTE_READWRITE, &flOldProtect);
+	if (!result)
+		goto DONE;
 
 	*lpAddress = lpDestAddress;
 	if (bRelAddr)
-		*lpAddress -= lpBaseAddress + dwAddressSize;
+		*lpAddress -= lpBaseAddress + sizeof(UINT_PTR);
 
-	WriteProcessMemory(hProcess, lpAddress, lpAddress, dwAddressSize, &dwBytesWritten);
-	VirtualProtectEx(hProcess, lpAddress, dwAddressSize, flOldProtect, &flProtect);
+	result = WriteProcessMemory(hProcess, lpAddress, lpAddress, sizeof(UINT_PTR), &dwBytesWritten);
+	if (!result)
+		goto DONE;
+
+	result = VirtualProtectEx(hProcess, lpAddress, sizeof(UINT_PTR), flOldProtect, &flProtect);
+DONE:
+	return result;
 }
 
-#define SRC_SIZE 16
+extern "C" BOOL __stdcall PatchData(HANDLE hProcess, UINT_PTR dwAddress, LPVOID lpBuffer, SIZE_T dwSize)
+{
+	DWORD flProtect, flOldProtect;
+	SIZE_T dwBytesWritten;
+	BOOL result;
+
+	result = VirtualProtectEx(hProcess, (LPVOID)dwAddress, dwSize, PAGE_EXECUTE_READWRITE, &flOldProtect);
+	if (!result)
+		goto DONE;
+
+	result = WriteProcessMemory(hProcess, (LPVOID)dwAddress, lpBuffer, dwSize, &dwBytesWritten);
+	if (!result)
+		goto DONE;
+
+	result = VirtualProtectEx(hProcess, (LPVOID)dwAddress, dwSize, flOldProtect, &flProtect);
+DONE:
+	return result;
+}
+
 #define JMP_REL32_SIZE 5
 
-extern "C" void __stdcall PatchCodeCave(HANDLE hProcess, DWORD dwAddress, DWORD dwAddressEnd, DWORD dwCCAddress, DWORD dwCCAddressEnd)
+extern "C" BOOL __stdcall PatchCodeCave(HANDLE hProcess, UINT_PTR dwAddress, UINT_PTR dwAddressEnd, UINT_PTR dwCCAddress, UINT_PTR dwCCAddressEnd)
 {
 	// minimum instructions' size larger than 32 bit relative jump
-	DWORD dwSize = dwAddressEnd - dwAddress;
+	UINT_PTR dwSize = dwAddressEnd - dwAddress;
 
 	DWORD flProtect, flOldProtect = PAGE_EXECUTE_READWRITE;
-	DWORD dwBytes;
-	BYTE lpBuffer[SRC_SIZE];
+	SIZE_T dwBytes;
+	BYTE lpBuffer[32];
+	BOOL result;
 
 	if (dwSize < JMP_REL32_SIZE) {
 		BYTE lpInsBuffer[16], lpRestoreBuffer[32];
 		PBYTE lpRestoration, lpIns, lpRestore;
-		DWORD dwAddressDest, dwInsSize, dwRestoreSize;
+		SIZE_T dwAddressDest, dwInsSize, dwRestoreSize;
 
 		// Restored relative instructions' jump addresses
-		DWORD dwAddressCount = 0;
-		PDWORD lpAddresses[4];
+		SIZE_T dwAddressCount = 0;
+		PUINT_PTR lpAddresses[4];
 
 		// Allocate space for restored code and a jump from the address to base address
-		VirtualProtectEx(hProcess, (LPVOID)dwAddress, SRC_SIZE, PAGE_EXECUTE_READWRITE, &flOldProtect);
-		ReadProcessMemory(hProcess, (LPVOID)dwAddress, lpBuffer, SRC_SIZE, &dwBytes);
+		result = VirtualProtectEx(hProcess, (LPVOID)dwAddress, sizeof(lpBuffer), PAGE_EXECUTE_READWRITE, &flOldProtect);
+		if (!result)
+			goto DONE;
+
+		result = ReadProcessMemory(hProcess, (LPVOID)dwAddress, lpBuffer, sizeof(lpBuffer), &dwBytes);
+		if (!result)
+			goto DONE;
 
 		lpRestore = lpRestoreBuffer;
 
@@ -52,15 +83,18 @@ extern "C" void __stdcall PatchCodeCave(HANDLE hProcess, DWORD dwAddress, DWORD 
 			lpIns = lpInsBuffer;
 			switch (lpBuffer[dwSize]) {
 				// jcc rel8
-				// no near jump for jcxz(0xe3)
 			case 0x70: case 0x71: case 0x72: case 0x73: case 0x74: case 0x75: case 0x76: case 0x77:
 			case 0x78: case 0x79: case 0x7a: case 0x7b: case 0x7c: case 0x7d: case 0x7e: case 0x7f:
 				dwAddressDest = (dwAddress + dwSize) + 2 + (CHAR)lpBuffer[dwSize + 1];
-				*lpIns++ = 0x0f;
+				*lpIns++ = 0x0f; // JCC prefix
 				*lpIns++ = lpBuffer[dwSize] + 0x10;
 				dwInsSize = 6;
 				dwSize += 2;
 				break;
+				// no near jump for jcxz(0xe3)
+			case 0xe3:
+				result = FALSE;
+				goto DONE;
 				// jmp rel8
 			case 0xeb:
 				dwAddressDest = (dwAddress + dwSize) + 2 + (CHAR)lpBuffer[dwSize + 1];
@@ -75,7 +109,7 @@ extern "C" void __stdcall PatchCodeCave(HANDLE hProcess, DWORD dwAddress, DWORD 
 				case 0x80: case 0x81: case 0x82: case 0x83: case 0x84: case 0x85: case 0x86: case 0x87:
 				case 0x88: case 0x89: case 0x8a: case 0x8b: case 0x8c: case 0x8d: case 0x8e: case 0x8f:
 					dwAddressDest = (dwAddress + dwSize) + 6 + *(PDWORD)(lpBuffer + 2);
-					*lpIns++ = 0x0f;
+					*lpIns++ = 0x0f; // JCC prefix
 					*lpIns++ = lpBuffer[dwSize + 1];
 					dwInsSize = 6;
 					dwSize += 6;
@@ -94,8 +128,13 @@ extern "C" void __stdcall PatchCodeCave(HANDLE hProcess, DWORD dwAddress, DWORD 
 				dwSize += 5;
 				break;
 			default:
-LABEL_NOT_REL:
-				dwInsSize = InstructionLength(lpBuffer + dwSize);
+			LABEL_NOT_REL:
+				ZydisDecodedInstruction ins;
+				result = ZYDIS_SUCCESS(ZydisDecoderDecodeBuffer(&pUHCInfo->Decoder, lpBuffer + dwSize, sizeof(lpBuffer) - dwSize, dwAddress + dwSize, &ins));
+				if (!result)
+					goto DONE;
+
+				dwInsSize = ins.length;
 				CopyMemory(lpRestore, lpBuffer + dwSize, dwInsSize);
 				dwSize += dwInsSize;
 			}
@@ -103,7 +142,7 @@ LABEL_NOT_REL:
 			if (lpIns != lpInsBuffer) {
 				*(PDWORD)lpIns = dwAddressDest - ((lpRestore - lpRestoreBuffer) + dwInsSize);
 				CopyMemory(lpRestore, lpInsBuffer, dwInsSize);
-				lpAddresses[dwAddressCount++] = (PDWORD)(lpRestore + (lpIns - lpInsBuffer));
+				lpAddresses[dwAddressCount++] = (PUINT_PTR)(lpRestore + (lpIns - lpInsBuffer));
 			}
 
 			lpRestore += dwInsSize;
@@ -111,43 +150,180 @@ LABEL_NOT_REL:
 
 		dwRestoreSize = lpRestore - lpRestoreBuffer + JMP_REL32_SIZE;
 		lpRestoration = (PBYTE)VirtualAllocEx(hProcess, NULL, dwRestoreSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+
+		if (!lpRestoration) {
+			result = FALSE;
+			goto DONE;
+		}
 		
 		// update relative addresses
-		for (DWORD i = 0; i < dwAddressCount; i++)
-			*lpAddresses[i] -= (DWORD)lpRestoration;
+		for (SIZE_T i = 0; i < dwAddressCount; i++)
+			*lpAddresses[i] -= (UINT_PTR)lpRestoration;
 
 		// Patch jump from restored code address to base address
 		lpRestore[0] = 0xe9; // JMP rel32
-		*(PDWORD)(lpRestore + 1) = (dwAddress + dwSize) - ((DWORD)lpRestoration + (lpRestore - lpRestoreBuffer) + JMP_REL32_SIZE);
-		WriteProcessMemory(hProcess, lpRestoration, lpRestoreBuffer, dwRestoreSize, &dwBytes);
-		VirtualProtectEx(hProcess, lpRestoration, dwRestoreSize, PAGE_EXECUTE_READ, &flProtect);
+		*(PUINT_PTR)(lpRestore + 1) = (dwAddress + dwSize) - ((UINT_PTR)lpRestoration + (lpRestore - lpRestoreBuffer) + JMP_REL32_SIZE);
+		result = WriteProcessMemory(hProcess, lpRestoration, lpRestoreBuffer, dwRestoreSize, &dwBytes);
+		if (!result)
+			goto DONE;
+
+		result = VirtualProtectEx(hProcess, lpRestoration, dwRestoreSize, PAGE_EXECUTE_READ, &flProtect);
+		if (!result)
+			goto DONE;
 
 		// Patch jump from end of code cave to restored code address
-		VirtualProtectEx(hProcess, (LPVOID)dwCCAddressEnd, JMP_REL32_SIZE, PAGE_EXECUTE_READWRITE, &flOldProtect);
+		result = VirtualProtectEx(hProcess, (LPVOID)dwCCAddressEnd, JMP_REL32_SIZE, PAGE_EXECUTE_READWRITE, &flOldProtect);
+		if (!result)
+			goto DONE;
+
 		lpBuffer[0] = 0xe9;
-		*(PDWORD)(lpBuffer + 1) = (DWORD)lpRestoration - (dwCCAddressEnd + JMP_REL32_SIZE);
-		WriteProcessMemory(hProcess, (LPVOID)dwCCAddressEnd, lpBuffer, JMP_REL32_SIZE, &dwBytes);
-		VirtualProtectEx(hProcess, (LPVOID)dwCCAddressEnd, JMP_REL32_SIZE, flOldProtect, &flProtect);
+		*(PUINT_PTR)(lpBuffer + 1) = (UINT_PTR)lpRestoration - (dwCCAddressEnd + JMP_REL32_SIZE);
+
+		result = WriteProcessMemory(hProcess, (LPVOID)dwCCAddressEnd, lpBuffer, JMP_REL32_SIZE, &dwBytes);
+		if (!result)
+			goto DONE;
+
+		result = VirtualProtectEx(hProcess, (LPVOID)dwCCAddressEnd, JMP_REL32_SIZE, flOldProtect, &flProtect);
+		if (!result)
+			goto DONE;
 	}
 	else {
 		// Patch jump from end of code cave to end to base address
-		VirtualProtectEx(hProcess, (LPVOID)dwCCAddressEnd, JMP_REL32_SIZE, flOldProtect, &flProtect);
+		result = VirtualProtectEx(hProcess, (LPVOID)dwCCAddressEnd, JMP_REL32_SIZE, flOldProtect, &flProtect);
+		if (!result)
+			goto DONE;
+
 		lpBuffer[0] = 0xe9;
-		*(PDWORD)(lpBuffer + 1) = dwAddressEnd - (dwCCAddressEnd + JMP_REL32_SIZE);
-		WriteProcessMemory(hProcess, (LPVOID)dwCCAddressEnd, lpBuffer, JMP_REL32_SIZE, &dwBytes);
-		VirtualProtectEx(hProcess, (LPVOID)dwCCAddressEnd, JMP_REL32_SIZE, flOldProtect, &flProtect);
+		*(PUINT_PTR)(lpBuffer + 1) = dwAddressEnd - (dwCCAddressEnd + JMP_REL32_SIZE);
+		result = WriteProcessMemory(hProcess, (LPVOID)dwCCAddressEnd, lpBuffer, JMP_REL32_SIZE, &dwBytes);
+		if (!result)
+			goto DONE;
+
+		result = VirtualProtectEx(hProcess, (LPVOID)dwCCAddressEnd, JMP_REL32_SIZE, flOldProtect, &flProtect);
+		if (!result)
+			goto DONE;
 	}
 
 	// Patch jump from base address to code cave
-	*(PDWORD)(lpBuffer + 1) = dwCCAddress - (dwAddress + JMP_REL32_SIZE);
-	WriteProcessMemory(hProcess, (LPVOID)dwAddress, lpBuffer, JMP_REL32_SIZE, &dwBytes);
-	VirtualProtectEx(hProcess, (LPVOID)dwAddress, SRC_SIZE, flOldProtect, &flProtect);
+	*(PUINT_PTR)(lpBuffer + 1) = dwCCAddress - (dwAddress + JMP_REL32_SIZE);
+	result = WriteProcessMemory(hProcess, (LPVOID)dwAddress, lpBuffer, JMP_REL32_SIZE, &dwBytes);
+	if (!result)
+		goto DONE;
+
+	result = VirtualProtectEx(hProcess, (LPVOID)dwAddress, sizeof(lpBuffer), flOldProtect, &flProtect);
+
+DONE:
+	return result;
 }
 
-extern "C" void __stdcall PatchData(HANDLE hProcess, DWORD dwAddress, LPVOID lpBuffer, DWORD dwSize)
+#define FAKE_INSTRUCTION_IDENTIFIER 0xF1
+
+#pragma pack(push, 1)
+
+struct FakeInstruction
 {
-	DWORD flProtect, flOldProtect, dwBytesWritten;
-	VirtualProtectEx(hProcess, (LPVOID)dwAddress, dwSize, PAGE_EXECUTE_READWRITE, &flOldProtect);
-	WriteProcessMemory(hProcess, (LPVOID)dwAddress, lpBuffer, dwSize, &dwBytesWritten);
-	VirtualProtectEx(hProcess, (LPVOID)dwAddress, dwSize, flOldProtect, &flProtect);
+	BYTE identifier;
+	BYTE opcode;
+	UINT_PTR address;
+
+	enum
+	{
+		CALL32,
+        JMP32,
+		JE32,
+		JNE32,
+		CASE,
+		CodeCaveBegin,
+		CodeCaveEnd,
+	};
+};
+
+#pragma pack(pop)
+
+// Patch fake instructions in a given range
+extern "C" BOOL __stdcall PatchFakeInstructions(HANDLE hProcess, UINT_PTR lpAddress, UINT_PTR lpAddressEnd)
+{
+	ZydisDecodedInstruction instruction;
+	UINT_PTR position = lpAddress;
+	BYTE lpBuffer[32];
+	SIZE_T bytesRead;
+	UINT_PTR uBeginAddress = 0;
+	UINT_PTR uCCBeginAddress = 0;
+	BOOL result;
+
+	while (position < lpAddressEnd) {
+		result = ReadProcessMemory(hProcess, (LPCVOID)position, lpBuffer, sizeof(lpBuffer), &bytesRead);
+		if (!result)
+			goto DONE;
+
+		auto fakeIns = (FakeInstruction*)lpBuffer;
+		if (fakeIns->identifier == FAKE_INSTRUCTION_IDENTIFIER) {
+			UINT16 data = 0;
+			switch (fakeIns->opcode)
+			{
+			case FakeInstruction::CALL32:
+				data = 0xe890; // nop, call near
+				break;
+			case FakeInstruction::JMP32:
+				data = 0xe990; // nop, jmp near
+				break;
+			case FakeInstruction::JE32:
+				data = 0x840f;
+				break;
+			case FakeInstruction::JNE32:
+				data = 0x850f;
+				break;
+			case FakeInstruction::CASE:
+				// jump table offset
+				result = PatchAddress(hProcess, fakeIns->address, position + sizeof(FakeInstruction), FALSE);
+				if (!result)
+					goto DONE;
+				break;
+			case FakeInstruction::CodeCaveBegin:
+				uBeginAddress = fakeIns->address;
+				uCCBeginAddress = position + sizeof(FakeInstruction);
+				break;
+			case FakeInstruction::CodeCaveEnd:
+			{
+				PUINT_PTR lpCCEnd = &fakeIns->address;
+				if (uBeginAddress == 0 || uCCBeginAddress == 0) {
+					result = FALSE;
+					goto DONE;
+				}
+				result = PatchCodeCave(hProcess, uBeginAddress, fakeIns->address, uCCBeginAddress, position - JMP_REL32_SIZE);
+				if (!result)
+					goto DONE;
+				uBeginAddress = 0;
+				uCCBeginAddress = 0;
+			}
+			break;
+			default:
+				result = FALSE;
+				goto DONE;
+			}
+
+			if (data) {
+				result = PatchData(hProcess, position, &data, sizeof(UINT16));
+				if (!result)
+					goto DONE;
+				result = PatchAddress(hProcess, position + offsetof(FakeInstruction, address), fakeIns->address, TRUE);
+				if (!result)
+					goto DONE;
+			}
+
+			position += sizeof(FakeInstruction);
+		}
+		else {
+			result = ZYDIS_SUCCESS(ZydisDecoderDecodeBuffer(&pUHCInfo->Decoder, lpBuffer, sizeof(lpBuffer), position, &instruction));
+			if (!result)
+				goto DONE;
+			position += instruction.length;
+		}
+	}
+
+	if (position > lpAddressEnd)
+		result = FALSE;
+
+DONE:
+	return result;
 }
