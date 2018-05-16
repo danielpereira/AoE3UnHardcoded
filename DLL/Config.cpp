@@ -18,7 +18,7 @@ BOOL Config::Parse(LPCWSTR lpConfigName) {
 
 	hFile = CreateFileW(lpConfigName, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
-	if (!hFile) {
+	if (hFile == INVALID_HANDLE_VALUE) {
 		WCHAR lpStr[256];
 		wsprintfW(lpStr, L"Failed to open '%s'!", lpConfigName);
 		OutputDebugStringW(lpStr);
