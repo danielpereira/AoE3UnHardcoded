@@ -489,6 +489,17 @@ case 009A2194h
 
 patch_end FameRestriction
 
+; Fame Trickling Patch
+
+public stdcall PatchFameTrickle
+PatchFameTrickle proc
+
+	invoke PatchAddress, hProcess, 0051B026h, 00BD62F8h, 0
+
+	ret
+PatchFameTrickle endp
+
+
 ; Conversion Restriction
 ; Allows the ConvertGuardian power/ability to be used on units that do not belong to a treasure
 

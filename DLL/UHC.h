@@ -166,6 +166,7 @@ extern "C" {
 	void __stdcall PatchFarmRadius();
 	void __stdcall PatchTacticSwitching();
 	void __stdcall PatchFameRestriction();
+	void __stdcall PatchFameTrickle();
 	void __stdcall PatchAttackTypeIcons();
 	void __stdcall PatchTwoScoutCivs();
 	void __stdcall PatchExplorerUnits();

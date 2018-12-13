@@ -420,10 +420,10 @@ void APIENTRY UHCMain() {
 		if (enable & ENABLE_NATIVE_CIVS)
 			PatchNativeCivs();
 		
-		if (enable & ENABLE_BIGBUTTON)
+		if (enable & ENABLE_TWO_SCOUT_CIVS)
 			PatchTwoScoutCivs();
 
-		if (enable & ENABLE_TWO_SCOUT_CIVS)
+		if (enable & ENABLE_BIGBUTTON)
 			PatchBigButton();
 
 		if (enable & ENABLE_POP_LIMIT)
