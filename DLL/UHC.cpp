@@ -119,12 +119,12 @@ inline void SetRefTable(UHCRefTable& table, ConfigKey& key) {
 
 UHCInfo::UHCInfo() {
 	// UHC Patcher default string offset
-	//LPCWSTR szConfig = (LPCWSTR)0x00C65083;
+	LPCWSTR szConfig = (LPCWSTR)0x00C65083;
 
-	WCHAR szConfig[MAX_PATH];
-	LPCWSTR lpStartup = (LPCWSTR)0xbeaf98;
-	lstrcpyW(szConfig, lpStartup);
-	lstrcatW(szConfig, L"uhc.cfg");
+	//WCHAR szConfig[MAX_PATH];
+	//LPCWSTR lpStartup = (LPCWSTR)0xbeaf98;
+	//lstrcpyW(szConfig, lpStartup);
+	//lstrcatW(szConfig, L"uhc.cfg");
 
 	Enable = 0;
 
