@@ -295,8 +295,18 @@ UHCInfo::UHCInfo() {
 		else if (lstrcmpiA(key.Name, "customRevolutionBanners") == 0)
 			Enable |= ENABLE_REV_BANNER;
 
-		else if (lstrcmpiA(key.Name, "customSyscalls") == 0)
+		else if (lstrcmpiA(key.Name, "customSyscalls") == 0) {
 			Enable |= ENABLE_SYSCALL;
+			SetRefTable(Tables[Upls], key);
+
+			for (DWORD i = 0; i < Tables[Upls].RefCount; i++) {
+				LPCSTR lpSrc = Tables[Upls].Refs[i];
+				size_t length = lstrlenA(lpSrc) + 1;
+				WCHAR* lpStr = new WCHAR[length];
+				mbstowcs(lpStr, lpSrc, length);
+				UplFilepaths.PushBack(lpStr);
+			}
+		}
 
 		else if (lstrcmpiA(key.Name, "enableAllTeams") == 0)
 			Enable |= ENABLE_TEAM_LIMIT;
@@ -323,6 +333,9 @@ UHCInfo::~UHCInfo() {
 			delete[] SyscallGroups[g][i].Params;
 	}
 
+	for (size_t i = 0; i < UplFilepaths.GetNumElements(); i++)
+		delete[] UplFilepaths[i];
+
 	for (size_t i = 0; i < Personalities.GetNumElements(); i++)
 		delete[] Personalities[i];
 
@@ -334,37 +347,45 @@ UHCInfo::~UHCInfo() {
 }
 
 void UHCInfo::LoadPlugins() {
-	WIN32_FIND_DATAW fd;
-	HANDLE hFind = FindFirstFileW(L"*.upl", &fd);
-
-	if (hFind != INVALID_HANDLE_VALUE) {
-
-		do {
-			if (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-				continue;
-			HMODULE hLib = LoadLibraryW(fd.cFileName);
-
-			if (!hLib)
-				continue;
-
-			FARPROC pluginProc = GetProcAddress(hLib, "UHCPluginMain");
-
-			if (pluginProc) {
-				int exitCode;
-
-				exitCode = reinterpret_cast<int(*)(UHCPluginInfo*)>(pluginProc)(&pluginInfo);
-
-#ifdef _DEBUG
-				WCHAR debugMsg[256];
-				wsprintfW(debugMsg, L"UHC Plugin \"%s\" returned with exit code %d.\n", fd.cFileName, exitCode);
-				OutputDebugStringW(debugMsg);
-#endif
-			}
-
-		} while (FindNextFileW(hFind, &fd));
+	// defaults to load all upls in folder if none specified
+	if (UplFilepaths.GetNumElements() == 0) {
+		UplFilepaths.PushBack(L"*.upl");
 	}
 
-	FindClose(hFind);
+	for (size_t i = 0; i < UplFilepaths.GetNumElements(); i++) {
+
+		WIN32_FIND_DATAW fd;
+		HANDLE hFind = FindFirstFileW(UplFilepaths[i], &fd);
+
+		if (hFind != INVALID_HANDLE_VALUE) {
+
+			do {
+				if (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+					continue;
+				HMODULE hLib = LoadLibraryW(fd.cFileName);
+
+				if (!hLib)
+					continue;
+
+				FARPROC pluginProc = GetProcAddress(hLib, "UHCPluginMain");
+
+				if (pluginProc) {
+					int exitCode;
+
+					exitCode = reinterpret_cast<int(*)(UHCPluginInfo*)>(pluginProc)(&pluginInfo);
+
+#ifdef _DEBUG
+					WCHAR debugMsg[256];
+					wsprintfW(debugMsg, L"UHC Plugin \"%s\" returned with exit code %d.\n", fd.cFileName, exitCode);
+					OutputDebugStringW(debugMsg);
+#endif
+				}
+
+			} while (FindNextFileW(hFind, &fd));
+		}
+
+		FindClose(hFind);
+	}
 }
 
 extern "C" _declspec(dllexport)
