@@ -15,6 +15,16 @@ UHCPluginInfo pluginInfo = {
 	reinterpret_cast<void(*)(void*, const char*)>(0x007B4F03)
 };
 
+// request high-performance NVIDIA GPU
+extern "C" {
+	__declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+}
+
+// request high-performance AMD GPU
+extern "C" {
+	__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
+}
+
 // override operator new and delete
 /*void* operator new(size_t size) {
 	auto _operator_new = reinterpret_cast<void* (__thiscall *)(int, size_t*)>(0x401234);
