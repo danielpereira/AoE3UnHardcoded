@@ -473,8 +473,10 @@ void APIENTRY UHCMain() {
 		if (enable & ENABLE_REGISTRY_PATH)
 			PatchRegistryPath();
 
-		if (enable & REMOVE_FAME_RESTRICTION)
+		if (enable & REMOVE_FAME_RESTRICTION) {
 			PatchFameRestriction();
+            PatchFameTrickle();
+        }
 
 		if (enable & REMOVE_CONVERSION_RESTRICTION)
 			PatchConversionRestriction();
