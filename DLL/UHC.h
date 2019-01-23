@@ -23,7 +23,8 @@ enum UHCTableName {
 	NoBigButtonBlds,
 	AttackTypeIcons,
 	TwoScoutCivs,
-	ExplorerUnits
+	ExplorerUnits,
+	Upls
 };
 
 enum UHCSyscallType {
@@ -110,6 +111,7 @@ public:
 	int BasePop, ExtraPop, DeckCardCount;
 	TArray<UHCSyscall> SyscallGroups[GROUP_COUNT];
 	TArray<UHCCheat> Cheats;
+	TArray<LPWSTR> UplFilepaths;
 	TArray<LPWSTR> Personalities;
 	TArray<LPWSTR> AsianCivNames;
 	TArray<LPWSTR> NativeCivNames;

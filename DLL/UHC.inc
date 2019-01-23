@@ -67,6 +67,8 @@ UHCInfo struct
 	SyscallGroups UHCSyscallGroup GROUP_COUNT dup (<>)
 	CheatCount dd ?
 	Cheats UHCCheatPtr ?	
+	UplFilepathCount dd ?
+	UplFilepaths dd ?
 	PersonalityCount dd ?
 	Personalities dd ?
 	AsianCivCount dd ?
