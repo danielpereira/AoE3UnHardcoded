@@ -116,8 +116,8 @@ checkCouncil PROC stdcall civID:DWORD, esiPtr:DWORD, ediPtr:DWORD
 	mov edi,  NATIVE
 	imul ebx, edi
 	mov edi, pUHCInfo
+    mov esi, [edi].UHCInfo.NativeCivNames
 	lea edi, [edi].UHCInfo.Tables
-	mov esi, [edi].UHCInfo.NativeCivNames
 	lea edi, [edi+ebx]
 	mov ebx, [edi].UHCRefTable.RefCount
 	test ebx, ebx
@@ -384,7 +384,7 @@ code_cave_end 008D52B5h
 code_cave_begin 0081ADEBh
 	mov [esp+20h], eax
 	mov eax,[esp+10h]
-	invoke checkCouncil, eax, hProcess, edi
+	invoke checkCouncil, eax, esi, edi
 	test eax, eax
 	jne_rel32 0081AE59h
 	cmp [esp+10h], ebx

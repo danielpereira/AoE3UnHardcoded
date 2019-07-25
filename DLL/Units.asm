@@ -516,7 +516,7 @@ code_cave_begin 009DE04Dh
 	push ebp
 	push 2
 	mov ecx,00C66588h
-	call_rel32 00422648
+	call_rel32 00422648h
 	fstp dword ptr [esp+14h]
 	mov edx,[edx+08]
 	jmp_rel32 009DE06Bh
